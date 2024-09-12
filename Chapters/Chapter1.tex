@@ -21,7 +21,7 @@
 %\section{Introducción}
 
 %----------------------------------------------------------------------------------------
-\section{Resumen inicial{}}
+% \section{Resumen inicial{}}
 En este capítulo se exploran las motivaciones que impulsaron el desarrollo del sistema, diseñado para automatizar la comunicación entre emprendedores y sus clientes. Se ofrece, además, una explicación detallada sobre qué son los chatbots y las razones por las que su uso resulta fundamental en este contexto. Finalmente, se describen los objetivos principales del trabajo, centrados en la facilidad de implementación y en la mejora de la eficiencia operativa, junto con el alcance definido durante la planificación.
 
 \section{Motivación{}}
@@ -31,20 +31,20 @@ El sistema desarrollado en el presente trabajo surge de la necesidad de proporci
 
 \subsection{¿Qué es un chatbot?}
 
-Un chatbot es un software diseñado para simular una conversación con usuarios humanos a través de interfaces de mensajería o aplicaciones web. Los chatbots modernos utilizan técnicas de Procesamiento del Lenguaje Natural (PLN) para comprender y responder a las consultas de los usuarios de manera coherente y eficiente, mejorando la experiencia del cliente al automatizar las interacciones comunes.
+Un chatbot es un programa de software que emplea técnicas de Procesamiento del Lenguaje Natural (PLN)\footnote{El procesamiento de lenguaje natural, o PLN, combina la lingüística computacional (modelado del lenguaje humano basado en reglas) con modelos estadísticos y de aprendizaje automático para permitir que las computadoras y los dispositivos digitales reconozcan, comprendan y generen texto y voz. \url{https://www.ibm.com/mx-es/topics/natural-language-processing}} para interpretar y contestar automáticamente las consultas de los usuarios de manera coherente y eficiente. Esto facilita la automatización de interacciones comunes y mejora la experiencia del cliente.
 
 \subsubsection{¿Por qué un chatbot?}
 
-El uso de chatbots en la atención al cliente ha demostrado ser una herramienta clave para mejorar la eficiencia en la interacción con los usuarios. A continuación, se destacan algunas de las razones principales por las cuales un chatbot es la solución ideal para este trabajo:
+A continuación, se destacan algunas de las razones principales por las cuales un chatbot es la solución ideal para este trabajo:
 
 \begin{itemize}
-    \item \textbf{Disponibilidad 24/7}: los chatbots están disponibles en todo momento, lo que permite a las empresas atender consultas de sus clientes a cualquier hora del día, mejorando significativamente la experiencia del usuario.
+    \item Disponibilidad 24/7: los chatbots están disponibles en todo momento, lo que permite a las empresas atender consultas de sus clientes a cualquier hora del día.
     
-    \item \textbf{Reducción de costos}: al automatizar la atención al cliente, los chatbots permiten a las empresas reducir los costos asociados a personal humano, sin comprometer la calidad del servicio.
+    \item Reducción de costos: al automatizar la atención al cliente, los chatbots permiten a las empresas reducir los costos asociados a personal humano, sin comprometer la calidad del servicio.
     
-    \item \textbf{Recolección de datos valiosos}: los chatbots pueden recopilar y analizar información relevante sobre las interacciones con los clientes, permitiendo a las empresas ajustar sus estrategias de manera eficiente.
+    \item Recolección de datos valiosos: los chatbots pueden recopilar y analizar información relevante sobre las interacciones con los clientes, lo que permite a las empresas ajustar sus estrategias de manera eficiente.
     
-    \item \textbf{Optimización de tiempos de respuesta}: la capacidad de generar respuestas inmediatas en función de consultas predefinidas optimiza los tiempos de respuesta, mejorando la satisfacción del cliente.
+    \item Optimización de tiempos de respuesta: la capacidad de generar respuestas inmediatas en función de consultas predefinidas optimiza los tiempos de respuesta.
 \end{itemize}
 
 % \subsection{Guía matemática rápida para \LaTeX{}}
@@ -53,20 +53,21 @@ El uso de chatbots en la atención al cliente ha demostrado ser una herramienta 
 
 
 %----------------------------------------------------------------------------------------
-\newpage % agrego un salto de página 
+% \newpage % agrego un salto de página 
 \subsection{Objetivos principales}
 
-El trabajo se enfoca en tres objetivos principales que se interrelacionan para ofrecer una solución integral a pequeños emprendedores. Cada uno de estos objetivos está orientado a asegurar que la herramienta sea accesible, fácilmente implementable y de bajo costo, garantizando una experiencia eficiente y optimizada para las empresas que la adopten. 
+El trabajo se enfoca en tres objetivos principales que se interrelacionan para ofrecer una solución integral a pequeños emprendedores. Cada uno de estos objetivos está orientado a asegurar que la herramienta sea accesible, fácilmente implementable y de bajo costo, para garantizar una experiencia eficiente y optimizada para las empresas que la adopten. 
  
 A continuación, se detallan los objetivos principales:
 
 
 \begin{itemize}
-    \item \textbf{Hacer accesible la solución a pequeños emprendedores}: desarrollar un sistema que pueda ser utilizado por pequeñas empresas, independientemente de sus conocimientos técnicos, facilitando su adopción.
+    \item Hacer accesible la solución a pequeños emprendedores: desarrollar un sistema que sea de fácil adopción y pueda ser utilizado por pequeñas empresas, independientemente de sus conocimientos técnicos.
     
-    \item \textbf{Garantizar una fácil implementación}: diseñar una solución replicable, de manera que cualquier empresa pueda contar con el chatbot simplemente proporcionando el contexto necesario para su entrenamiento. No será necesario disponer de infraestructura compleja ni personal especializado.
+    \item Garantizar una fácil implementación: diseñar una solución replicable, de manera que cualquier empresa pueda contar con el chatbot simplemente proporcionando el contexto necesario para su entrenamiento. No será necesario disponer de infraestructura compleja ni personal especializado.
     
-    \item \textbf{Reducir el costo de mantenimiento}: proporcionar una herramienta con un bajo costo de mantenimiento, tanto en términos económicos como de tiempo, permitiendo a los emprendedores centrarse en su negocio principal.
+    \item Reducir el costo de mantenimiento: proporcionar una herramienta con un bajo costo de mantenimiento, tanto en términos económicos como de tiempo, para que los emprendedores puedan centrarse en su negocio principal.
+    
 \end{itemize}
 
 
@@ -74,18 +75,19 @@ A continuación, se detallan los objetivos principales:
 % \includegraphics[width=\textwidth]{ruta/al/grafico_venn.png}
 
 \begin{figure}[htbp]
+
   \centering
-  \includegraphics[width=.5\textwidth]{./Figures/Venn_objetivos.png}
+  \includegraphics[width=.75\textwidth]{./Figures/Venn_objetivos.png}
   \caption{Relación entre los objetivos centrales.}
   \label{fig:objetivos_venn}
 \end{figure}
 
 \subsection{Alcance del trabajo}
 
-Durante la ejecución del trabajo se propusieron las siguientes actividades:
+Durante la planificación del trabajo se propusieron las siguientes actividades:
 
 \begin{itemize}
-    \item Diseño, desarrollo e implementación de un pipeline completo para la creación y gestión de chatbots basados en PLN, con capacidad de aprendizaje continuo.
+    \item Diseño, desarrollo e implementación de un \textit{pipeline} completo para la creación y gestión de chatbots basados en PLN, con capacidad de aprendizaje continuo.
     \item Desarrollo de algoritmos para el preprocesamiento de información y generación de respuestas relevantes y coherentes.
     \item Establecimiento de métricas y procedimientos de evaluación para medir la calidad y eficacia de las respuestas del chatbot.
     \item Implementación de un sistema de retroalimentación que utilice los datos de interacciones con usuarios para mejorar el rendimiento del modelo.
