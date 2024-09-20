@@ -31,18 +31,19 @@ El sistema desarrollado en el presente trabajo surge de la necesidad de proporci
 
 \subsection{¿Qué es un chatbot?}
 
-Un chatbot es un programa de software que emplea técnicas de Procesamiento del Lenguaje Natural (PLN)\footnote{El procesamiento de lenguaje natural, o PLN, combina la lingüística computacional (modelado del lenguaje humano basado en reglas) con modelos estadísticos y de aprendizaje automático para permitir que las computadoras y los dispositivos digitales reconozcan, comprendan y generen texto y voz. \url{https://www.ibm.com/mx-es/topics/natural-language-processing}} para interpretar y contestar automáticamente las consultas de los usuarios de manera coherente y eficiente. Esto facilita la automatización de interacciones comunes y mejora la experiencia del cliente.
+Un chatbot es un programa de software que emplea técnicas de Procesamiento del Lenguaje Natural (PLN) \citep{ibm-pln} para interpretar y contestar automáticamente las consultas de los usuarios de manera coherente y eficiente. Esto facilita la automatización de interacciones comunes y mejora la experiencia del cliente.
 
-\subsubsection{¿Por qué un chatbot?}
+
+\subsection{¿Por qué un chatbot?}
 
 A continuación, se destacan algunas de las razones principales por las cuales un chatbot es la solución ideal para este trabajo:
 
 \begin{itemize}
-    \item Disponibilidad 24/7: los chatbots están disponibles en todo momento, lo que permite a las empresas atender consultas de sus clientes a cualquier hora del día.
+    \item Disponibilidad 24/7: los chatbots están disponibles en todo momento, lo que les permite a las empresas atender consultas de sus clientes a cualquier hora del día.
     
-    \item Reducción de costos: al automatizar la atención al cliente, los chatbots permiten a las empresas reducir los costos asociados a personal humano, sin comprometer la calidad del servicio.
+    \item Reducción de costos: al automatizar la atención al cliente, los chatbots ayudan a las empresas a reducir los costos asociados al personal humano sin comprometer la calidad del servicio.
     
-    \item Recolección de datos valiosos: los chatbots pueden recopilar y analizar información relevante sobre las interacciones con los clientes, lo que permite a las empresas ajustar sus estrategias de manera eficiente.
+    \item Recolección de datos valiosos: los chatbots pueden recopilar y analizar información relevante sobre las interacciones con los clientes, lo que les permite a las empresas ajustar sus estrategias de manera eficiente.
     
     \item Optimización de tiempos de respuesta: la capacidad de generar respuestas inmediatas en función de consultas predefinidas optimiza los tiempos de respuesta.
 \end{itemize}
@@ -54,6 +55,8 @@ A continuación, se destacan algunas de las razones principales por las cuales u
 
 %----------------------------------------------------------------------------------------
 % \newpage % agrego un salto de página 
+\section{Alcance y objetivos{}}
+
 \subsection{Objetivos principales}
 
 El trabajo se enfoca en tres objetivos principales que se interrelacionan para ofrecer una solución integral a pequeños emprendedores. Cada uno de estos objetivos está orientado a asegurar que la herramienta sea accesible, fácilmente implementable y de bajo costo, para garantizar una experiencia eficiente y optimizada para las empresas que la adopten. 
@@ -93,47 +96,43 @@ Durante la planificación del trabajo se propusieron las siguientes actividades:
     \item Implementación de un sistema de retroalimentación que utilice los datos de interacciones con usuarios para mejorar el rendimiento del modelo.
 \end{itemize}
 
-Se espera que los resultados incluyan un sistema accesible, de fácil implementación y de bajo costo, que permita a los emprendedores mejorar la eficiencia de sus comunicaciones con los clientes, ahorrando tiempo y mejorando la satisfacción del cliente.
+\vspace{0.5cm} % Esto añade un pequeño espacio vertical (medio centímetro)
+
+El presente trabajo excluye: 
+\begin{itemize}
+    \item Desarrollo de interfaces de usuario avanzadas, por fuera de las básicas necesarias para probar el pipeline.
+    \item Integración con sistemas externos, como bases de datos o plataformas de gestión de clientes.
+    \item Implementación del sistema en un entorno productivo.
+    \item Actividades de marketing o promoción del producto final.
+\end{itemize}
 
 
-
-% Si estás familiarizado con \LaTeX{}, entonces podés explorar la estructura de directorios de esta plantilla y proceder a personalizarla agregando tu información en el bloque \emph{INFORMACIÓN DE LA PORTADA} en el archivo \file{memoria.tex}.  
-
-% Se puede continuar luego modificando el resto de los archivos siguiendo los lineamientos que se describen en la sección \ref{sec:FillingFile} en la página \pageref{sec:FillingFile}.
-
-% Debés asegurarte de leer el capítulo \ref{Chapter2} acerca de las convenciones utilizadas para las Memoria de los Trabajos Finales de la \degreename.
-
-% Si sos nuevo en \LaTeX{}, se recomienda que continúes leyendo el documento ya que contiene información básica para aprovechar el potencial de esta herramienta.
-
+ 
 
 %----------------------------------------------------------------------------------------
+% \newpage % agrego un salto de página 
+
+ 
 
 \section{Estado del arte}
- 
-\subsection{Revisión de tecnologías}
-...
-% Esta plantilla se distribuye como una único archivo .zip que se puede descomprimir en varios archivos y carpetas. Asimismo, se puede consultar el repositorio git para obtener la última versión de los archivos, \url{https://github.com/patriciobos/Plantilla-CESE.git}. Los nombres de las carpetas son, o pretender ser, auto-explicativos.
 
-% \keyword{Appendices} -- Esta es la carpeta donde se deben poner los apéndices. Cada apéndice debe ir en su propio archivo \file{.tex}. Se incluye un ejemplo y una plantilla en la carpeta.
+Los chatbots se han integrado en numerosos aspectos de la vida diaria y en diversos canales de comunicación. Se encuentran presentes en redes sociales como Facebook e Instagram, donde facilitan la interacción con empresas. Además, muchas organizaciones, incluyendo entidades gubernamentales, han implementado chatbots para mejorar la atención al ciudadano. Plataformas como IBM Watson, Google Dialogflow y Microsoft Bot Framework permiten a las empresas crear chatbots personalizados con gran flexibilidad.
 
-% \keyword{Chapters} -- Esta es la carpeta donde se deben poner los capítulos de la memoria. Cada capítulo debe ir un su propio archivo \file{.tex} por separado.  Se ofrece por defecto, la siguiente estructura de capítulos y se recomienda su utilización dentro de lo posible:
+\subsection{Recursos para chatbots}
 
-% \begin{itemize}
-% \item Capítulo 1: Introducción general	
-% \item Capítulo 2: Introducción específica
-% \item Capítulo 3: Diseño e implementación
-% \item Capítulo 4: Ensayos y resultados
-% \item Capítulo 5: Conclusiones
+\subsubsection{Servicios basados en APIs}
+Los servicios basados en API\footnote{API (Interfaz de Programación de Aplicaciones) es un conjunto de reglas y protocolos que permite que diferentes aplicaciones se comuniquen entre sí.} simplifican la implementación de chatbots al ofrecer interfaces estandarizadas para acceder a funcionalidades avanzadas. Estos servicios permiten una mayor personalización y flexibilidad en el diseño de chatbots, facilitando la integración con otros sistemas y plataformas. La utilización de APIs permite a las empresas adaptar las soluciones a sus necesidades específicas sin necesidad de desarrollar toda la infraestructura desde cero.
 
-% \end{itemize}
 
-% Esta estructura de capítulos es la que se recomienda para las memorias de la especialización.
+\subsubsection{Modelos locales}
+Los modelos locales como Llama 3.1, Phi 3, Gemma y Mistral son soluciones robustas que operan sin depender de servicios externos. Cada uno de estos modelos ofrece características y ventajas específicas, como mayor control sobre los datos y la posibilidad de operar en entornos con restricciones de privacidad. Su uso es particularmente valioso cuando se requiere un alto nivel de personalización y seguridad en la gestión de datos.
 
-% \keyword{Figures} -- Esta carpeta contiene todas las figuras de la memoria.  Estas son las versiones finales de las imágenes que van a ser incluidas en la memoria.  Pueden ser imágenes en formato \textit{raster}\footnote{\url{https://en.wikipedia.org/wiki/Raster_graphics}} como \file{.png}, \file{.jpg} o en formato vectoriales\footnote{\url{https://en.wikipedia.org/wiki/Vector_graphics}} como \file{.pdf}, \file{.ps}.  Se debe notar que utilizar imágenes vectoriales disminuye notablemente el peso del documento final y acelera el tiempo de compilación por lo que es recomendable su utilización siempre que sea posible.
 
-\subsection{investigaciones previas y tendencias actuales}
+\subsection{Tendencias actuales}
+Cada vez más empresas optan por utilizar servicios basados en API, los cuales han hecho más accesible y económico el despliegue de chatbots sofisticados. Estas herramientas simplifican la implementación y permiten la creación rápida de soluciones adaptadas a las necesidades específicas de cada empresa o entidad. Aunque los modelos locales, siguen siendo valiosos por su robustez y capacidad para operar sin depender de servicios externos, son útiles especialmente cuando se requiere un mayor control o confidencialidad.
 
-...
+
+
 % También están incluidos varios archivos, la mayoría de ellos son de texto plano y se puede ver su contenido en un editor de texto. Después de la compilación inicial, se verá que más archivos auxiliares son creados por \ LaTeX{} o BibTeX, pero son de uso interno y no es necesario hacer nada en particular con ellos.  Toda la información necesaria para compilar el documento se encuentra en los archivos \file{.tex}, \file{.bib}, \file{.cls} y en las imágenes de la carpeta Figures.
 
 % \keyword{referencias.bib} - este es un archivo importante que contiene toda la información de referencias bibliográficas que se utilizarán para las citas en la memoria en conjunto con BibTeX. Usted puede escribir las entradas bibliográficas en forma manual, aunque existen también programas de gestión de referencias que facilitan la creación y gestión de las referencias y permiten exportarlas en formato BibTeX.  También hay disponibles sitios web como \url{books.google.com} que permiten obtener toda la información necesaria para una cita en formato BibTeX. Ver sección \ref{sec:biblio}
