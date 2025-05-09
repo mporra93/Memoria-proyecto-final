@@ -7,8 +7,10 @@ Este capítulo explora los requisitos fundamentales para el desarrollo de un sis
 
 \section{Requerimientos}
 
+En esta sección se presentan los requerimientos específicos de software del sistema. Estos se tuvieron en cuenta al inicio del desarrollo de este proyecto, cuyo fin es construir un chatbot inteligente basado en arquitectura RAG, optimizado para brindar respuestas contextualizadas, precisas y eficientes a través de una interfaz adaptable y trazabilidad completa de interacciones.
+
 \begin{enumerate}
-    \item Requerimientos funcionales:
+    \item Requerimientos funcionales fueron:
         \begin{enumerate}
             \item El sistema debe ser capaz de procesar y comprender mensajes de texto entrantes.
             \item El chatbot debe poder proporcionar respuestas relevantes y precisas a las consultas de los usuarios.
@@ -23,7 +25,7 @@ Este capítulo explora los requisitos fundamentales para el desarrollo de un sis
             \item Proporcionar un registro de avance que documente los hitos alcanzados durante el desarrollo del proyecto, que contemple fechas de cumplimiento y descripciones de las tareas realizadas.
          \end{enumerate}
 		 
-	\newpage % agrego un salto de página 
+	% \newpage % agrego un salto de página 
     \item Requerimientos de Testing:
         \begin{enumerate}
             \item Se llevarán a cabo pruebas en diferentes escenarios y con diferentes tipos de contexto de datos, para garantizar la fiabilidad y precisión del chatbot.
@@ -44,7 +46,7 @@ Este capítulo explora los requisitos fundamentales para el desarrollo de un sis
      
   \textbf{Modelos basados en reglas:} estos modelos utilizan gramáticas y diccionarios para analizar el lenguaje. Aunque son efectivos en tareas específicas, su rigidez y la necesidad de una extensa programación manual limitan su aplicabilidad en contextos más amplios.
   
-  \textbf{Modelos estadísticos:} a medida que los datos comenzaron a acumularse, los modelos estadísticos, como los n-gramas, se convirtieron en populares. Estos modelos predicen la probabilidad de una palabra en función de las palabras anteriores. Sin embargo, su dependencia de datos limitados puede resultar en un contexto insuficiente, lo que afecta la calidad de las predicciones.
+  \textbf{Modelos estadísticos:} a medida que los datos comenzaron a acumularse, los modelos estadísticos, como los n-gramas, se convirtieron en populares. Estos modelos predicen la probabilidad de una palabra en función de las anteriores. Sin embargo, su dependencia de datos limitados puede resultar en un contexto insuficiente, lo que afecta la calidad de las predicciones.
   
   \textbf{Modelos de aprendizaje profundo:} con el auge del aprendizaje profundo, arquitecturas como RNN (Redes Neuronales Recurrentes), LSTM (Memoria a Largo Plazo) y transformers han revolucionado el PLN. Estos modelos pueden captar patrones complejos en grandes volúmenes de datos, lo que les permite realizar tareas como la traducción automática y la generación de texto de manera más efectiva.
   
@@ -86,7 +88,7 @@ Este capítulo explora los requisitos fundamentales para el desarrollo de un sis
   
   \subsection{Fine-Tuning}
   El fine-tuning implica ajustar un modelo de lenguaje preentrenado en un conjunto de datos específico para mejorar su comportamiento en contextos particulares. Este proceso optimiza la efectividad del modelo en aplicaciones industriales específicas, como en medicina, derecho o ingeniería. Sin embargo, una desventaja del fine-tuning es que el modelo resultante puede quedar congelado en un estado particular, lo que limita su adaptabilidad a nuevos contextos sin un nuevo ciclo de entrenamiento.
-  Aunque el fine-tuning proporciona respuestas más precisas en contextos específicos, también puede carecer de la flexibilidad de RAG, que permite incorporar datos contextuales en tiempo real.
+  Aunque el fine-tuning proporciona respuestas más precisas en contextos específicos, puede carecer de la flexibilidad de RAG, que permite incorporar datos contextuales en tiempo real.
    
   \newpage
 \subsection{Ventajas y desventajas de los modelos RAG y Fine-Tuning}
