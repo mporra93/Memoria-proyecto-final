@@ -1,133 +1,90 @@
 \chapter{Ensayos y resultados}
 \label{Chapter4}
 
-En este capítulo se presentan las pruebas realizadas al chatbot desarrollado, los resultados obtenidos en diferentes escenarios, los procesos de optimización aplicados y un análisis detallado del comportamiento observado. Finalmente, se identifican fallos relevantes y se proponen posibles mejoras para futuras iteraciones del sistema.
+En este capítulo se presentan las pruebas realizadas al chatbot desarrollado, junto con los resultados obtenidos en distintos escenarios, los procesos de optimización aplicados y un análisis detallado del comportamiento observado. Asimismo, se identifican fallos relevantes y se proponen mejoras para futuras iteraciones del sistema.
 
-%----------------------------------------------------------------------------------------
-%	SECTION 1
-%----------------------------------------------------------------------------------------
+Se describen los diferentes escenarios de prueba utilizados para evaluar el rendimiento del chatbot, destacando que la estructura de las pruebas fue clave para detectar áreas susceptibles de mejora y optimización. Además, se analizan los resultados obtenidos en cada escenario con el fin de evaluar la efectividad de las mejoras implementadas, así como identificar posibles limitaciones y proponer ajustes adicionales al sistema.
 
 \section{Evaluación de escenarios del chatbot}
 \label{sec:evaluacionEscenarios}
 
-Esta sección describe las pruebas realizadas al chatbot en distintos escenarios representativos. El objetivo es observar su comportamiento y desempeño en situaciones típicas de uso, así como frente a entradas no esperadas o complejas.
-
 \subsection{Escenario 1: Interacción básica}
+Se evaluó la capacidad del chatbot para mantener una conversación coherente en interacciones simples. Para ello, se formularon preguntas directamente relacionadas con el contexto actual de la versión, aunque no siempre completas ni contextualizadas en el hilo conversacional. El objetivo principal de esta prueba fue verificar el denominado \textit{happy path} del sistema; es decir, el funcionamiento correcto de las etapas del \textit{pipeline}, incluyendo la recepción de entrada, la captura de contextos relevantes y el análisis por parte del modelo de lenguaje para generar una respuesta adecuada.
 
-Se evalúa la capacidad del chatbot para responder de manera coherente a preguntas simples y directas, típicas de un usuario promedio. Se espera verificar la fluidez, naturalidad y precisión en respuestas básicas.
+\subsection{Escenario 2: Consultas con múltiples pasos}
+En esta evaluación se realizaron consultas más complejas desde el punto de vista del hilo conversacional, donde el usuario planteó preguntas encadenadas que requerían del sistema la retención y gestión del contexto. Se analizó la capacidad del chatbot para mantener coherencia y relevancia a lo largo de múltiples interacciones. Si bien las preguntas fueron formuladas de forma directa, se buscó evaluar la habilidad del sistema para adaptarse a cambios en la temática sin perder el hilo de la conversación ni mezclar las respuestas con temas tratados previamente.
 
-\subsection{Escenario 2: Manejo de errores}
-
-Este escenario considera la interacción con entradas incompletas, ambiguas o mal redactadas. Se analiza la habilidad del chatbot para detectar errores, pedir aclaraciones o corregir las respuestas en función del contexto.
-
-\subsection{Escenario 3: Consultas complejas}
-
-Aquí se prueban preguntas que requieren razonamiento más profundo o que involucran múltiples pasos. El objetivo es evaluar hasta qué punto el sistema puede gestionar tareas que van más allá de una interacción sencilla.
-
-%----------------------------------------------------------------------------------------
-%	SECTION 2
-%----------------------------------------------------------------------------------------
-
-\section{Optimización}
-\label{sec:optimizacion}
-
-En esta sección se detallan los procesos de optimización llevados a cabo para mejorar el rendimiento del chatbot. Esto incluye ajustes tanto en los parámetros del modelo como en la configuración del entorno de ejecución.
-
-\subsection{Ajuste de parámetros del modelo}
-
-Se describen los cambios realizados en los parámetros del modelo de lenguaje (por ejemplo, temperatura, top-k, top-p), justificando su elección en función de los resultados obtenidos.
-
-\subsection{Configuraciones del entorno de ejecución}
-
-Se documentan las modificaciones en el entorno técnico (hardware, uso de aceleradores, recursos del servidor, etc.) que influyeron en el rendimiento general del sistema.
-
-\subsection{Impacto en el rendimiento}
-
-Se analizan los efectos de las optimizaciones aplicadas, incluyendo mejoras en tiempo de respuesta, calidad de las respuestas y reducción de errores.
-
-%----------------------------------------------------------------------------------------
-%	SECTION 3
-%----------------------------------------------------------------------------------------
-
-\section{Análisis de resultados}
-\label{sec:analisisResultados}
-
-Esta sección ofrece una interpretación crítica de los resultados obtenidos durante las pruebas. Se emplean métricas cuantitativas y cualitativas para comparar el comportamiento del chatbot en los distintos escenarios.
-
-\subsection{Métricas de evaluación}
-
-Se presentan y explican las métricas utilizadas para evaluar el rendimiento del sistema, como precisión, tiempo de respuesta y tasa de error.
-
-\subsection{Comparación entre escenarios}
-
-Se contrastan los resultados obtenidos en los distintos escenarios de prueba, identificando patrones de desempeño, fortalezas y debilidades.
-
-\subsection{Interpretación de resultados}
-
-Se interpreta el significado de los resultados y se reflexiona sobre los factores que pudieron influir en el comportamiento observado. Esta sección sirve como base para las propuestas de mejora.
-
-\begin{table}[ht]
-    \centering
-    \caption{Resultados comparativos de evaluación del chatbot.}
-    \begin{tabular}{|c|p{0.25\linewidth}|p{0.25\linewidth}|p{0.25\linewidth}|}
-        \hline
-        \multicolumn{1}{|c|}{\textbf{Escenario}} & \multicolumn{1}{c|}{\textbf{Precisión (\%)}} & \multicolumn{1}{c|}{\textbf{Tiempo de respuesta (s)}} & \multicolumn{1}{c|}{\textbf{Tasa de error (\%)}} \\ 
-        \hline
-        Escenario 1 & 
-        \begin{raggedright}
-        92.3
-        \end{raggedright} & 
-        \begin{raggedright}
-        1.2
-        \end{raggedright} & 
-        \begin{raggedright}
-        3.4
-        \end{raggedright} \\
-        \hline
-        Escenario 2 & 
-        \begin{raggedright}
-        85.6
-        \end{raggedright} & 
-        \begin{raggedright}
-        1.8
-        \end{raggedright} & 
-        \begin{raggedright}
-        7.1
-        \end{raggedright} \\
-        \hline
-        Escenario 3 & 
-        \begin{raggedright}
-        78.4
-        \end{raggedright} & 
-        \begin{raggedright}
-        2.4
-        \end{raggedright} & 
-        \begin{raggedright}
-        10.6
-        \end{raggedright} \\
-        \hline
-    \end{tabular}
-    \label{tab:comparativa_chatbot}
-\end{table}
+\subsection{Escenario 3: Consultas fuera de contexto}
+En este escenario se examinó la capacidad del chatbot para gestionar preguntas ambiguas o fuera de contexto, así como su habilidad para solicitar mayor información o derivar la consulta a un humano. Cabe destacar que esta función se encuentra en etapa de pruebas, ya que el prototipo no cuenta con una conexión real a un sistema CRM para realizar la transferencia de la conversación. El objetivo fue evaluar la habilidad del sistema para reconocer sus propias limitaciones y ofrecer respuestas apropiadas incluso ante la falta de información contextual.
 
 
-%----------------------------------------------------------------------------------------
-%	SECTION 4
-%----------------------------------------------------------------------------------------
+\section{Resultados de las pruebas}
+\label{sec:resultadosPruebas}
 
-\section{Identificación de fallos y mejoras propuestas}
-\label{sec:fallosYMejoras}
+En este apartado se presentan los resultados obtenidos en cada uno de los escenarios de prueba descritos anteriormente para cada una de las 4 versiones del chatbot. Además, se discuten los hallazgos más relevantes y se proponen recomendaciones para futuras mejoras.
 
-A partir de los ensayos realizados, esta sección presenta los errores más relevantes identificados durante las pruebas, así como propuestas concretas para mejorar el desempeño y la robustez del chatbot en el futuro.
+\subsection{Pruebas para la version 0}
+\label{sec:resultadosPruebasV0}
+\subsubsection{Pruebas de interacción básica}
 
-\subsection{Principales errores detectados}
+ 
 
-Se enumeran y describen los errores más significativos observados durante las pruebas, tales como respuestas incorrectas, ambigüedad o fallos de reconocimiento.
+\subsubsection{Pruebas de consultas con múltiples pasos}
 
-\subsection{Limitaciones del sistema actual}
 
-Se discuten las limitaciones técnicas o de diseño que restringen las capacidades del sistema actual y que podrían abordarse en futuras versiones.
+\subsubsection{Pruebas de consultas fuera de contexto}
 
-\subsection{Sugerencias para mejoras futuras}
 
-Se presentan recomendaciones para superar los errores y limitaciones detectadas, proponiendo estrategias de mejora a nivel de modelo, arquitectura o interfaz.
+\subsubsection{Conclusiones de la version 0}
+
+
+\subsection{Pruebas para la version 1}
+\label{sec:resultadosPruebasV1}
+\subsubsection{Pruebas de interacción básica}
+
+\subsubsection{Pruebas de consultas con múltiples pasos}
+
+\subsubsection{Pruebas de consultas fuera de contexto}
+
+\subsubsection{Conclusiones de la version 1}
+
+\subsection{Pruebas para la version 2}
+\label{sec:resultadosPruebasV2}
+\subsubsection{Pruebas de interacción básica}
+
+\subsubsection{Pruebas de consultas con múltiples pasos}
+
+\subsubsection{Pruebas de consultas fuera de contexto}
+
+\subsubsection{Conclusiones de la version 2}
+
+\subsection{Pruebas para la version 3}
+\label{sec:resultadosPruebasV3}
+\subsubsection{Pruebas de interacción básica}
+
+\subsubsection{Pruebas de consultas con múltiples pasos}
+
+\subsubsection{Pruebas de consultas fuera de contexto}
+
+\subsubsection{Conclusiones de la version 3}
+
+
+\section{Mejoras y optimizaciones propuestas}
+\label{sec:mejorasOptimizaciones}
+
+En esta sección se presentan las mejoras y optimizaciones propuestas para el chatbot, basadas en los resultados obtenidos en las pruebas realizadas. Estas recomendaciones están orientadas a abordar los problemas identificados y mejorar la experiencia del usuario, así como la eficiencia del sistema en futuras iteraciones.
+
+\subsection{Mejoras en la gestión del contexto}
+\label{sec:mejorasGestionContexto}
+
+\subsection{Optimización del modelo de lenguaje}
+\label{sec:optimizacionModeloLenguaje}
+
+\subsection{Integración con sistemas externos}
+\label{sec:integracionSistemasExternos}
+
+\subsection{Mejoras en la interfaz de usuario}
+\label{sec:mejorasInterfazUsuario}
+
+
+
