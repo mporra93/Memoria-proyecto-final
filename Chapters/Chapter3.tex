@@ -37,9 +37,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
         \label{fig:version1}
     \end{figure}
 
-    Problemas detectados: aunque se logró una mayor robustez y control, surgieron diversos desafíos. NemoGuardrails presentó un rendimiento limitado en español y una baja capacidad de personalización, debido a su fuerte orientación hacia el idioma inglés, lo que redujo la eficacia del filtrado y motivó la búsqueda de alternativas más flexibles.
-
-    Además, si bien se incorporó un sistema de evaluación automática, aún no se contaba con trazabilidad completa de las interacciones ni con segmentación por métricas, aspectos que se abordarían en versiones posteriores.
+    Problemas detectados: aunque se logró mayor robustez y control, surgieron desafíos como el rendimiento limitado de NemoGuardrails en español y la falta de trazabilidad completa, lo que motivó la búsqueda de alternativas.
 
 
 \item{Versión 2 - Guardrails personalizados, almacenamiento estructurado de chats e implementación del frontend y backend de pruebas}
@@ -55,14 +53,12 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=.75\textwidth]{./Figures/version2.png}
+        \includegraphics[width=.90\textwidth]{./Figures/version2.png}
         \caption{Diagrama general del sistema para la versión 2.}
         \label{fig:version2}
     \end{figure}
 
-    Problemas detectados: aunque el nuevo sistema de guardrails ofreció un mayor control, la forma en que se persistían los historiales de conversación generó un aumento significativo en el uso de memoria RAM, lo que limitó la escalabilidad del sistema. Además, la latencia de respuesta aumentó considerablemente y afectó la experiencia del usuario.
-
-    Por último, si bien el almacenamiento de las conversaciones facilitó la gestión del contexto en interacciones encadenadas, se identificó que, en casos donde la nueva pregunta dependía de la anterior, el contexto no era interpretado correctamente. Por ejemplo:
+    Problemas detectados: aunque el nuevo sistema de guardrails ofreció mayor control, su forma de almacenar historiales elevó el uso de RAM y la latencia, afectando la escalabilidad y experiencia del usuario; además, en preguntas encadenadas, el contexto no siempre se interpretaba correctamente. Por ejemplo:
 
     \begin{itemize}
         \item Usuario: "¿Tienen stock del producto X?"
@@ -82,7 +78,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=.75\textwidth]{./Figures/ejemploreformulado.png}
+        \includegraphics[width=.9\textwidth]{./Figures/ejemploreformulado.png}
         \caption{Ejemplo de redefinición de pregunta.}
         \label{fig:ejemploreformulado}
     \end{figure}
@@ -95,7 +91,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
 Durante las primeras iteraciones surgieron limitaciones clave: costos por servicios externos (Pinecone, API de LLMs), pobre trazabilidad del sistema y ausencia de control sobre la evaluación de calidad. Estos problemas fueron mitigados mediante las siguientes acciones:
 
 \begin{itemize}
-    \item Migración a LanceDB para almacenamiento local sin costo: LanceDB es una base de datos vectorial optimizada para uso local. Su adopción permitió eliminar la dependencia de servicios como Pinecone, que implicaban costos por cada consulta. Esta decisión fue especialmente útil durante la etapa de desarrollo y pruebas, ya que redujo los costos operativos. Sin embargo, se observó que LanceDB puede presentar latencias más altas en comparación con soluciones SaaS (Software as a Service), lo cual debe considerarse en entornos de producción. Por otro lado, para aplicaciones a gran escala, su uso local podría representar un ahorro sustancial al evitar tarifas por tokens o el uso de APIs externas.
+    \item Migración a LanceDB para almacenamiento local sin costo: LanceDB es una base de datos vectorial optimizada para uso local. Su adopción permitió eliminar la dependencia de servicios como Pinecone, que implicaban costos por cada consulta. Esta decisión fue especialmente útil durante la etapa de desarrollo y pruebas, ya que redujo los costos operativos. Sin embargo, se observó que LanceDB puede presentar latencias más altas en comparación con soluciones SaaS (Software as a Service)\footnote{SaaS (Software as a Service) es un modelo en el que el software se aloja en la nube y se accede vía internet, sin necesidad de instalación o mantenimiento por parte del usuario. Ofrece actualizaciones automáticas, acceso remoto y pago por uso.}, que deben considerarse en entornos de producción. Por otro lado, para aplicaciones a gran escala, su uso local podría representar un ahorro sustancial al evitar tarifas por tokens o el uso de APIs externas.
 
     \item Uso de DSPy para estructurar la lógica RAG y mejorar la modularidad: DSPy es una biblioteca que permite construir y optimizar pipelines de IA mediante programación declarativa. Se utilizó para implementar de manera modular el sistema RAG, y se definieron claramente las etapas de recuperación y generación. Esta implementación facilitó la trazabilidad del proceso completo, y permitió auditar tanto la recuperación de contextos como la generación de respuestas. Además, su enfoque declarativo simplificó el desarrollo, mejoró la mantenibilidad y facilitó la introducción de mejoras incrementales al sistema.
 
@@ -110,7 +106,7 @@ La arquitectura final del chatbot se basa en el enfoque RAG (Retrieval-Augmented
 
 El uso de RAG permite mantener el modelo LLM independiente de la base de conocimiento, lo que implica que se pueden incorporar nuevos documentos, actualizaciones o correcciones al modificar los datos almacenados en el vectorstore, sin necesidad de ajustar los parámetros del modelo. Esta separación entre el modelo y la información facilita enormemente las tareas de mantenimiento y mejora continua del sistema.
 
-La elección de esta arquitectura RAG se fundamentó en su capacidad para ofrecer un equilibrio óptimo entre precisión, costo y mantenibilidad. Durante el desarrollo del proyecto, OpenAI lanzó GPT-4o mini, un modelo que presentó un excelente balance entre rendimiento y economía, con capacidades superiores a las alternativas locales disponibles en ese momento. Aunque se evaluó la posibilidad de implementar un modelo local con Ollama\footnote{Ollama es una plataforma que permite ejecutar modelos de lenguaje de manera local, y ofrece una alternativa a los servicios en la nube. En el contexto de RAG, Ollama permite el uso de modelos de lenguaje sin necesidad de depender de APIs externas, lo que puede ofrecer mayor control sobre los datos y reducir costos operativos. Ollama facilita la integración de modelos LLM en entornos locales, y permite realizar consultas y generar respuestas con los contextos recuperados de un vectorstore, lo cual es clave para la arquitectura de Retrieval-Augmented Generation.}, la combinación de GPT-4o mini con LanceDB resultó ser más eficiente en términos de costo-beneficio, ya que eliminaba la necesidad de infraestructura adicional para hospedar y mantener modelos locales. Esta decisión redujo significativamente el costo por consulta, y mantuvo un alto estándar de calidad en las respuestas, lo que hizo que la solución fuera más accesible para pequeñas empresas y emprendedores. Además, el uso de componentes modulares como DSPy facilitó la adaptación del sistema a nuevos modelos o proveedores de LLMs en el futuro, sin necesidad de rediseñar toda la arquitectura.
+La elección de esta arquitectura RAG se fundamentó en su capacidad para ofrecer un equilibrio óptimo entre precisión, costo y mantenibilidad. Durante el desarrollo del proyecto, OpenAI lanzó GPT-4o mini, un modelo que presentó un excelente balance entre rendimiento y economía, con capacidades superiores a las alternativas locales disponibles en ese momento. Aunque se evaluó la posibilidad de implementar un modelo local con Ollama\footnote{Ollama es una plataforma que permite ejecutar modelos de lenguaje de manera local, y ofrece una alternativa a los servicios en la nube. En el contexto de RAG, Ollama permite el uso de modelos de lenguaje sin necesidad de depender de APIs externas, lo que puede ofrecer mayor control sobre los datos y reducir costos operativos. Ollama facilita la integración de modelos LLM en entornos locales, permite realizar consultas y generar respuestas con los contextos recuperados de un vectorstore, actor clave en la arquitectura de Retrieval-Augmented Generation.}, la combinación de GPT-4o mini con LanceDB resultó ser más eficiente en términos de costo-beneficio, ya que eliminaba la necesidad de infraestructura adicional para hospedar y mantener modelos locales. Esta decisión redujo significativamente el costo por consulta, y mantuvo un alto estándar de calidad en las respuestas, lo que hizo que la solución fuera más accesible para pequeñas empresas y emprendedores. Además, el uso de componentes modulares como DSPy facilitó la adaptación del sistema a nuevos modelos o proveedores de LLMs en el futuro, sin necesidad de rediseñar toda la arquitectura.
 \section{Arquitectura final propuesta}
 
 La arquitectura final del sistema está diseñada para ofrecer una solución robusta, eficiente y fácilmente escalable para la automatización de respuestas contextuales. Está compuesta por los siguientes bloques funcionales:
@@ -119,12 +115,12 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
     \item Frontend: interfaz renovada para usuarios y administradores. Permite enviar preguntas al sistema, visualizar respuestas, acceder a métricas y gestionar los contextos mediante un formulario ilustrativo.
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=.75\textwidth]{./Figures/frontend.png}
+        \includegraphics[width=.9\textwidth]{./Figures/frontend.png}
         \caption{Frontend del chatbot.}
         \label{fig:frontend}
     \end{figure}
 
-    \item Backend: implementado en \footnote{FastAPI es un framework web moderno y de alto rendimiento para construir APIs con Python, basado en las anotaciones de tipo de Python 3.6+. Se destaca por su rapidez, facilidad de uso y soporte nativo para documentación automática, lo que lo hace ideal para desarrollar backends eficientes en sistemas que integran modelos de lenguaje y flujos RAG.}, se encarga de recibir las solicitudes del frontend para procesar las preguntas, enviar las respuestas, gestionar las métricas requeridas y actualizar los contextos en la base de datos de vectores. Gestiona el flujo completo de la conversación, registra cada interacción, clasifica temáticamente las preguntas, las redefine con el historial de mensajes previos y prepara la consulta para la lógica RAG. Además, procesa las métricas al leer las trazas de Langfuse, y analiza patrones de uso, calcula estadísticas de rendimiento y envía estos análisis al frontend para que se ilustren mediante gráficos y dashboards interactivos, lo que facilita la visualización de tendencias y áreas de mejora del sistema.
+    \item Backend: implementado en FastAPI\footnote{FastAPI es un framework web moderno y de alto rendimiento para construir APIs con Python, basado en las anotaciones de tipo de Python 3.6+. Se destaca por su rapidez, facilidad de uso y soporte nativo para documentación automática, lo que lo hace ideal para desarrollar backends eficientes en sistemas que integran modelos de lenguaje y flujos RAG.}, se encarga de recibir las solicitudes del frontend para procesar las preguntas, enviar las respuestas, gestionar las métricas requeridas y actualizar los contextos en la base de datos de vectores. Gestiona el flujo completo de la conversación, registra cada interacción, clasifica temáticamente las preguntas, las redefine con el historial de mensajes previos y prepara la consulta para la lógica RAG. Además, procesa las métricas al leer las trazas de Langfuse, y analiza patrones de uso, calcula estadísticas de rendimiento y envía estos análisis al frontend para que se ilustren mediante gráficos y dashboards interactivos, lo que facilita la visualización de tendencias y áreas de mejora del sistema.
 
     \item Guardrails: módulo de filtrado y preprocesamiento que evalúa si una consulta es válida (según reglas predefinidas), la clasifica en categorías como "Producto", "Quejas", "Saludos" y la redefine con el contexto de los mensajes anteriores.
 
@@ -186,7 +182,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.75\textwidth]{./Figures/svgtech.png}
+    \includegraphics[width=.90\textwidth]{./Figures/svgtech.png}
     \caption{Diagrama de flujo de funcionamiento.}
     \label{fig:svgtech}
 \end{figure}
@@ -258,7 +254,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
   En lugar de reentrenar el LLM, se implementó un ciclo de mejora continua, alimentado por datos conversacionales reales. Estos datos son recolectados, organizados y evaluados automáticamente mediante herramientas diseñadas para analizar el rendimiento y la calidad de las interacciones. De esta manera, se mantiene una evolución constante del sistema sin la necesidad de grandes intervenciones.
   
   El administrador del sistema juega un papel crucial en este proceso, ya que es responsable de revisar las métricas generadas y decidir si es necesario realizar ajustes o mejoras en el sistema. A través de la interfaz de administración en el frontend, el administrador puede gestionar los contextos almacenados en la base de datos vectorial LanceDB y realizar ajustes en la configuración de los guardrails o en los datos contextuales, sin necesidad de modificar el modelo base.
-  
+
   \vspace{1em}
   \noindent
   \begin{figure}[htbp]
@@ -276,19 +272,19 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
   
   \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.75\textwidth]{./Figures/metricas1.png}
+    \includegraphics[width=.95\textwidth]{./Figures/metricas.png}
     \caption{Métricas por categoría.}
     \label{fig:metricas1}
   \end{figure}
   
   \newpage
-  \begin{lstlisting}[language=Python, caption={Fragmento de código para extracción y evaluación de trazas desde Langfuse}]
-  for trace in all_traces:
-      ...
-      if trace.scores and 'Saludo' not in trace.tags:
-          score = trace.scores[0]
-          traces_df = traces_df.append({...})
-  \end{lstlisting}
+%   \begin{lstlisting}[language=Python, caption={Fragmento de código para extracción y evaluación de trazas desde Langfuse}]
+%   for trace in all_traces:
+%       ...
+%       if trace.scores and 'Saludo' not in trace.tags:
+%           score = trace.scores[0]
+%           traces_df = traces_df.append({...})
+%   \end{lstlisting}
   
   \subsubsection*{Procesamiento y análisis de calidad}
 
@@ -306,12 +302,28 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
       \item Síntesis por grupo: se selecciona una pregunta representativa de cada grupo para generar un resumen conciso por cada etiqueta temática, lo que facilita la visualización de la calidad del sistema y la identificación de áreas de mejora.
   \end{enumerate}
   
+
   \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.75\textwidth]{./Figures/metricas2.png}
-    \caption{Ejemplo de frontend que muestra métricas para preguntas buenas y malas.}
-    \label{fig:metricas2}
+    \includegraphics[width=.75\textwidth]{./Figures/metricasbuenas.png}
+    \caption{Ejemplo de frontend que muestra métricas para preguntas buenas.}
+    \label{fig:metricasbuenas}
   \end{figure}
+
+
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.75\textwidth]{./Figures/metricasmalas.png}
+    \caption{Ejemplo de frontend que muestra métricas para preguntas malas.}
+    \label{fig:metricasmalas}
+  \end{figure}
+
+%   \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=.75\textwidth]{./Figures/metricasclusters.png}
+%     \caption{Ejemplo de frontend que muestra clusters de métricas.}
+%     \label{fig:metricasmalas}
+%   \end{figure}
   
   Este análisis permite generar reportes automáticos por versión del sistema. Las métricas agregadas permiten evaluar el impacto de cada iteración del sistema. Durante las diferentes versiones, se registraron las siguientes métricas:
 
