@@ -13,7 +13,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
 
 
     Descripción: se implementó una arquitectura RAG elemental que utilizó un modelo de lenguaje grande (LLM), específicamente GPT-3.5-turbo, junto con el servicio de almacenamiento vectorial\footnote{Vectorstore (almacenamiento de vectores) es una estructura de datos especializada en almacenar y recuperar representaciones vectoriales de documentos o fragmentos de texto. En el contexto de RAG, el vectorstore almacena los vectores de contexto generados a partir de documentos que han sido procesados y transformados en \textit{embeddings}. Estos vectores permiten realizar búsquedas eficientes y precisas, lo que ayuda al modelo a recuperar fragmentos relevantes para generar respuestas más contextualizadas sin necesidad de reentrenar el modelo de lenguaje.} Pinecone.
-    El flujo básico consistió en preprocesar un documento extenso que contenía toda la información relevante del dominio, aplicando una lógica sencilla de particionado en secciones temáticas o por longitud, con el fin de facilitar su procesamiento. Cada sección fue transformada en un \textit{embedding} y almacenada en Pinecone. Posteriormente, ante una consulta del usuario, se generaba el \textit{embedding} correspondiente a la pregunta y se realizaba una búsqueda semántica en el vectorstore para recuperar los fragmentos más relevantes. Estos fragmentos fueron concatenados al \textit{prompt}, enriqueciendo el contexto que se enviaba al modelo de lenguaje para generar respuestas más precisas y alineadas con el contenido original.
+    El flujo básico consistió en preprocesar un documento extenso que contenía toda la información relevante del dominio, aplicando una lógica sencilla de particionado en secciones temáticas o por longitud, con el fin de facilitar su procesamiento. Cada sección fue transformada en un \textit{embedding} y almacenada en Pinecone. Posteriormente, ante una consulta del usuario, se generaba el \textit{embedding} correspondiente a la pregunta y se realizaba una búsqueda semántica en el vectorstore para recuperar los fragmentos más relevantes. Estos fragmentos se concatenaron al prompt, lo que enriqueció el contexto enviado al modelo de lenguaje para generar respuestas más precisas y alineadas con el contenido original.
 
 
     Problemas detectados: aunque Pinecone ofrecía un buen desempeño en la recuperación de información, su costo por consulta representaba un obstáculo considerable para su adopción en entornos de producción. Además, la trazabilidad del sistema era limitada, ya que no existían mecanismos para evaluar la calidad de los fragmentos obtenidos ni auditar el proceso de recuperación.
@@ -71,7 +71,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
     \end{figure}
 
     
-    Problemas detectados: aunque el nuevo sistema de guardrails ofreció mayor control, su forma de almacenar historiales elevó el uso de RAM y la latencia, afectando la escalabilidad y experiencia del usuario; además, en preguntas encadenadas, el contexto no siempre se interpretaba correctamente. 
+    Problemas detectados: aunque el nuevo sistema de guardrails ofreció mayor control, su forma de almacenar historiales elevó el uso de RAM y la latencia, lo que afectó la escalabilidad y la experiencia del usuario; además, en preguntas encadenadas, el contexto no siempre se interpretaba correctamente.
     
     \newpage
     Por ejemplo:
@@ -84,9 +84,10 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
         \item Robot: "¿Podrías aclarar de qué producto hablas?"
     \end{itemize}
 
-    En este caso, el sistema no logró identificar que la pregunta hacía referencia al producto mencionado previamente. Aunque se utilizaba el historial de conversación para proporcionar contexto a la LLM, el mecanismo de recuperación de información seguía dependiendo exclusivamente de la formulación de la pregunta actual. Esta limitación evidenció la necesidad de incorporar un sistema de reformulación de preguntas que permitiera enriquecer el contexto conversacional, no solo mediante el uso de palabras clave, sino también integrando referencias explícitas a intervenciones anteriores. Por ejemplo, en el caso previamente analizado, la búsqueda de contextos se realizaba a partir de la consulta “¿cuánto cuesta?”, cuando en realidad debería haberse reformulado como “¿cuánto cuesta el producto X?”, incorporando así la referencia al elemento mencionado anteriormente. De este modo, las búsquedas semánticas podrían orientarse hacia contextos más coherentes y relevantes, alineados con la continuidad temática de la interacción.
+    En este caso, el sistema no logró identificar que la pregunta hacía referencia al producto mencionado previamente. Aunque se utilizaba el historial de conversación para proporcionar contexto a la LLM, el mecanismo de recuperación de información seguía dependiendo exclusivamente de la formulación de la pregunta actual. Esta limitación evidenció la necesidad de incorporar un sistema de reformulación de preguntas que permitiera enriquecer el contexto conversacional, no solo mediante el uso de palabras clave, sino también al integrar referencias explícitas a intervenciones anteriores. Por ejemplo, en el caso previamente analizado, la búsqueda de contextos se realizaba a partir de la consulta “¿cuánto cuesta?”, cuando en realidad debería haberse reformulado como “¿cuánto cuesta el producto X?”, de este modo se incorpora la referencia al elemento mencionado anteriormente.. De este modo, las búsquedas semánticas podrían orientarse hacia contextos más coherentes y relevantes, alineados con la continuidad temática de la interacción.
 
-    Por otro lado, el sistema de métricas, aunque útil para el análisis de performance, mostró limitaciones: el uso simultáneo de múltiples modelos incrementó el tiempo de respuesta y el consumo de cómputo, y la clasificación dependía demasiado de ejemplos predefinidos, reduciendo su robustez frente a consultas poco comunes o mal redactadas.
+
+    Por otro lado, el sistema de métricas, aunque útil para el análisis de performance, presentó limitaciones: el uso simultáneo de múltiples modelos incrementó el tiempo de respuesta y el consumo de cómputo, y la clasificación dependía demasiado de ejemplos predefinidos, lo que reducía su robustez frente a consultas poco comunes o mal redactadas.
 
 
 \item{Versión 3 - Integración de Langfuse, clasificación y evaluación automática}
@@ -269,7 +270,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
   
 \subsection{Sistema de reentrenamiento con historiales y evaluación automatizada de interacciones}
 
-Durante el desarrollo del sistema, se adoptó un enfoque alternativo al reentrenamiento tradicional de modelos de lenguaje (LLM), priorizando la adaptabilidad continua mediante mecanismos de evaluación automática y actualización contextual. Esta arquitectura permite que el sistema analice los resultados de las interacciones con los usuarios sin modificar directamente los parámetros internos del modelo base.
+Durante el desarrollo del sistema, se adoptó un enfoque alternativo al reentrenamiento tradicional de modelos de lenguaje (LLM), y se priorizó la adaptabilidad continua a través de mecanismos de evaluación automática y actualización contextual. Esta arquitectura permite que el sistema analice los resultados de las interacciones con los usuarios sin modificar directamente los parámetros internos del modelo base.
 
 En lugar de reentrenar el LLM, se implementó un ciclo de mejora continua basado en datos conversacionales reales. Estos datos se recolectan, organizan y evalúan automáticamente mediante herramientas diseñadas para analizar el rendimiento y la calidad de las interacciones. Así, se asegura una evolución constante del sistema sin requerir intervenciones complejas.
 
@@ -313,7 +314,7 @@ El proceso de evaluación es semi-automatizado y se ejecuta manualmente desde el
 
 \section{Despliegue de la interfaz de pruebas}
 
-Se desarrolló una interfaz interactiva utilizando ReactJS, apoyada en las herramientas en línea de \textit{lovable.dev}. Esta interfaz fue diseñada con un doble propósito: facilitar las pruebas de usuario y permitir la administración dinámica de los contextos del sistema.
+Se desarrolló una interfaz interactiva utilizando ReactJS, con apoyo en las herramientas en línea de lovable.dev. Esta interfaz tuvo un doble propósito: facilitar las pruebas de usuario y permitir la administración dinámica de los contextos del sistema.
 
 \subsection{Interfaz de usuario}
 
@@ -381,7 +382,7 @@ En conjunto, esta interfaz fue concebida como una herramienta versátil para val
 
 El sistema se desplegó en Azure Container Apps, una plataforma que permite ejecutar contenedores en la nube con escalabilidad automática y administración simplificada. Esta solución ofrece una gestión eficiente de los recursos y garantiza un rendimiento constante, incluso ante variaciones en la carga de trabajo.
 
-Una de sus principales ventajas es que no requiere gestionar directamente la infraestructura subyacente, lo que permite al equipo de desarrollo enfocarse en la evolución funcional del sistema en lugar de tareas operativas. Asimismo, la plataforma facilita las tareas de mantenimiento y actualización, acelerando los ciclos de mejora continua.
+Una de sus principales ventajas es que no requiere gestionar directamente la infraestructura subyacente, lo que permite al equipo de desarrollo enfocarse en la evolución funcional del sistema en lugar de tareas operativas. Asimismo, la plataforma facilita las tareas de mantenimiento y actualización, lo que acelera los ciclos de mejora continua.
 
 Azure Container Apps también ofrece una integración nativa con otros servicios del ecosistema Azure, lo que habilita la incorporación fluida de nuevas funcionalidades y simplifica la expansión del sistema en escenarios futuros.
 
