@@ -12,8 +12,9 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
     La necesidad inicial consistía en construir un prototipo funcional para validar la arquitectura RAG mediante herramientas accesibles.
 
 
-    Descripción: se implementó una arquitectura RAG elemental que utiliza una LLM (GPT-3.5-turbo) y el servicio de vectorstore\footnote{Vectorstore (almacenamiento de vectores) es una estructura de datos especializada en almacenar y recuperar representaciones vectoriales de documentos o fragmentos de texto. En el contexto de RAG, el vectorstore almacena los vectores de contexto generados a partir de documentos que han sido procesados y transformados en embeddings. Estos vectores permiten realizar búsquedas eficientes y precisas, lo que ayuda al modelo a recuperar fragmentos relevantes para generar respuestas más contextualizadas sin tener que reentrenar el modelo de lenguaje.}
-    Pinecone. El flujo básico consistía en preprocesar documentos, generar embeddings, almacenarlos en Pinecone y recuperar los fragmentos relevantes a partir de la pregunta del usuario, con el objetivo de construir un prompt enriquecido que sería enviado a la LLM.
+    Descripción: se implementó una arquitectura RAG elemental que utilizó un modelo de lenguaje grande (LLM), específicamente GPT-3.5-turbo, junto con el servicio de almacenamiento vectorial\footnote{Vectorstore (almacenamiento de vectores) es una estructura de datos especializada en almacenar y recuperar representaciones vectoriales de documentos o fragmentos de texto. En el contexto de RAG, el vectorstore almacena los vectores de contexto generados a partir de documentos que han sido procesados y transformados en \textit{embeddings}. Estos vectores permiten realizar búsquedas eficientes y precisas, lo que ayuda al modelo a recuperar fragmentos relevantes para generar respuestas más contextualizadas sin necesidad de reentrenar el modelo de lenguaje.} Pinecone.
+    El flujo básico consistió en preprocesar un documento extenso que contenía toda la información relevante del dominio, aplicando una lógica sencilla de particionado en secciones temáticas o por longitud, con el fin de facilitar su procesamiento. Cada sección fue transformada en un \textit{embedding} y almacenada en Pinecone. Posteriormente, ante una consulta del usuario, se generaba el \textit{embedding} correspondiente a la pregunta y se realizaba una búsqueda semántica en el vectorstore para recuperar los fragmentos más relevantes. Estos fragmentos fueron concatenados al \textit{prompt}, enriqueciendo el contexto que se enviaba al modelo de lenguaje para generar respuestas más precisas y alineadas con el contenido original.
+
 
     Problemas detectados: aunque Pinecone ofrecía un buen desempeño en la recuperación de información, su costo por consulta representaba un obstáculo considerable para su adopción en entornos de producción. Además, la trazabilidad del sistema era limitada, ya que no existían mecanismos para evaluar la calidad de los fragmentos obtenidos ni auditar el proceso de recuperación.
 
@@ -40,16 +41,14 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
     Problemas detectados: aunque se logró mayor robustez y control, surgieron desafíos como el rendimiento limitado de NemoGuardrails en español y la falta de trazabilidad completa, lo que motivó la búsqueda de alternativas.
 
 
-\item{Versión 2 - Guardrails personalizados, almacenamiento estructurado de chats e implementación del frontend y backend de pruebas}
+\item{Versión 2 - Guardrails personalizados, almacenamiento estructurado de chats, implementación de sistema de métricas e implementación del frontend y backend de pruebas}
 
-    Razón del cambio: necesidad de una mayor precisión en el filtrado y una mejor trazabilidad de las conversaciones.
+    Razón del cambio: necesidad de una mayor precisión en el filtrado de preguntas fuera de contexto, mejor trazabilidad de las conversaciones y cálculo de métricas para analisis de performance.
 
     Descripción: se reemplazó NemoGuardrails por una implementación propia, basada en LLMs livianos y reglas personalizadas escritas en código con prompts específicos. Esto permitió una mayor flexibilidad y una mejor adaptación al idioma español. 
 
-    Además, se comenzó a almacenar localmente la conversación completa de cada usuario, con preguntas, respuestas y el contexto previo, en la memoria RAM\footnote{RAM (Memoria de Acceso Aleatorio, por sus siglas en inglés) es un tipo de memoria volátil utilizada por los sistemas informáticos para almacenar datos de forma temporal y rápida. En el contexto de los modelos de lenguaje, RAM es crucial para mantener los datos y contextos relevantes durante la ejecución de tareas de procesamiento, y permite un acceso rápido a la información mientras el modelo genera respuestas.}. Esta funcionalidad dotó al sistema de memoria conversacional, lo que mejoró la coherencia de las respuestas y habilitó análisis posteriores sobre el historial de interacción.
-
-
-    En paralelo, todas las interacciones del asistente (preguntas, respuestas, errores y rechazos por guardrails) comenzaron a registrarse en una base de datos NoSQL, lo que facilitó la trazabilidad de cada interacción y el análisis detallado del comportamiento conversacional.
+    Se comenzó a almacenar localmente la conversación completa de cada usuario, con preguntas, respuestas y el contexto previo, en la memoria RAM\footnote{RAM (Memoria de Acceso Aleatorio, por sus siglas en inglés) es un tipo de memoria volátil utilizada por los sistemas informáticos para almacenar datos de forma temporal y rápida. En el contexto de los modelos de lenguaje, RAM es crucial para mantener los datos y contextos relevantes durante la ejecución de tareas de procesamiento, y permite un acceso rápido a la información mientras el modelo genera respuestas.}. Esta funcionalidad dotó al sistema de memoria conversacional, lo que mejoró la coherencia de las respuestas.
+    En paralelo, todas las interacciones del asistente (preguntas, respuestas, errores y rechazos por guardrails) comenzaron a registrarse en una base de datos NoSQL, lo que facilitó la trazabilidad de cada interacción y el análisis detallado del comportamiento conversacional. Gracias a esto, se pudo implementar un sistema de métricas que permitía calcular estadísticas de rendimiento y analizar patrones de uso.
 
     \begin{figure}[htbp]
         \centering
@@ -58,7 +57,25 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
         \label{fig:version2}
     \end{figure}
 
-    Problemas detectados: aunque el nuevo sistema de guardrails ofreció mayor control, su forma de almacenar historiales elevó el uso de RAM y la latencia, afectando la escalabilidad y experiencia del usuario; además, en preguntas encadenadas, el contexto no siempre se interpretaba correctamente. Por ejemplo:
+    Descripción del sistema de métricas: el sistema de métricas implementado permitió analizar automáticamente los mensajes recibidos por el asistente y clasificarlos según su intención, mediante una combinación de tecnologías de procesamiento de lenguaje natural (PLN). La arquitectura se basó en un sistema de clasificación híbrido que empleó modelos de lenguaje como DistilBERT multilingüe (a través de la librería Hugging Face), Sentence Transformers para la detección de similitud semántica y FastText para el análisis vectorial de lenguaje coloquial. Cada mensaje fue evaluado por estos tres modelos, y la decisión final se determinó mediante un mecanismo de votación basado en el mayor puntaje. Esta combinación mejoró la precisión del sistema frente a distintos tipos de expresiones, registros lingüísticos y errores comunes en el texto.
+
+    Una vez clasificados, los mensajes fueron almacenados de forma estructurada y pudieron someterse a procesos adicionales de agrupamiento (clustering). Para ello, se emplearon técnicas de TF-IDF y el algoritmo K-Means (de la librería scikit-learn), con la eliminación de palabras vacías (stopwords) mediante la biblioteca NLTK. Esto permitió segmentar, por ejemplo, las consultas sobre productos en temas más específicos, lo que facilitó el análisis posterior y la detección de tendencias.
+
+    El resultado fue un sistema que no solo clasificó los mensajes con alta precisión, sino que también posibilitó la exploración temática del contenido agrupado.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=.90\textwidth]{./Figures/clasificadorv2.png}
+        \caption{Diagrama general del sistema de métricas de la versión 2.}
+        \label{fig:clasificadorv2}
+    \end{figure}
+
+    
+    Problemas detectados: aunque el nuevo sistema de guardrails ofreció mayor control, su forma de almacenar historiales elevó el uso de RAM y la latencia, afectando la escalabilidad y experiencia del usuario; además, en preguntas encadenadas, el contexto no siempre se interpretaba correctamente. 
+    
+    \newpage
+    Por ejemplo:
+
 
     \begin{itemize}
         \item Usuario: "¿Tienen stock del producto X?"
@@ -67,18 +84,22 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
         \item Robot: "¿Podrías aclarar de qué producto hablas?"
     \end{itemize}
 
-    En este caso, el sistema no logró identificar que la pregunta hacía referencia al producto mencionado previamente. Esta limitación evidenció la necesidad de incorporar un sistema de reformulación de preguntas que permitiera enriquecer el contexto conversacional mediante el uso de palabras clave que referencien el historial de la interacción.
+    En este caso, el sistema no logró identificar que la pregunta hacía referencia al producto mencionado previamente. Aunque se utilizaba el historial de conversación para proporcionar contexto a la LLM, el mecanismo de recuperación de información seguía dependiendo exclusivamente de la formulación de la pregunta actual. Esta limitación evidenció la necesidad de incorporar un sistema de reformulación de preguntas que permitiera enriquecer el contexto conversacional, no solo mediante el uso de palabras clave, sino también integrando referencias explícitas a intervenciones anteriores. Por ejemplo, en el caso previamente analizado, la búsqueda de contextos se realizaba a partir de la consulta “¿cuánto cuesta?”, cuando en realidad debería haberse reformulado como “¿cuánto cuesta el producto X?”, incorporando así la referencia al elemento mencionado anteriormente. De este modo, las búsquedas semánticas podrían orientarse hacia contextos más coherentes y relevantes, alineados con la continuidad temática de la interacción.
+
+    Por otro lado, el sistema de métricas, aunque útil para el análisis de performance, mostró limitaciones: el uso simultáneo de múltiples modelos incrementó el tiempo de respuesta y el consumo de cómputo, y la clasificación dependía demasiado de ejemplos predefinidos, reduciendo su robustez frente a consultas poco comunes o mal redactadas.
 
 
 \item{Versión 3 - Integración de Langfuse, clasificación y evaluación automática}
 
     Razón del cambio: necesidad de un sistema robusto para trazabilidad, evaluación y mejora continua.
 
-    Descripción: se integró Langfuse como sistema observador no intrusivo para registrar todas las interacciones del sistema. Además, se añadieron dos nuevas tareas en la capa de guardrails: la primera, redefinir preguntas, que genera una nueva oración con palabras clave para buscar los contextos en la vectorstore; la segunda, clasificar consultas, que organiza las preguntas según su temática, como por ejemplo: Productos, Precios, Delivery, Queja, Saludo, entre otras. También se eliminaron bases de datos auxiliares y se centralizó la gestión de la trazabilidad en Langfuse, que ahora se encarga de registrar todos los eventos: consultas, respuestas, errores, rechazos por guardrails, consumo de tokens, costos, latencia, etc.
+    Descripción: se integró Langfuse como sistema observador no intrusivo para registrar todas las interacciones del sistema. Asimismo, se incorporaron dos nuevas tareas en la capa de restricciones (guardrails): la primera consistió en la reformulación de preguntas, que generaba una nueva oración con palabras clave referidas al contexto de la consulta actual, con el fin de optimizar la búsqueda de contextos en el vectorstore; la segunda correspondió a la clasificación de consultas, encargada de categorizarlas según su temática, tales como: productos, precios, delivery, quejas, saludos, entre otras. Además, se eliminaron las bases de datos auxiliares y se centralizó la gestión de trazabilidad en Langfuse, el cual pasó a encargarse del registro de todos los eventos relevantes del sistema: consultas, respuestas, errores, rechazos por restricciones, consumo de tokens, costos, latencia, entre otros.
+
+
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=.9\textwidth]{./Figures/ejemploreformulado.png}
+        \includegraphics[width=.75\textwidth]{./Figures/ejemploreformulado.png}
         \caption{Ejemplo de redefinición de pregunta.}
         \label{fig:ejemploreformulado}
     \end{figure}
@@ -86,6 +107,8 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
     Problemas detectados: algunos temas, como las quejas, mostraron un rendimiento inferior, lo que sugiere la necesidad de expandir y refinar el contexto disponible en versiones futuras.
 \end{itemize}
 
+
+% \newpage
 \subsection{Problemas y mitigaciones}
 
 Durante las primeras iteraciones surgieron limitaciones clave: costos por servicios externos (Pinecone, API de LLMs), pobre trazabilidad del sistema y ausencia de control sobre la evaluación de calidad. Estos problemas fueron mitigados mediante las siguientes acciones:
@@ -113,20 +136,14 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
 
 \begin{itemize}
     \item Frontend: interfaz renovada para usuarios y administradores. Permite enviar preguntas al sistema, visualizar respuestas, acceder a métricas y gestionar los contextos mediante un formulario ilustrativo.
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=.9\textwidth]{./Figures/frontend.png}
-        \caption{Frontend del chatbot.}
-        \label{fig:frontend}
-    \end{figure}
-
-    \item Backend: implementado en FastAPI\footnote{FastAPI es un framework web moderno y de alto rendimiento para construir APIs con Python, basado en las anotaciones de tipo de Python 3.6+. Se destaca por su rapidez, facilidad de uso y soporte nativo para documentación automática, lo que lo hace ideal para desarrollar backends eficientes en sistemas que integran modelos de lenguaje y flujos RAG.}, se encarga de recibir las solicitudes del frontend para procesar las preguntas, enviar las respuestas, gestionar las métricas requeridas y actualizar los contextos en la base de datos de vectores. Gestiona el flujo completo de la conversación, registra cada interacción, clasifica temáticamente las preguntas, las redefine con el historial de mensajes previos y prepara la consulta para la lógica RAG. Además, procesa las métricas al leer las trazas de Langfuse, y analiza patrones de uso, calcula estadísticas de rendimiento y envía estos análisis al frontend para que se ilustren mediante gráficos y dashboards interactivos, lo que facilita la visualización de tendencias y áreas de mejora del sistema.
+    
+    \item Backend: implementado en FastAPI\footnote{FastAPI es un framework web moderno y de alto rendimiento para construir APIs con Python, basado en las anotaciones de tipo de Python 3.6+. Se destaca por su rapidez, facilidad de uso y soporte nativo para documentación automática, lo que lo hace ideal para desarrollar backends eficientes en sistemas que integran modelos de lenguaje y flujos RAG.}, se encarga de recibir las solicitudes del frontend para procesar las preguntas, enviar las respuestas, gestionar las métricas requeridas y actualizar los contextos en la base de datos de vectores.
 
     \item Guardrails: módulo de filtrado y preprocesamiento que evalúa si una consulta es válida (según reglas predefinidas), la clasifica en categorías como "Producto", "Quejas", "Saludos" y la redefine con el contexto de los mensajes anteriores.
 
     \item DSPy RAG: es el corazón del sistema, responsable de orquestar la lógica principal del flujo RAG. DSPy toma la pregunta ya enriquecida desde el módulo de guardrails y ejecuta una búsqueda eficiente de contextos relevantes en LanceDB. A partir de los fragmentos recuperados, construye un prompt enriquecido que será enviado al modelo LLM para generar una respuesta coherente y precisa. Además de facilitar la integración de prompts, DSPy permite definir y estructurar toda la lógica del sistema de recuperación y generación, y proporciona un marco flexible y modular para el diseño del flujo completo.
 
-    \item Langfuse: observador pasivo que registra todas las interacciones del sistema sin intervenir. Almacena información crítica como la pregunta original, la redefinida, el consumo de tokens, la respuesta final y los estados de los guardrails. También permite aplicar evaluaciones automáticas sobre la precisión de las respuestas generadas por el sistema.
+    \item Langfuse: observador pasivo que registra todas las interacciones del sistema sin intervenir. Almacena información crítica como la pregunta original, la redefinida, el consumo de tokens, la respuesta final y los estados de los guardrails. También permite aplicar evaluaciones automáticas sobre la precisión de las respuestas generadas por el sistema que luego son usadas por el sistema de métricas.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -142,8 +159,7 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
 \begin{itemize}
     \item Streamlit: utilizado para construir el frontend inicial de pruebas, y permite una interacción simple con el chat, que posteriormente fue migrada a ReactJS. Streamlit es un framework de código abierto en Python para crear aplicaciones web de forma rápida y sencilla, especialmente orientado a proyectos de ciencia de datos e inteligencia artificial.
 
-
-    item Lovable: \textit{lovable.dev} es una herramienta en línea que permite crear frontends de forma rápida y sencilla con la ayuda de inteligencia artificial. Fue utilizada para desarrollar la versión final del frontend con ReactJS, y proporcionó una experiencia de usuario más fluida y atractiva. Además, en esta plataforma se integraron las visualizaciones de las métricas generadas a partir de los datos de Langfuse.
+    \item Lovable: \textit{lovable.dev} es una herramienta en línea que permite crear frontends de forma rápida y sencilla con la ayuda de inteligencia artificial. Fue utilizada para desarrollar la versión final del frontend con ReactJS, y proporcionó una experiencia de usuario más fluida y atractiva. Además, en esta plataforma se integraron las visualizaciones de las métricas generadas a partir de los datos de Langfuse.
 
     \item Azure Container Apps: recurso de la plataforma Azure diseñado para ejecutar aplicaciones en contenedores sin necesidad de administrar directamente la infraestructura. Fue utilizado para desplegar tanto el backend como el frontend del sistema en contenedores individuales, lo que permite escalar automáticamente según la demanda y asegura un rendimiento óptimo.
 
@@ -171,7 +187,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
     
     \item La respuesta y todos los datos asociados (estado del guardrail, redefinición, tokens consumidos, clasificación, etc.) son registrados por Langfuse.
     
-    \item En Langfuse, se ejecuta una evaluación automática, que analiza la calidad de la respuesta y asigna puntajes en una escala del 1 al 10. Las puntuaciones bajas (menores a 3) indican respuestas que solo reformulan la pregunta o evidencian insuficiencia de contexto. Los criterios de evaluación son:
+    \item En Langfuse, se ejecuta una evaluación automática, que analiza la calidad de la respuesta y asigna puntajes en una escala del 1 al 10. Los criterios de evaluación son:
         \begin{itemize}
             \item Precisión: determina si la respuesta aborda directamente la pregunta del usuario o simplemente la reformula sin proporcionar información sustancial.
             \item Suficiencia de contexto: evalúa si la respuesta demuestra que el sistema disponía de información adecuada para contestar con propiedad o si indica explícitamente la falta de contexto necesario.
@@ -194,8 +210,8 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
 
   \subsection{Preparación de los datos de contexto} 
   
-  La base de conocimiento utilizada por el sistema no proviene de documentos extensos procesados en chunks, sino de una estructura de tipo clave-valor diseñada específicamente para búsquedas contextuales rápidas y precisas. Cada entrada contiene dos campos principales:
-  
+ La base de conocimiento utilizada por el sistema no se deriva de documentos extensos fragmentados en segmentos, como se hacía en versiones anteriores, sino que se construyó a partir de una estructura de tipo clave-valor, diseñada específicamente para realizar búsquedas contextuales rápidas y precisas. Cada entrada en esta estructura contiene dos campos principales:
+
   \begin{itemize}
       \item question: una lista de términos, sinónimos o expresiones relacionadas que representan la intención del usuario. Este campo actúa como una clave semántica para la búsqueda.
       \item relates: una serie de frases informativas asociadas a la clave, que constituyen el contexto que será devuelto al modelo como parte del proceso RAG.
@@ -204,119 +220,88 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
   La estructura clave-valor facilita la búsqueda semántica eficiente, y permite que el sistema recupere contextos relevantes rápidamente al comparar las consultas del usuario con las claves almacenadas en la base de datos.
 
   A continuación se muestra un ejemplo de cómo se estructuran estos datos en Python:
+  
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.9\textwidth]{./Figures/contextformat.png}
+    \caption{Ejemplo de formato de contexto.}
+    \label{fig:contextformat}
+  \end{figure}
 
-  \begin{lstlisting}[language=Python, caption={Ejemplo de estructura de datos clave-valor para el contexto}]
-    context = [
-        {
-            'question': [
-                'queja',
-                'reclamo',
-                'problema'
-            ],
 
-            'relates': [
-                Lamentamos que hayas tenido una mala
-                experiencia. Por favor cuentanos mas
-                sobre tu situacion, Estamos aqui
-                para ayudarte con cualquier
-                inconveniente que hayas tenido...
-            ]
-        },
-        {
-            'question': [
-                'producto', 
-                'caracteristicas', 
-                'especificaciones'
-            ],
+%   \begin{lstlisting}[language=Python, caption={Ejemplo de estructura de datos clave-valor para el contexto}]
+%     context = [
+%         {
+%             'question': [
+%                 'queja',
+%                 'reclamo',
+%                 'problema'
+%             ],
 
-            'relates': [
-                Nuestro producto cuenta 
-                con las siguientes caracteristicas,
-                Las especificaciones tecnicas son...
-            ]
-        }
-    \end{lstlisting}
+%             'relates': [
+%                 Lamentamos que hayas tenido una mala
+%                 experiencia. Por favor cuentanos mas
+%                 sobre tu situacion, Estamos aqui
+%                 para ayudarte con cualquier
+%                 inconveniente que hayas tenido...
+%             ]
+%         },
+%         {
+%             'question': [
+%                 'producto', 
+%                 'caracteristicas', 
+%                 'especificaciones'
+%             ],
+
+%             'relates': [
+%                 Nuestro producto cuenta 
+%                 con las siguientes caracteristicas,
+%                 Las especificaciones tecnicas son...
+%             ]
+%         }
+%     \end{lstlisting}
     % ]   
   
-  Esta estructura permite una consulta eficiente, ya que las claves semánticas (como "queja", "reclamo", "producto") se utilizan para buscar y recuperar los fragmentos de contexto adecuados. Una vez que el sistema identifica las claves correspondientes a la consulta del usuario, recupera las frases informativas asociadas en el campo \texttt{relates}, que luego se integran en el flujo RAG para proporcionar respuestas contextualizadas y precisas.
-
-    
-  Durante la interacción, el sistema utiliza un modelo de lenguaje grande (LLM) para reformular la consulta del usuario e identificar las palabras clave más relevantes. Estas palabras clave son luego utilizadas por LanceDB para realizar una comparación con el conjunto de datos almacenado en el campo \texttt{question}.
-
-  La búsqueda se realiza de manera híbrida, y combina técnicas de búsqueda semántica y vectorial. Gracias a este enfoque, el sistema no solo busca coincidencias exactas, sino que también tiene en cuenta la similitud semántica entre la consulta y las claves almacenadas. Al encontrar una coincidencia, LanceDB recupera los valores asociados desde el campo \texttt{relates}, que contienen el contexto necesario para la consulta.
-  
-  Una vez obtenidos los fragmentos de contexto relevantes, estos se inyectan en el prompt del modelo LLM generador. Esto permite que el sistema genere una respuesta precisa y contextualizada, y aproveche tanto la consulta original del usuario como el contexto recuperado.
-  
-  \subsection{Sistema de reentrenamiento con historiales y evaluación automatizada de interacciones}
-
-  A lo largo del desarrollo del sistema, se adoptó un enfoque alternativo al reentrenamiento tradicional de modelos de lenguaje (LLM), y se priorizó la adaptabilidad continua mediante mecanismos de evaluación automática y actualización contextual. Esta arquitectura permite que el sistema analice los resultados de las interacciones con los usuarios sin necesidad de modificar directamente los parámetros internos del modelo base.
-  
-  En lugar de reentrenar el LLM, se implementó un ciclo de mejora continua, alimentado por datos conversacionales reales. Estos datos son recolectados, organizados y evaluados automáticamente mediante herramientas diseñadas para analizar el rendimiento y la calidad de las interacciones. De esta manera, se mantiene una evolución constante del sistema sin la necesidad de grandes intervenciones.
-  
-  El administrador del sistema juega un papel crucial en este proceso, ya que es responsable de revisar las métricas generadas y decidir si es necesario realizar ajustes o mejoras en el sistema. A través de la interfaz de administración en el frontend, el administrador puede gestionar los contextos almacenados en la base de datos vectorial LanceDB y realizar ajustes en la configuración de los guardrails o en los datos contextuales, sin necesidad de modificar el modelo base.
-
-  \vspace{1em}
-  \noindent
-  \begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.75\textwidth]{./Figures/flujometricas.png}
-    \caption{Diagrama de flujo de observación de métricas.}
-    \label{fig:flujometricas}
-  \end{figure}
-  
-  \subsubsection*{Evaluación automatizada y extracción de métricas}
-
-  Cada interacción registrada en el sistema genera una “traza” que es almacenada mediante Langfuse. Estas trazas contienen no solo los mensajes de entrada y salida, sino también metainformación crucial, como el costo (tokens consumidos y dinero gastado), etiquetas temáticas (por dominio o tipo de consulta), comentarios evaluativos y puntajes de calidad (en una escala del 1 al 10).
-  
-  El proceso de evaluación es automatizado y recorre todas las trazas válidas (se excluye la categoría genérica Saludo). Identifica aquellas trazas que contienen puntuaciones explícitas (`trace.scores`). El código implementa un control de tasa (rate limit) para evitar sobrecargar el sistema y garantiza la integridad del conjunto de datos utilizado para la evaluación.
-  
-  \begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.95\textwidth]{./Figures/metricas.png}
-    \caption{Métricas por categoría.}
-    \label{fig:metricas1}
-  \end{figure}
-  
-  \newpage
-%   \begin{lstlisting}[language=Python, caption={Fragmento de código para extracción y evaluación de trazas desde Langfuse}]
-%   for trace in all_traces:
-%       ...
-%       if trace.scores and 'Saludo' not in trace.tags:
-%           score = trace.scores[0]
-%           traces_df = traces_df.append({...})
-%   \end{lstlisting}
-  
-  \subsubsection*{Procesamiento y análisis de calidad}
-
-  Una vez recolectadas las trazas, se analizan mediante un pipeline estructurado que sigue estos pasos:
-  
-  \begin{enumerate}
-      \item Preprocesamiento del texto: las preguntas son normalizadas (se convierten a minúsculas, se eliminan acentos y símbolos no relevantes) para asegurar consistencia en el análisis posterior.
-      
-      \item Asociación temática: las preguntas se agrupan según etiquetas temáticas estandarizadas, lo que facilita la categorización y la identificación de patrones comunes en las consultas.
-      
-      \item Evaluación cuantitativa: se asignan puntajes de calidad a cada pregunta, se procesan los valores obtenidos para calcular promedios, desviaciones estándar y clasificar las preguntas según su calidad: buenas (\(\geq\) 8), malas (< 5), y aquellas con puntajes intermedios.
-      
-      \item Agrupamiento semántico: las preguntas son transformadas en vectores de embeddings mediante técnicas de NLP, y luego se agrupan con HDBSCAN para detectar redundancias y patrones recurrentes.
-      
-      \item Síntesis por grupo: se selecciona una pregunta representativa de cada grupo para generar un resumen conciso por cada etiqueta temática, lo que facilita la visualización de la calidad del sistema y la identificación de áreas de mejora.
-  \end{enumerate}
-  
-
-  \begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.75\textwidth]{./Figures/metricasbuenas.png}
-    \caption{Ejemplo de frontend que muestra métricas para preguntas buenas.}
-    \label{fig:metricasbuenas}
-  \end{figure}
+    Esta estructura permite una consulta eficiente, ya que las claves semánticas generadas durante el proceso de reformulación se emplean para buscar y recuperar los fragmentos de contexto más adecuados. A partir de estas claves, se extraen las frases informativas ubicadas en el campo \texttt{relates}. La búsqueda se realiza mediante un enfoque híbrido que combina técnicas semánticas y vectoriales, lo que permite identificar coincidencias exactas y también similitudes conceptuales entre la consulta y las claves almacenadas.
+    Una vez identificadas las coincidencias, LanceDB accede a los valores del campo \texttt{relates}, que contienen el contexto necesario para interpretar correctamente la consulta. Después, el sistema inserta los fragmentos de contexto relevantes en el prompt del modelo generador LLM. Este procedimiento garantiza respuestas precisas y contextualizadas, al integrar tanto la consulta original del usuario como el contexto obtenido.
 
 
-  \begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.75\textwidth]{./Figures/metricasmalas.png}
-    \caption{Ejemplo de frontend que muestra métricas para preguntas malas.}
-    \label{fig:metricasmalas}
-  \end{figure}
+  
+\subsection{Sistema de reentrenamiento con historiales y evaluación automatizada de interacciones}
+
+Durante el desarrollo del sistema, se adoptó un enfoque alternativo al reentrenamiento tradicional de modelos de lenguaje (LLM), priorizando la adaptabilidad continua mediante mecanismos de evaluación automática y actualización contextual. Esta arquitectura permite que el sistema analice los resultados de las interacciones con los usuarios sin modificar directamente los parámetros internos del modelo base.
+
+En lugar de reentrenar el LLM, se implementó un ciclo de mejora continua basado en datos conversacionales reales. Estos datos se recolectan, organizan y evalúan automáticamente mediante herramientas diseñadas para analizar el rendimiento y la calidad de las interacciones. Así, se asegura una evolución constante del sistema sin requerir intervenciones complejas.
+
+El administrador del sistema desempeña un papel fundamental en este proceso, ya que revisa las métricas generadas y determina si es necesario aplicar ajustes o mejoras. A través de la interfaz de administración en el frontend, es posible gestionar los datos contextuales sin modificar el modelo base.
+
+
+\subsubsection*{Evaluación automatizada y extracción de métricas}
+
+Cada interacción registrada en el sistema genera una traza, almacenada mediante Langfuse. Estas trazas incluyen tanto los mensajes de entrada y salida como metainformación relevante, entre la que se encuentran el costo (tokens consumidos y monto económico), las etiquetas temáticas generadas durante la etapa de restricciones y los puntajes de calidad asignados en una escala del 1 al 10.
+
+El proceso de evaluación es semi-automatizado y se ejecuta manualmente desde el frontend. Se recorren todas las trazas válidas, excluyendo aquellas clasificadas como saludo, y se identifican las que contienen puntuaciones explícitas. Estas se procesan mediante un pipeline estructurado compuesto por las siguientes etapas:
+
+\begin{enumerate}
+    \item Preprocesamiento del texto: las preguntas se normalizan mediante la conversión a minúsculas, la eliminación de acentos y de símbolos no relevantes, con el fin de garantizar consistencia en el análisis posterior.
+
+    \item Asociación temática: las preguntas se agrupan según las etiquetas temáticas estandarizadas incluidas en su metainformación.
+
+    \item Evaluación cuantitativa: se analizan los puntajes de calidad asignados por el agente de Langfuse. A partir de estos valores, se calculan promedios y se clasifican las preguntas en dos categorías: buenas (\(\geq\) 8) y malas (< 5).
+
+    \item Agrupamiento semántico: las preguntas se transforman en vectores de embeddings mediante técnicas de procesamiento de lenguaje natural (NLP). Luego, se agrupan utilizando HDBSCAN\footnote{HDBSCAN (Hierarchical Density-Based Spatial Clustering of Applications with Noise) es un algoritmo de agrupamiento jerárquico basado en densidad. Permite detectar automáticamente la cantidad de clústeres, identificar valores atípicos y agrupar datos complejos, como los embeddings de texto, lo que lo hace especialmente útil en inteligencia artificial y modelos de lenguaje.}, con el objetivo de identificar similitudes semánticas y patrones recurrentes.
+
+    \item Síntesis por grupo: se selecciona una pregunta representativa de cada clúster mayoritario, a partir de la cual se genera un resumen conciso para cada etiqueta temática. Esta síntesis facilita la visualización del desempeño del sistema y la identificación de áreas susceptibles de mejora.
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.9\textwidth]{./Figures/flujometricas.png}
+  \caption{Diagrama de flujo de observación de métricas.}
+  \label{fig:flujometricas}
+\end{figure}
 
 %   \begin{figure}[htbp]
 %     \centering
@@ -325,42 +310,81 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
 %     \label{fig:metricasmalas}
 %   \end{figure}
   
-  Este análisis permite generar reportes automáticos por versión del sistema. Las métricas agregadas permiten evaluar el impacto de cada iteración del sistema. Durante las diferentes versiones, se registraron las siguientes métricas:
 
-  \begin{itemize}
-      \item Métricas de calidad de respuestas: a lo largo de cada versión, se recopiló el puntaje promedio de calidad de las respuestas generadas. Este puntaje se calculó a partir de los puntajes de evaluación automática registrados en Langfuse, que incluyen factores como precisión, suficiencia de contexto y relevancia de la respuesta.
-      
-      \item Tiempos de respuesta: se registraron los tiempos promedio de respuesta del sistema, desde la recepción de la consulta hasta la entrega de la respuesta al usuario. Esto incluye el tiempo de procesamiento de la consulta en el backend y la generación de la respuesta por el modelo LLM.
-  
-      \item Consumo de tokens y costos: se registraron los tokens consumidos por cada interacción, así como el costo asociado, especialmente relevante en versiones donde se utilizaban servicios externos para los LLMs. Estos datos fueron clave para evaluar la viabilidad económica del sistema.
-  
-      \item Interacciones clasificadas por tema: durante cada iteración, se hizo un seguimiento de cómo se clasificaban las interacciones en diferentes temas (productos, quejas, saludos, etc.). Esto permitió evaluar si el sistema interpretaba correctamente las intenciones del usuario.
-  
-      \item Tasa de satisfacción del usuario: se implementaron encuestas o análisis de retroalimentación en el frontend, lo que permitió medir la satisfacción de los usuarios con respecto a las respuestas del chatbot.
-  
-      \item Cobertura de contexto: se evaluó la cantidad de veces que el sistema pudo proporcionar una respuesta satisfactoria gracias a la información recuperada desde la base de conocimiento. Esta métrica es útil para entender cómo la gestión y expansión de contextos impacta en la calidad del sistema.
-  
-      \item Reducción de interacciones no satisfactorias: durante las versiones posteriores, se observó la disminución de interacciones en las que el sistema no podía ofrecer una respuesta satisfactoria, lo que indica una mejora en la precisión y adaptabilidad del modelo.
-  
-  \end{itemize}
-  
-  Estas métricas no solo fueron fundamentales para evaluar la efectividad del sistema, sino también para dirigir futuras mejoras y ajustes. El análisis de estas métricas proporcionó información valiosa sobre qué aspectos del sistema necesitaban optimización, lo que permitió un proceso de mejora continua y garantizó que cada nueva versión fuera más eficiente y efectiva que la anterior.
-  \section{Despliegue de la interfaz de pruebas}
+\section{Despliegue de la interfaz de pruebas}
 
-Se implementó una interfaz interactiva mediante ReactJS, diseñada para facilitar tanto pruebas de usuario como análisis administrativo. Esta interfaz permite:
+Se desarrolló una interfaz interactiva utilizando ReactJS, apoyada en las herramientas en línea de \textit{lovable.dev}. Esta interfaz fue diseñada con un doble propósito: facilitar las pruebas de usuario y permitir la administración dinámica de los contextos del sistema.
+
+\subsection{Interfaz de usuario}
+
+\subsubsection{Chatbot}
+
+La interfaz de usuario (UI, por sus siglas en inglés) permite realizar preguntas al chatbot y visualizar las respuestas en tiempo real, lo que habilita una interacción directa con el sistema y un análisis inmediato de la calidad de las respuestas. Presenta un diseño intuitivo y accesible, compuesto por un campo de texto para ingresar preguntas, un botón de envío y un área de visualización para las respuestas generadas por el modelo. También incluye un campo de nombre, útil para la trazabilidad de usuarios durante las pruebas, ya que permitió distinguir fácilmente entre los distintos perfiles de uso, incluyendo el usuario de desarrollo empleado para pruebas locales.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.9\textwidth]{./Figures/frontend.png}
+    \caption{Frontend del chatbot.}
+    \label{fig:frontend}
+\end{figure}
+
+\subsubsection{Métricas}
+
+La interfaz permite consultar las métricas generadas por el sistema de evaluación automática, junto con las categorías temáticas asignadas a cada pregunta. Esto facilita un análisis detallado del desempeño del sistema de clasificación.
 
 \begin{itemize}
-    \item Realizar preguntas al chatbot y visualizar respuestas en tiempo real, lo que facilita la interacción directa con el sistema.
-    \item Consultar métricas de evaluación automática y las categorías temáticas asignadas a cada pregunta, lo que permite un análisis detallado del rendimiento del sistema.
-    \item Modificar o agregar fragmentos de contexto a través de un formulario de carga que ofrece la flexibilidad de ajustar la base de conocimiento en tiempo real.
-    \item Acceder a las trazas generadas por Langfuse para cada interacción, lo que proporciona visibilidad completa sobre los datos de entrada, salida y la evaluación del sistema.
+    \item \textit{Métricas generales}: se presentan indicadores agregados del sistema, como el total de preguntas, el puntaje promedio, la desviación estándar y una evaluación global de la calidad de las respuestas generadas. Estos datos permiten identificar el rendimiento general por categoría temática y detectar áreas que requieren ajustes en el contexto.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=.95\textwidth]{./Figures/metricas.png}
+        \caption{Métricas por categoría temática.}
+        \label{fig:metricas1}
+    \end{figure}
+
+    \item \textit{Buenas preguntas}: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, incluyendo el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=.9\textwidth]{./Figures/metricasbuenas.png}
+        \caption{Ejemplo del frontend con métricas de preguntas bien calificadas.}
+        \label{fig:metricasbuenas}
+    \end{figure}
+
+    \item \textit{Malas preguntas}: se visualizan métricas correspondientes a preguntas mal calificadas, lo que permite detectar fallos en el sistema y orientar acciones correctivas en los contextos o el flujo conversacional.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=.9\textwidth]{./Figures/metricasmalas.png}
+        \caption{Ejemplo del frontend con métricas de preguntas mal calificadas.}
+        \label{fig:metricasmalas}
+    \end{figure}
 \end{itemize}
+
+\subsubsection{Administración de contextos}
+
+Esta sección de la interfaz permite modificar o agregar fragmentos de contexto mediante un formulario de carga, lo que brinda flexibilidad para actualizar la base de conocimiento de forma dinámica, sin intervención técnica directa.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.75\textwidth]{./Figures/contextosui.png}
-    \caption{Frontend creado para la administración de contextos.}
+    \caption{Vista del frontend para la administración de contextos.}
     \label{fig:contextos_ui}
 \end{figure}
 
-Esta interfaz está pensada como una herramienta versátil que permite validar mejoras y cambios en el sistema de manera inmediata, y asegura que las actualizaciones sean evaluadas y validadas rápidamente antes de su implementación a gran escala en el entorno de producción.
+\vspace{1em}
+
+En conjunto, esta interfaz fue concebida como una herramienta versátil para validar de forma rápida las mejoras implementadas en el sistema. Su uso permite asegurar que cada modificación sea evaluada y ajustada oportunamente antes de su incorporación al entorno de producción.
+
+
+\subsection{Despliegue del sistema}
+
+El sistema se desplegó en Azure Container Apps, una plataforma que permite ejecutar contenedores en la nube con escalabilidad automática y administración simplificada. Esta solución ofrece una gestión eficiente de los recursos y garantiza un rendimiento constante, incluso ante variaciones en la carga de trabajo.
+
+Una de sus principales ventajas es que no requiere gestionar directamente la infraestructura subyacente, lo que permite al equipo de desarrollo enfocarse en la evolución funcional del sistema en lugar de tareas operativas. Asimismo, la plataforma facilita las tareas de mantenimiento y actualización, acelerando los ciclos de mejora continua.
+
+Azure Container Apps también ofrece una integración nativa con otros servicios del ecosistema Azure, lo que habilita la incorporación fluida de nuevas funcionalidades y simplifica la expansión del sistema en escenarios futuros.
+
+
+      
+  
