@@ -1,9 +1,103 @@
 \chapter{Ensayos y resultados}
 \label{Chapter4}
 
-En este capítulo se presentan las pruebas realizadas al chatbot desarrollado, junto con los resultados obtenidos en distintos escenarios, los procesos de optimización aplicados y un análisis detallado del comportamiento observado. Asimismo, se identifican fallos relevantes y se proponen mejoras para futuras iteraciones del sistema.
+En este capítulo se presentan las pruebas realizadas al chatbot desarrollado, junto con los resultados obtenidos en distintos escenarios. Se detallan los procesos de optimización aplicados, se analiza el comportamiento del sistema y se identifican oportunidades de mejora. Asimismo, se expone la metodología de evaluación empleada y se discuten los hallazgos más relevantes, con el objetivo de orientar futuras iteraciones del sistema.
 
-Se describen los diferentes escenarios de prueba utilizados para evaluar el rendimiento del chatbot, destacando que la estructura de las pruebas fue clave para detectar áreas susceptibles de mejora y optimización. Además, se analizan los resultados obtenidos en cada escenario con el fin de evaluar la efectividad de las mejoras implementadas, así como identificar posibles limitaciones y proponer ajustes adicionales al sistema.
+
+\section{Evaluación de calidad en sistemas conversacionales}
+
+La evaluación de la calidad en sistemas conversacionales basados en modelos de lenguaje es esencial para asegurar que las respuestas generadas sean útiles, coherentes, contextualizadas y acordes con la intención del usuario. A diferencia de los sistemas deterministas clásicos, los modelos generativos presentan una salida probabilística, lo que requiere métodos de evaluación específicos, tanto automáticos como humanos, que permitan analizar la experiencia del usuario y la efectividad del sistema.
+
+\subsection{Criterios y mecanismos de evaluación}
+
+La determinación de la calidad de una respuesta no es trivial. Existen criterios ampliamente aceptados que sirven como base para la evaluación:
+
+\begin{itemize}
+    \item Relevancia: la respuesta debe estar directamente relacionada con la consulta del usuario.
+    \item Claridad y coherencia: debe expresarse de forma comprensible y sin contradicciones.
+    \item Contextualización: debe considerar el historial conversacional y adaptarse adecuadamente a la situación planteada.
+\end{itemize}
+
+Dado que estos aspectos no siempre pueden medirse mediante métricas automáticas, se adopta un enfoque híbrido que combina herramientas automatizadas con revisión humana, con el fin de lograr una evaluación más integral.
+
+\subsection{Evaluación, observabilidad y trazabilidad}
+
+El sistema adopta un enfoque híbrido para evaluar la calidad de las respuestas, combinando mecanismos automatizados y revisión humana, complementados con capacidades de observabilidad y trazabilidad para la mejora continua.
+
+Langfuse se utiliza como plataforma central para el registro y análisis de interacciones, integrando agentes automáticos que asignan puntuaciones de calidad en una escala del 1 al 10, basándose en reglas y modelos predefinidos. Estas puntuaciones, almacenadas junto con las trazas conversacionales, permiten detectar respuestas problemáticas, identificar patrones de error mediante agrupamiento semántico y calcular métricas según el tipo de pregunta, contexto o modelo, facilitando así la escalabilidad del control de calidad sin supervisión constante.
+
+Como complemento cualitativo, el administrador realiza revisiones manuales enfocadas en casos ambiguos que no se resuelven automáticamente, preguntas frecuentes con baja puntuación que requieren ajustes, y oportunidades de mejora en el tono o la empatía conversacional.
+
+Además, el sistema incorpora funcionalidades de auditoría para reconstruir el proceso de generación de cada respuesta, diagnóstico para identificar errores recurrentes, cuellos de botella o sesgos, y mecanismos de retroalimentación que aportan datos útiles para ajustes de contexto o rediseño de los prompts. La combinación de estos elementos convierte a Langfuse en una plataforma autoevaluativa y adaptable que no requiere reentrenamiento para incorporar mejoras.
+
+
+
+
+\section{Despliegue de la interfaz de pruebas}
+
+Se desarrolló una interfaz interactiva utilizando ReactJS, con apoyo en las herramientas en línea de lovable.dev. Esta interfaz tuvo un doble propósito: facilitar las pruebas de usuario y permitir la administración dinámica de los contextos del sistema.
+
+\subsection{Interfaz de usuario}
+
+\subsubsection{Chatbot}
+
+La interfaz de usuario permite realizar preguntas al chatbot y visualizar las respuestas en tiempo real, lo que habilita una interacción directa con el sistema y un análisis inmediato de la calidad de las respuestas. Presenta un diseño intuitivo y accesible, compuesto por un campo de texto para ingresar preguntas, un botón de envío y un área de visualización para las respuestas generadas por el modelo. También incluye un campo de nombre, útil para la trazabilidad de usuarios durante las pruebas, ya que permitió distinguir fácilmente entre los distintos perfiles de uso, incluyendo el usuario de desarrollo empleado para pruebas locales.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\textwidth]{./Figures/frontend.png}
+    \caption{Frontend del chatbot.}
+    \label{fig:frontend}
+\end{figure}
+
+\subsubsection{Métricas}
+
+La interfaz permite consultar las métricas generadas por el sistema de evaluación automática, junto con las categorías temáticas asignadas a cada pregunta. Esto facilita un análisis detallado del desempeño del sistema de clasificación.
+
+\begin{itemize}
+    \item \textit{Métricas generales}: se presentan indicadores agregados del sistema, como el total de preguntas, el puntaje promedio, la desviación estándar y una evaluación global de la calidad de las respuestas generadas. Estos datos permiten identificar el rendimiento general por categoría temática y detectar áreas que requieren ajustes en el contexto.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=.95\textwidth]{./Figures/metricas.png}
+        \caption{Métricas por categoría temática.}
+        \label{fig:metricas1}
+    \end{figure}
+
+    \item \textit{Buenas preguntas}: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, incluyendo el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=.9\textwidth]{./Figures/metricasbuenas.png}
+        \caption{Ejemplo del frontend con métricas de preguntas bien calificadas.}
+        \label{fig:metricasbuenas}
+    \end{figure}
+
+    \item \textit{Malas preguntas}: se visualizan métricas correspondientes a preguntas mal calificadas, lo que permite detectar fallos en el sistema y orientar acciones correctivas en los contextos o el flujo conversacional.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=.9\textwidth]{./Figures/metricasmalas.png}
+        \caption{Ejemplo del frontend con métricas de preguntas mal calificadas.}
+        \label{fig:metricasmalas}
+    \end{figure}
+\end{itemize}
+
+\subsubsection{Administración de contextos}
+
+Esta sección de la interfaz permite modificar o agregar fragmentos de contexto mediante un formulario de carga, lo que brinda flexibilidad para actualizar la base de conocimiento de forma dinámica, sin intervención técnica directa.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.75\textwidth]{./Figures/contextosui.png}
+    \caption{Vista del frontend para la administración de contextos.}
+    \label{fig:contextos_ui}
+\end{figure}
+
+\vspace{1em}
+
+En conjunto, esta interfaz fue concebida como una herramienta versátil para validar de forma rápida las mejoras implementadas en el sistema. Su uso permite asegurar que cada modificación sea evaluada y ajustada oportunamente antes de su incorporación al entorno de producción.
+
 
 \section{Evaluación de escenarios del chatbot}
 \label{sec:evaluacionEscenarios}
@@ -23,68 +117,185 @@ En este escenario se examinó la capacidad del chatbot para gestionar preguntas 
 
 En este apartado se presentan los resultados obtenidos en cada uno de los escenarios de prueba descritos anteriormente para cada una de las 4 versiones del chatbot. Además, se discuten los hallazgos más relevantes y se proponen recomendaciones para futuras mejoras.
 
-\subsection{Pruebas para la version 0}
+
+
+%%%%%%%%%%%%% VERSION 0 %%%%%%%%%%%%%
+
+\subsection{Pruebas para la versión 0}
 \label{sec:resultadosPruebasV0}
+
 \subsubsection{Pruebas de interacción básica}
 
- 
+El sistema funcionó de forma adecuada en la mayoría de las interacciones directas, generando respuestas precisas y pertinentes según la información almacenada en Pinecone. No obstante, debido a la dependencia de un modelo RAG básico y a la recuperación de fragmentos desde los embeddings, se identificaron dificultades ante preguntas ambiguas o imprecisas. En estos casos, las respuestas resultaron menos alineadas con la intención del usuario o presentaron imprecisiones en detalles específicos.
+
+\begin{itemize}
+    \item Hallazgos: la recuperación de información fue efectiva cuando las preguntas coincidieron con las secciones temáticas predefinidas. En contraste, las consultas formuladas de forma vaga provocaron respuestas generales.
+    \item Recomendaciones: optimizar el preprocesamiento de documentos para abordar consultas ambiguas. incorporar un sistema de validación de respuestas que permita verificar la relevancia de los fragmentos antes de generar la respuesta.
+\end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
 
+El sistema no logró gestionar de forma adecuada preguntas encadenadas o de múltiples pasos. En la mayoría de los casos, no se mantuvo el contexto conversacional, y las respuestas carecieron de relación directa con la consulta inicial. Esto se debió a que el modelo RAG utilizado no contemplaba mecanismos para la gestión de contexto prolongado ni para el seguimiento efectivo de interacciones previas.
+
+\begin{itemize}
+    \item Recomendaciones: incorporar un mecanismo de contexto persistente que permita conservar el hilo de la conversación, incluso ante cambios temáticos. reforzar la recuperación semántica para atender consultas complejas de forma más precisa.
+\end{itemize}
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
+Ante la ausencia de datos relevantes en el contexto, el sistema generó respuestas incorrectas y sin relación con la consulta. En algunas ocasiones, se intentó responder con información irrelevante o desconectada del tema solicitado.
 
-\subsubsection{Conclusiones de la version 0}
+\subsubsection{Conclusiones de la versión 0}
+
+La versión 0 del chatbot presentó un rendimiento adecuado en interacciones básicas, ofreciendo respuestas coherentes y precisas cuando las preguntas se alinearon con los fragmentos almacenados en Pinecone. No obstante, se observaron limitaciones ante consultas complejas, encadenadas o fuera de contexto. Estos resultados evidencian que, si bien el sistema básico de recuperación y generación fue funcional, aún requiere mejoras clave. La incorporación de validación de respuestas y de un sistema de contexto persistente más sólido resulta esencial para optimizar la experiencia del usuario y mejorar la eficacia del chatbot en escenarios complejos.
 
 
-\subsection{Pruebas para la version 1}
+%%%%%%%%%%%%% VERSION 1 %%%%%%%%%%%%%
+\subsection{Pruebas para la versión 1}
 \label{sec:resultadosPruebasV1}
+
 \subsubsection{Pruebas de interacción básica}
+
+Durante las pruebas de interacción básica, la versión 1 mostró mejoras notables en comparación con su predecesora. La incorporación de LanceDB permitió una recuperación local más eficiente de fragmentos relevantes. Por otro lado, la integración de DSPy contribuyó a una mayor claridad en la construcción de prompts, lo que facilitó respuestas más consistentes y alineadas con el contenido. En esta etapa, el sistema respondió con alta precisión a preguntas simples y directas, cumpliendo con las expectativas del \textit{happy path}.
+
+\begin{itemize}
+    \item Hallazgos: se observó una mejora en la calidad de las respuestas debido al uso de prompts más estructurados. la recuperación local fue eficiente y precisa, lo que redujo los tiempos de respuesta.
+    \item Recomendaciones: ampliar los criterios de evaluación automática para considerar mayor variabilidad lingüística. continuar ajustando los prompts con el objetivo de mejorar la claridad de las respuestas en casos límite.
+\end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
 
+En interacciones más complejas, que incluyeron consultas encadenadas o cambios temáticos sutiles, el sistema mostró un rendimiento comparable al de la versión anterior. La retención de contexto a lo largo de múltiples turnos se mantuvo de forma parcial, debido en parte a limitaciones en el flujo del pipeline y a la arquitectura modular, que si bien resultó más clara, aún no incorporaba mecanismos explícitos para la gestión del estado conversacional.
+
+\begin{itemize}
+    \item Recomendaciones: incorporar un componente específico para la gestión del historial conversacional dentro del pipeline. explorar la integración con modelos que dispongan de memoria o buffers de contexto persistente para mejorar la continuidad de la conversación.
+\end{itemize}
+
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-\subsubsection{Conclusiones de la version 1}
+Con la incorporación de NeMo Guardrails, el sistema logró identificar y bloquear parcialmente consultas fuera de dominio, generando respuestas más controladas. Adicionalmente, mediante DSPy se definió una regla en el prompt que permitía simular la derivación de la conversación hacia un asistente alternativo cuando el contexto disponible no resultaba suficiente para formular una respuesta adecuada.
 
-\subsection{Pruebas para la version 2}
+\begin{itemize}
+    \item Hallazgos: se identificaron limitaciones relevantes en el desempeño de Guardrails en español, lo que ocasionó respuestas inconsistentes y filtros poco precisos.
+    \item Recomendaciones: reforzar el soporte multilingüe de Guardrails o evaluar alternativas más compatibles con el idioma español. incorporar mensajes estandarizados para manejar de forma adecuada consultas fuera de contexto o sin respuesta posible.
+\end{itemize}
+
+\subsubsection{Conclusiones de la versión 1}
+
+La versión 1 representó un avance importante respecto a la versión inicial, principalmente en aspectos de modularidad, control de costos y calidad de respuesta. LanceDB mejoró la eficiencia en el almacenamiento y recuperación de embeddings, mientras que DSPy permitió una implementación más clara y mantenible del pipeline RAG. La incorporación de mecanismos de filtrado y evaluación automática añadió niveles útiles de control y monitoreo.
+
+Sin embargo, persistieron desafíos relacionados con la retención del contexto en conversaciones extensas y con el rendimiento limitado de NeMo Guardrails en español. Estos aspectos indican la necesidad de desarrollar soluciones orientadas a la continuidad conversacional y al control lingüístico específico del idioma. En términos generales, la versión 1 estableció una base técnica sólida sobre la cual se pueden construir mejoras funcionales y de experiencia para versiones futuras.
+
+
+
+%%%%%%%%%%%%% VERSION 2 %%%%%%%%%%%%%
+\subsection{Pruebas para la versión 2}
 \label{sec:resultadosPruebasV2}
+
 \subsubsection{Pruebas de interacción básica}
+
+En las pruebas de interacción básica, la versión 2 presentó mejoras significativas con respecto a la anterior. La implementación de guardrails personalizados permitió un mayor control sobre las respuestas, filtrando de forma más efectiva las preguntas fuera de contexto. Además, la integración de memoria conversacional facilitó respuestas más coherentes, al aprovechar el historial completo de la conversación. No obstante, se observó un aumento en la latencia debido al almacenamiento de conversaciones completas en RAM, lo que afectó ligeramente los tiempos de respuesta en consultas extensas.
+
+\begin{itemize}
+    \item Hallazgos: el filtrado de preguntas fuera de contexto resultó más efectivo, especialmente en español, gracias al uso de guardrails personalizados. la memoria conversacional mejoró la coherencia y continuidad de las respuestas. el almacenamiento en RAM elevó la latencia en consultas prolongadas.
+    \item Recomendaciones: optimizar el uso de RAM para reducir la latencia, considerando un sistema de almacenamiento más eficiente o en la nube, como REDIS\footnote{Es un sistema de almacenamiento en memoria, basado en clave-valor, que permite la persistencia de datos y es ampliamente utilizado para mejorar el rendimiento de aplicaciones web.}. continuar ajustando los guardrails personalizados para mejorar el filtrado en escenarios complejos y con variaciones lingüísticas.
+\end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
 
+En interacciones complejas que incluyeron consultas encadenadas, el sistema presentó un rendimiento mixto. Aunque la memoria conversacional permitió generar respuestas más coherentes, en algunos casos el contexto no se interpretó correctamente, especialmente cuando las preguntas no hacían referencia explícita a elementos previos. Por ejemplo, ante la pregunta "¿Cuánto cuesta?" luego de una consulta sobre un producto, el sistema no logró identificar adecuadamente el antecedente, lo que condujo a respuestas incorrectas.
+
+\begin{itemize}
+    \item Hallazgos: la memoria conversacional mejoró la coherencia general, pero persistieron dificultades en la interpretación del contexto en preguntas encadenadas. la ausencia de un mecanismo de reformulación afectó la precisión, al no integrar de forma adecuada las referencias anteriores.
+    \item Recomendaciones: incorporar un sistema de reformulación automática de preguntas para enriquecer el contexto y mejorar la precisión de las respuestas. mejorar la detección de cambios temáticos sutiles o ambigüedades en la formulación de consultas.
+\end{itemize}
+
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-\subsubsection{Conclusiones de la version 2}
+El sistema de guardrails personalizados en la versión 2 mostró mayor precisión en la detección y bloqueo de consultas fuera de contexto. Las preguntas irrelevantes o mal formuladas fueron redirigidas con mayor efectividad. Sin embargo, el rendimiento del sistema aún dependía de ejemplos predefinidos, lo que limitó su capacidad para clasificar correctamente ciertos casos.
 
-\subsection{Pruebas para la version 3}
+\begin{itemize}
+    \item Hallazgos: el filtrado de consultas fuera de contexto fue más eficaz y la redirección resultó más precisa.
+    \item Recomendaciones: optimizar el sistema de clasificación para reducir los tiempos de respuesta.
+\end{itemize}
+
+%%%%%%%%%%%%% VERSION 3 %%%%%%%%%%%%%
+\subsection{Pruebas para la versión 3}
 \label{sec:resultadosPruebasV3}
+
 \subsubsection{Pruebas de interacción básica}
 
-\subsubsection{Pruebas de consultas con múltiples pasos}
+En esta fase se evaluó el desempeño general del sistema ante preguntas frecuentes y directas relacionadas con productos, precios y servicios ofrecidos. Se verificó la capacidad de respuesta bajo condiciones normales de uso.
+
+\begin{itemize}
+    \item Hallazgos: el sistema respondió con precisión en la mayoría de los casos gracias a la estructura RAG y al uso de contextos organizados mediante pares clave-valor. Se observó una mejora notable en la coherencia y contextualización de las respuestas, especialmente en consultas simples.
+    \item Recomendaciones: reforzar la cobertura de dominios poco frecuentes mediante la expansión del conjunto de datos contextuales. Incluir ejemplos que aborden productos nuevos o condiciones especiales.
+\end{itemize}
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-\subsubsection{Conclusiones de la version 3}
+Estas pruebas consistieron en realizar preguntas ambiguas, fuera del dominio temático o sin relación con el historial reciente, con el objetivo de evaluar los mecanismos de restricción y reformulación de consultas.
+
+\begin{itemize}
+    \item Hallazgos: el sistema logró filtrar adecuadamente consultas fuera de dominio (por ejemplo, temas políticos o religiosos) y reformuló preguntas ambiguas con un grado moderado de éxito. No obstante, en ciertos casos respondió sin advertir la falta de contexto suficiente.
+    \item Recomendaciones: fortalecer los mecanismos de respuesta ante insuficiencia contextual. Se recomienda incorporar mensajes estandarizados o plantillas que soliciten información adicional cuando el contexto no sea claro.
+\end{itemize}
+
+\subsubsection{Pruebas de consultas con múltiples pasos}
+
+Se evaluaron interacciones en las que la respuesta dependía de la acumulación de información a lo largo de varios turnos. Este tipo de prueba fue clave para validar la persistencia del contexto y la capacidad de recuperación de información distribuida.
+
+\begin{itemize}
+    \item Hallazgos: el módulo de redefinición de preguntas mejoró la comprensión de consultas multietapa. Sin embargo, se identificaron errores en la asociación semántica cuando las referencias anteriores eran vagas o excesivamente extensas.
+    \item Recomendaciones: incorporar mecanismos de ventana de contexto dinámica o técnicas de resumen conversacional para evitar pérdida de información en diálogos prolongados.
+\end{itemize}
+
+\subsubsection{Conclusiones de la versión 3}
+
+La integración de Langfuse, en conjunto con DSPy y LanceDB, representó un avance significativo en términos de trazabilidad, evaluación y diseño modular del sistema. Se mejoró tanto la precisión como la eficiencia sin aumentar los costos operativos.
+
+\begin{itemize}
+    \item Hallazgos: se logró trazabilidad completa de las interacciones, evaluación automática y una arquitectura modular consolidada. No obstante, se observó un rendimiento inferior en categorías como quejas, posiblemente debido a la falta de contexto temático suficiente.
+    \item Recomendaciones: ampliar la base contextual en áreas críticas como atención al cliente. Evaluar la implementación de mecanismos de autoajuste más frecuentes y rediseñar los prompts de reformulación para mejorar la recuperación semántica en casos límite.
+\end{itemize}
 
 
-\section{Mejoras y optimizaciones propuestas}
-\label{sec:mejorasOptimizaciones}
+%%%%%%%%%%%%% COMPARACION DE VERSIONES %%%%%%%%%%%%%
+\subsubsection{Comparación de versiones del chatbot según métricas de aplicación}
+\label{sec:comparacionVersionesAplicacion}
 
-En esta sección se presentan las mejoras y optimizaciones propuestas para el chatbot, basadas en los resultados obtenidos en las pruebas realizadas. Estas recomendaciones están orientadas a abordar los problemas identificados y mejorar la experiencia del usuario, así como la eficiencia del sistema en futuras iteraciones.
+En la Tabla~\ref{tab:comparacion_versiones} se resumen las principales métricas de desempeño obtenidas a lo largo del desarrollo del chatbot. Se incluyen el número de interacciones registradas, el costo asociado y el puntaje promedio de evaluación automática.
 
-\subsection{Mejoras en la gestión del contexto}
-\label{sec:mejorasGestionContexto}
+\begin{table}[ht]
+    \centering
+    \caption{Comparación de métricas entre versiones del chatbot.}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Versión} & \textbf{Trazas} & \textbf{Costo (USD)} & \textbf{Puntaje Promedio} \\
+        \hline
+        0 & 96 & 0,0506 & 5,88 \\
+        \hline
+        1 & 132 & 0,0436 & 7,78 \\
+        \hline
+        2 & 54 & 0,0126 & 8,29 \\
+        \hline
+        3 & 136 & 0,0353 & 6,33 \\
+        \hline
+    \end{tabular}
+    \label{tab:comparacion_versiones}
+\end{table}
 
-\subsection{Optimización del modelo de lenguaje}
-\label{sec:optimizacionModeloLenguaje}
 
-\subsection{Integración con sistemas externos}
-\label{sec:integracionSistemasExternos}
+A lo largo del desarrollo del chatbot, se observó una disminución progresiva del costo por interacción, alcanzando su punto más bajo en la versión 2. Esta optimización económica no fue producto del azar, sino el resultado directo de decisiones técnicas orientadas a reducir la cantidad de tokens procesados por el modelo de lenguaje.
 
-\subsection{Mejoras en la interfaz de usuario}
-\label{sec:mejorasInterfazUsuario}
+En la versión 0, el sistema utilizaba Pinecone como base vectorial y almacenaba fragmentos extensos de documentos que se incorporaban directamente al prompt. Este enfoque implicaba altos volúmenes de texto por consulta, lo que generaba un mayor consumo de tokens y, por ende, un costo más elevado por interacción (USD 0,0506 por 96 trazas).
 
+A partir de la versión 1, consolidado en la versión 2, se reemplazó Pinecone por LanceDB, una base de datos vectorial local que permitió no solo reducir los costos asociados a infraestructura externa, sino también mejorar la precisión de recuperación mediante el control total del almacenamiento.
+
+Sin embargo, la optimización más significativa se logró mediante la redefinición de la estructura de contexto. Se pasó de fragmentos textuales extensos a una arquitectura basada en pares clave-valor semánticos, donde cada clave correspondía a una intención o categoría de consulta y cada valor contenía únicamente la información estrictamente necesaria. Este diseño minimizó el tamaño de los contextos insertados en los prompts, reduciendo drásticamente el número de tokens utilizados por consulta.
+
+Esta estrategia quedó reflejada en la métrica de la versión 2: con solo 54 trazas se alcanzó un costo total de USD 0,0126 y un puntaje promedio de calidad de 8,29, el más alto entre todas las versiones. Aunque la versión 3 reintrodujo una leve subida en el costo (USD 0,0353), ello se debió a la complejidad adicional que implicó el manejo de categorías como quejas, las cuales demandan más procesamiento contextual.
+
+En resumen, la reducción del costo operativo del sistema se debió fundamentalmente a dos acciones técnicas clave: la adopción de LanceDB como vectorstore local y la estructuración eficiente del conocimiento en pares clave-valor, lo que redujo sustancialmente el consumo de tokens sin comprometer la calidad de las respuestas.
 
 
