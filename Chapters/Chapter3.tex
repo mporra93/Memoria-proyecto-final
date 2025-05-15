@@ -5,7 +5,7 @@
 
 \subsection{Propuestas de implementación} 
 
-Durante el desarrollo del sistema se elaboraron cuatro versiones principales, cada representa un cambio significativo en la tecnología, la arquitectura o el enfoque funcional del chatbot. A continuación, se describen dichas iteraciones:
+Durante el desarrollo del sistema se elaboraron cuatro versiones principales, cada una representa un cambio significativo en la tecnología, la arquitectura o el enfoque funcional del chatbot. A continuación, se describen dichas iteraciones:
 \vspace{1em}
 \begin{itemize}
 \item{Versión 0 - RAG básico con Pinecone}
@@ -32,17 +32,21 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
 
     Asimismo, se añadió una capa de filtrado con NemoGuardrails\footnote{NeMo Guardrails es un sistema de control diseñado para filtrar y gestionar las interacciones con modelos de lenguaje, de manera que las respuestas sean apropiadas y alineadas con las políticas predefinidas. En el contexto de RAG, se utiliza para clasificar y redirigir consultas, lo que garantiza que el sistema mantenga un comportamiento controlado y seguro.} para bloquear preguntas fuera de dominio, junto con un sistema de evaluación automática que puntuaba las respuestas de la LLM, y permitía monitorear su rendimiento. Estos componentes fueron implementados como módulos independientes en DSPy, lo que mejoró la modularidad y claridad del sistema.
 
-    \begin{figure}[htbp]
+    Problemas detectados: aunque se logró mayor robustez y control, surgieron desafíos como el rendimiento limitado de NemoGuardrails en español y la falta de trazabilidad completa, lo que motivó la búsqueda de alternativas.
+
+    \begin{figure}[h]
         \centering
-        \includegraphics[width=.75\textwidth]{./Figures/version1.png}
+        \includegraphics[width=.65\textwidth]{./Figures/version1.png}
         \caption{Diagrama general del sistema para la versión 1.}
         \label{fig:version1}
     \end{figure}
 
 
-    Problemas detectados: aunque se logró mayor robustez y control, surgieron desafíos como el rendimiento limitado de NemoGuardrails en español y la falta de trazabilidad completa, lo que motivó la búsqueda de alternativas.
+    
 
-\vspace{1em}
+% \vspace{1em}
+\newpage
+
 \item{Versión 2 - Guardrails personalizados, almacenamiento estructurado de chats, implementación de sistema de métricas e implementación del frontend y backend de pruebas}
 
     Razón del cambio: necesidad de una mayor precisión en el filtrado de preguntas fuera de contexto, mejor trazabilidad de las conversaciones y cálculo de métricas para analisis de performance.
@@ -88,7 +92,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
 
 
     \vspace{1em}
-    En este caso, el sistema no logró identificar que la pregunta hacía referencia al producto mencionado previamente. Aunque se utilizaba el historial de conversación para proporcionar contexto a la LLM, el mecanismo de recuperación de información seguía dependiendo exclusivamente de la formulación de la pregunta actual. Esta limitación evidenció la necesidad de incorporar un sistema de reformulación de preguntas que permitiera enriquecer el contexto conversacional, no solo mediante el uso de palabras clave, sino también al integrar referencias explícitas a intervenciones anteriores. Por ejemplo, en el caso previamente analizado, la búsqueda de contextos se realizaba a partir de la consulta “¿cuánto cuesta?”, cuando en realidad debería haberse reformulado como “¿cuánto cuesta el producto X?”, de este modo se incorpora la referencia al elemento mencionado anteriormente.. De este modo, las búsquedas semánticas podrían orientarse hacia contextos más coherentes y relevantes, alineados con la continuidad temática de la interacción.
+    En este caso, el sistema no logró identificar que la pregunta hacía referencia al producto mencionado previamente. Aunque se utilizaba el historial de conversación para proporcionar contexto a la LLM, el mecanismo de recuperación de información seguía dependiendo exclusivamente de la formulación de la pregunta actual. Esta limitación evidenció la necesidad de incorporar un sistema de reformulación de preguntas que permitiera enriquecer el contexto conversacional, no solo mediante el uso de palabras clave, sino también al integrar referencias explícitas a intervenciones anteriores. Por ejemplo, en el caso previamente analizado, la búsqueda de contextos se realizaba a partir de la consulta “¿cuánto cuesta?”, cuando en realidad debería haberse reformulado como “¿cuánto cuesta el producto X?”, de este modo se incorpora la referencia al elemento mencionado anteriormente. De este modo, las búsquedas semánticas podrían orientarse hacia contextos más coherentes y relevantes, alineados con la continuidad temática de la interacción.
 
 
     Por otro lado, el sistema de métricas, aunque útil para el análisis de performance, presentó limitaciones: el uso simultáneo de múltiples modelos incrementó el tiempo de respuesta y el consumo de cómputo, y la clasificación dependía demasiado de ejemplos predefinidos, lo que reducía su robustez frente a consultas poco comunes o mal redactadas.
@@ -164,7 +168,7 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
 \subsection{Tecnologías suplementarias}
 
 \begin{itemize}
-    \item Streamlit: utilizado para construir el frontend inicial de pruebas, y permite una interacción simple con el chat, que posteriormente fue migrada a ReactJS. Streamlit es un framework de código abierto en Python para crear aplicaciones web de forma rápida y sencilla, especialmente orientado a proyectos de ciencia de datos e inteligencia artificial.
+    \item Streamlit: utilizado para construir el frontend inicial de pruebas, y permite una interacción simple con el chat, que posteriormente fue migrada a ReactJS. Streamlit es un framework de código abierto en Python para crear aplicaciones web de forma rápida y sencilla, especialmente orientado a proyectos simples o pruebas de concepto.
 
     \item Lovable: \textit{lovable.dev} es una herramienta en línea que permite crear frontends de forma rápida y sencilla con la ayuda de inteligencia artificial. Fue utilizada para desarrollar la versión final del frontend con ReactJS, y proporcionó una experiencia de usuario más fluida y atractiva. Además, en esta plataforma se integraron las visualizaciones de las métricas generadas a partir de los datos de Langfuse.
 
@@ -172,10 +176,10 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
 
 \end{itemize}
 
-\newpage
+% \newpage
 \subsection{Funcionamiento general} 
 
-El pipeline del sistema está diseñado para ofrecer una experiencia conversacional precisa, eficiente y trazable. A continuación, se detalla el flujo completo de funcionamiento desde la perspectiva funcional:
+El pipeline del sistema está diseñado para ofrecer una experiencia conversacional precisa, eficiente y trazable. A continuación, se detalla el flujo completo de funcionamiento:
 
 \begin{enumerate}
     \item El usuario realiza una consulta a través del frontend.
@@ -213,7 +217,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
 
 
 % new page 
-\newpage
+% \newpage
 \section{Implementación} 
 
   \subsection{Preparación de los datos de contexto} 
@@ -236,9 +240,9 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
     \label{fig:contextformat}
   \end{figure}
 
-
-    Esta estructura permite una consulta eficiente, ya que las claves semánticas generadas durante el proceso de reformulación se emplean para buscar y recuperar los fragmentos de contexto más adecuados. A partir de estas claves, se extraen las frases informativas ubicadas en el campo relatess. La búsqueda se realiza mediante un enfoque híbrido que combina técnicas semánticas y vectoriales, lo que permite identificar coincidencias exactas y también similitudes conceptuales entre la consulta y las claves almacenadas.
-    Una vez identificadas las coincidencias, LanceDB accede a los valores del campo relatess, que contienen el contexto necesario para interpretar correctamente la consulta. Después, el sistema inserta los fragmentos de contexto relevantes en el prompt del modelo generador LLM. Este procedimiento garantiza respuestas precisas y contextualizadas, al integrar tanto la consulta original del usuario como el contexto
+\newpage
+    Esta estructura permite una consulta eficiente, ya que las claves semánticas generadas durante el proceso de reformulación se emplean para buscar y recuperar los fragmentos de contexto más adecuados. A partir de estas claves, se extraen las frases informativas ubicadas en el campo relates. La búsqueda se realiza mediante un enfoque híbrido que combina técnicas semánticas y vectoriales, lo que permite identificar coincidencias exactas y también similitudes conceptuales entre la consulta y las claves almacenadas.
+    Una vez identificadas las coincidencias, LanceDB accede a los valores del campo relates, que contienen el contexto necesario para interpretar correctamente la consulta. Después, el sistema inserta los fragmentos de contexto relevantes en el prompt del modelo generador LLM. Este procedimiento garantiza respuestas precisas y contextualizadas, al integrar tanto la consulta original del usuario como el contexto
 
 
 \subsection{Métricas, clasificadores y análisis semántico en sistemas conversacionales}
