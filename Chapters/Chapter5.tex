@@ -26,6 +26,37 @@ Algunas preguntas que pueden servir para completar este capítulo:
 \end{itemize}
 
 
+
+
+
+%%%%%%%%%%%%% MEJORAS Y OPTIMIZACIONES %%%%%%%%%%%%%
+\section{Mejoras y optimizaciones propuestas}
+\label{sec:mejorasOptimizaciones}
+
+En esta sección se presentan las mejoras y optimizaciones propuestas para el chatbot, basadas en los resultados obtenidos en las pruebas realizadas. Estas recomendaciones están orientadas a abordar los problemas identificados y mejorar la experiencia del usuario, así como la eficiencia del sistema en futuras iteraciones.
+
+\subsection{Mejoras en la gestión del contexto}
+\label{sec:mejorasGestionContexto}
+
+Aunque la versión 3 del sistema integró reformulación automática de preguntas y clasificación temática, se observó que algunas consultas, especialmente aquellas relacionadas con quejas, aún presentaban respuestas poco satisfactorias. Se propone ampliar la base de conocimiento disponible y refinar las claves semánticas para mejorar la cobertura contextual. Además, es recomendable incorporar una lógica de anclaje de entidades para reforzar la asociación de referencias previas en preguntas encadenadas.
+
+\subsection{Optimización del modelo de lenguaje}
+\label{sec:optimizacionModeloLenguaje}
+
+Si bien el uso de GPT-4o mini ofreció un buen equilibrio entre rendimiento y costos, algunos dominios temáticos aún muestran margen de mejora. Una alternativa viable sería evaluar modelos LLM optimizados para dominios específicos, como Mistral o Phi 3, en combinación con técnicas de few-shot prompting o in-context learning. También se podría investigar la posibilidad de utilizar embeddings personalizados para mejorar la precisión semántica en contextos específicos.
+
+\subsection{Integración con sistemas externos}
+\label{sec:integracionSistemasExternos}
+
+Actualmente, el sistema no se encuentra conectado a plataformas de gestión empresarial (CRM, e-commerce, etc.). Para futuras versiones, se recomienda integrar APIs externas que permitan enriquecer las respuestas del chatbot con información dinámica, como disponibilidad de productos, estado de pedidos o generación automática de tickets. Esta integración aumentaría el valor práctico del sistema y permitiría automatizar tareas operativas comunes.
+
+\subsection{Mejoras en la interfaz de usuario}
+\label{sec:mejorasInterfazUsuario}
+
+La interfaz desarrollada en ReactJS resultó efectiva para la etapa de pruebas, pero puede mejorarse en aspectos de experiencia de usuario. Se sugiere implementar funcionalidades como sugerencias automáticas de preguntas frecuentes, historial visible de conversaciones anteriores y mensajes de validación cuando el sistema no pueda ofrecer una respuesta adecuada. Asimismo, el módulo de administración de contextos podría beneficiarse de herramientas de validación automática para facilitar la carga de nuevos datos por parte de usuarios no técnicos.
+
+
+
 %----------------------------------------------------------------------------------------
 %	SECTION 2
 %----------------------------------------------------------------------------------------
