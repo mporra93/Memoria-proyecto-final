@@ -132,4 +132,23 @@ Los modelos locales como Llama 3.1, Phi 3, Gemma y Mistral son soluciones robust
 Cada vez más empresas optan por utilizar servicios basados en API, que han hecho más accesible y económico el despliegue de chatbots sofisticados. Estas herramientas simplifican la implementación y permiten la creación rápida de soluciones adaptadas a las necesidades específicas de cada empresa o entidad. Aunque los modelos locales son valiosos por su robustez y capacidad para operar sin depender de servicios externos, son útiles especialmente cuando se requiere un mayor control o confidencialidad.
 
 
- 
+\subsection{Consideraciones éticas en el uso de chatbots}
+
+El desarrollo e implementación de chatbots inteligentes plantea no solo desafíos técnicos, sino también importantes cuestiones éticas, especialmente cuando se emplean en contextos sensibles como la atención al cliente, la gestión de datos o la interacción con usuarios vulnerables. Estas consideraciones resultan esenciales para garantizar que la automatización de las interacciones no comprometa la privacidad, la transparencia ni la equidad.
+
+\subsubsection{Privacidad y manejo de datos}
+
+Una de las principales preocupaciones éticas se relaciona con la protección de los datos personales. Al interactuar con usuarios, los chatbots pueden recolectar información sensible de manera no intencionada. Por ello, es fundamental que estos sistemas se diseñen con el objetivo de limitar el almacenamiento innecesario de datos y garantizar su anonimato.
+
+\subsubsection{Limitaciones temáticas y control de contenido}
+
+Otro aspecto relevante es el control sobre el tipo de consultas que el chatbot puede atender. En entornos públicos o semiabiertos, es posible que los usuarios formulen preguntas relacionadas con temas delicados, como política, religión o salud. La generación automatizada de respuestas en estos ámbitos puede derivar en desinformación o respuestas inapropiadas. Por este motivo, se incorporan mecanismos de filtrado, denominados \emph{guardrails}, que permiten detectar y bloquear consultas fuera del dominio permitido, lo cual contribuye a la seguridad y alineación ética del sistema.
+
+\subsubsection{Transparencia y límites de automatización}
+
+Es fundamental que los usuarios sean conscientes de que están interactuando con un sistema automatizado y no con una persona. Esta transparencia evita la generación de falsas expectativas y reduce el riesgo de que se confíe en el chatbot para la toma de decisiones críticas. Asimismo, el sistema debe contar con mecanismos que le permitan reconocer sus propias limitaciones y, en caso de no disponer de información contextual suficiente, abstenerse de responder o derivar la consulta a un operador humano.
+
+\subsubsection{Equidad y sesgos}
+
+Los modelos de lenguaje empleados por los chatbots pueden reproducir sesgos presentes en los datos de entrenamiento. Si no se abordan de manera adecuada, dichos sesgos pueden perpetuar discriminaciones o estereotipos. Por ello, resulta esencial realizar un análisis exhaustivo de las fuentes de datos utilizadas en el entrenamiento, así como aplicar técnicas de mitigación. Entre estas se incluyen la revisión crítica de los conjuntos de datos, la identificación sistemática de sesgos y la implementación de estrategias orientadas a su corrección. Asimismo, es fundamental efectuar pruebas continuas que permitan verificar que el sistema se mantenga libre de sesgos a lo largo del tiempo.
+
