@@ -28,10 +28,6 @@ Langfuse se utiliza como plataforma central para el registro y análisis de inte
 
 Como complemento cualitativo, el administrador realiza revisiones manuales enfocadas en casos ambiguos que no se resuelven automáticamente, preguntas frecuentes con baja puntuación que requieren ajustes, y oportunidades de mejora en el tono o la empatía conversacional.
 
-Además, el sistema incorpora funcionalidades de auditoría para reconstruir el proceso de generación de cada respuesta, diagnóstico para identificar errores recurrentes, cuellos de botella o sesgos, y mecanismos de retroalimentación que aportan datos útiles para ajustes de contexto o rediseño de los prompts. La combinación de estos elementos convierte a Langfuse en una plataforma autoevaluativa y adaptable que no requiere reentrenamiento para incorporar mejoras.
-
-
-
 
 \section{Despliegue de la interfaz de pruebas}
 
@@ -96,8 +92,6 @@ Esta sección de la interfaz permite modificar o agregar fragmentos de contexto 
 
 \vspace{1em}
 
-En conjunto, esta interfaz fue concebida como una herramienta versátil para validar de forma rápida las mejoras implementadas en el sistema. Su uso permite asegurar que cada modificación sea evaluada y ajustada oportunamente antes de su incorporación al entorno de producción.
-
 
 \section{Evaluación de escenarios del chatbot}
 \label{sec:evaluacionEscenarios}
@@ -120,34 +114,33 @@ En este apartado se presentan los resultados obtenidos en cada uno de los escena
 
 
 %%%%%%%%%%%%% VERSION 0 %%%%%%%%%%%%%
-
 \subsection{Pruebas para la versión 0}
 \label{sec:resultadosPruebasV0}
 
 \subsubsection{Pruebas de interacción básica}
 
-El sistema funcionó de forma adecuada en la mayoría de las interacciones directas, generando respuestas precisas y pertinentes según la información almacenada en Pinecone. No obstante, debido a la dependencia de un modelo RAG básico y a la recuperación de fragmentos desde los embeddings, se identificaron dificultades ante preguntas ambiguas o imprecisas. En estos casos, las respuestas resultaron menos alineadas con la intención del usuario o presentaron imprecisiones en detalles específicos.
+El sistema funcionó adecuadamente en la mayoría de las interacciones directas, proporcionando respuestas precisas y pertinentes según la información almacenada en Pinecone. Sin embargo, debido a la simplicidad del modelo RAG y a la recuperación subóptima de fragmentos desde los embeddings, se detectaron dificultades ante preguntas ambiguas o imprecisas. En estos casos, las respuestas resultaron menos alineadas con la intención del usuario o presentaron imprecisiones en detalles específicos debido a la ausencia de un contexto claro.
 
 \begin{itemize}
     \item Hallazgos: la recuperación de información fue efectiva cuando las preguntas coincidieron con las secciones temáticas predefinidas. En contraste, las consultas formuladas de forma vaga provocaron respuestas generales.
-    \item Recomendaciones: optimizar el preprocesamiento de documentos para abordar consultas ambiguas. incorporar un sistema de validación de respuestas que permita verificar la relevancia de los fragmentos antes de generar la respuesta.
+    \item Recomendaciones: optimizar el preprocesamiento de documentos para atender consultas ambiguas y mejorar la calidad de los contextos retornados por el modelo de vectores.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
 
-El sistema no logró gestionar de forma adecuada preguntas encadenadas o de múltiples pasos. En la mayoría de los casos, no se mantuvo el contexto conversacional, y las respuestas carecieron de relación directa con la consulta inicial. Esto se debió a que el modelo RAG utilizado no contemplaba mecanismos para la gestión de contexto prolongado ni para el seguimiento efectivo de interacciones previas.
+El sistema no gestionó adecuadamente preguntas encadenadas o de múltiples pasos. En la mayoría de los casos, no se mantuvo el contexto conversacional y las respuestas carecieron de relación directa con la consulta inicial. Esto se debió a que el modelo RAG utilizado no contemplaba mecanismos para la gestión de contexto prolongado ni para el seguimiento efectivo de interacciones previas.
 
 \begin{itemize}
-    \item Recomendaciones: incorporar un mecanismo de contexto persistente que permita conservar el hilo de la conversación, incluso ante cambios temáticos. reforzar la recuperación semántica para atender consultas complejas de forma más precisa.
+    \item Recomendaciones: incorporar un mecanismo de contexto persistente que permita conservar el hilo de la conversación, incluso ante cambios temáticos. Reforzar la recuperación semántica para atender consultas complejas de forma más precisa.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-Ante la ausencia de datos relevantes en el contexto, el sistema generó respuestas incorrectas y sin relación con la consulta. En algunas ocasiones, se intentó responder con información irrelevante o desconectada del tema solicitado.
+Ante la ausencia de datos relevantes en el contexto, el sistema generó respuestas incorrectas y sin relación con la consulta. En ocasiones, se intentó responder con información irrelevante o desconectada del tema solicitado.
 
 \subsubsection{Conclusiones de la versión 0}
 
-La versión 0 del chatbot presentó un rendimiento adecuado en interacciones básicas, ofreciendo respuestas coherentes y precisas cuando las preguntas se alinearon con los fragmentos almacenados en Pinecone. No obstante, se observaron limitaciones ante consultas complejas, encadenadas o fuera de contexto. Estos resultados evidencian que, si bien el sistema básico de recuperación y generación fue funcional, aún requiere mejoras clave. La incorporación de validación de respuestas y de un sistema de contexto persistente más sólido resulta esencial para optimizar la experiencia del usuario y mejorar la eficacia del chatbot en escenarios complejos.
+La versión 0 del chatbot presentó un rendimiento adecuado en interacciones básicas, ofreciendo respuestas coherentes y precisas cuando las preguntas se alinearon con los fragmentos almacenados en Pinecone. Sin embargo, se identificaron limitaciones ante consultas complejas, encadenadas o fuera de contexto. Estos resultados evidencian que, aunque el sistema básico de recuperación y generación fue funcional, requería mejoras fundamentales.
 
 
 %%%%%%%%%%%%% VERSION 1 %%%%%%%%%%%%%
@@ -156,37 +149,33 @@ La versión 0 del chatbot presentó un rendimiento adecuado en interacciones bá
 
 \subsubsection{Pruebas de interacción básica}
 
-Durante las pruebas de interacción básica, la versión 1 mostró mejoras notables en comparación con su predecesora. La incorporación de LanceDB permitió una recuperación local más eficiente de fragmentos relevantes. Por otro lado, la integración de DSPy contribuyó a una mayor claridad en la construcción de prompts, lo que facilitó respuestas más consistentes y alineadas con el contenido. En esta etapa, el sistema respondió con alta precisión a preguntas simples y directas, cumpliendo con las expectativas del \textit{happy path}.
+Durante las pruebas de interacción básica, la versión 1 presentó mejoras notables en comparación con la versión anterior. La incorporación de LanceDB permitió una recuperación local más eficiente de fragmentos relevantes. Por otro lado, la integración de DSPy contribuyó a una mayor claridad en la construcción de los \textit{prompts}, lo que facilitó respuestas más consistentes y alineadas con el contenido. En esta etapa, el sistema respondió con alta precisión a preguntas simples y directas, cumpliendo las expectativas del \textit{happy path}.
 
 \begin{itemize}
-    \item Hallazgos: se observó una mejora en la calidad de las respuestas debido al uso de prompts más estructurados. la recuperación local fue eficiente y precisa, lo que redujo los tiempos de respuesta.
-    \item Recomendaciones: ampliar los criterios de evaluación automática para considerar mayor variabilidad lingüística. continuar ajustando los prompts con el objetivo de mejorar la claridad de las respuestas en casos límite.
+    \item Hallazgos: se observó una mejora en la calidad de las respuestas debido al uso de \textit{prompts} más estructurados. La recuperación local fue eficiente y precisa, lo que redujo los tiempos de respuesta.
+    \item Recomendaciones: ampliar los criterios de evaluación automática para considerar mayor variabilidad lingüística. Ajustar los \textit{prompts} con el objetivo de mejorar la claridad de las respuestas en casos límite.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
 
-En interacciones más complejas, que incluyeron consultas encadenadas o cambios temáticos sutiles, el sistema mostró un rendimiento comparable al de la versión anterior. La retención de contexto a lo largo de múltiples turnos se mantuvo de forma parcial, debido en parte a limitaciones en el flujo del pipeline y a la arquitectura modular, que si bien resultó más clara, aún no incorporaba mecanismos explícitos para la gestión del estado conversacional.
+En interacciones más complejas, que incluyeron consultas encadenadas o cambios temáticos sutiles, el sistema mostró un rendimiento comparable al de la versión anterior. La retención del contexto a lo largo de múltiples turnos se mantuvo parcialmente, debido en parte a limitaciones en el flujo del pipeline y a la arquitectura modular, que, si bien resultó más clara, no incorporaba mecanismos explícitos para la gestión del estado conversacional.
 
 \begin{itemize}
-    \item Recomendaciones: incorporar un componente específico para la gestión del historial conversacional dentro del pipeline. explorar la integración con modelos que dispongan de memoria o buffers de contexto persistente para mejorar la continuidad de la conversación.
+    \item Recomendaciones: incorporar un componente específico para la gestión del historial conversacional dentro del pipeline. Explorar la integración con modelos que dispongan de memoria o buffers de contexto persistente para mejorar la continuidad de la conversación.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-Con la incorporación de NeMo Guardrails, el sistema logró identificar y bloquear parcialmente consultas fuera de dominio, generando respuestas más controladas. Adicionalmente, mediante DSPy se definió una regla en el prompt que permitía simular la derivación de la conversación hacia un asistente alternativo cuando el contexto disponible no resultaba suficiente para formular una respuesta adecuada.
+Con la incorporación de NeMo Guardrails, el sistema identificó y bloqueó parcialmente consultas fuera de dominio, generando respuestas más controladas. Adicionalmente, mediante DSPy se definió una regla en el \textit{prompt} que permitía simular la derivación de la conversación hacia un asistente alternativo cuando el contexto disponible no resultaba suficiente para formular una respuesta adecuada.
 
 \begin{itemize}
     \item Hallazgos: se identificaron limitaciones relevantes en el desempeño de Guardrails en español, lo que ocasionó respuestas inconsistentes y filtros poco precisos.
-    \item Recomendaciones: reforzar el soporte multilingüe de Guardrails o evaluar alternativas más compatibles con el idioma español. incorporar mensajes estandarizados para manejar de forma adecuada consultas fuera de contexto o sin respuesta posible.
+    \item Recomendaciones: reforzar el soporte multilingüe de Guardrails o evaluar alternativas más compatibles con el idioma español. Incorporar mensajes estandarizados para manejar adecuadamente consultas fuera de contexto o sin respuesta posible.
 \end{itemize}
 
 \subsubsection{Conclusiones de la versión 1}
 
-La versión 1 representó un avance importante respecto a la versión inicial, principalmente en aspectos de modularidad, control de costos y calidad de respuesta. LanceDB mejoró la eficiencia en el almacenamiento y recuperación de embeddings, mientras que DSPy permitió una implementación más clara y mantenible del pipeline RAG. La incorporación de mecanismos de filtrado y evaluación automática añadió niveles útiles de control y monitoreo.
-
-Sin embargo, persistieron desafíos relacionados con la retención del contexto en conversaciones extensas y con el rendimiento limitado de NeMo Guardrails en español. Estos aspectos indican la necesidad de desarrollar soluciones orientadas a la continuidad conversacional y al control lingüístico específico del idioma. En términos generales, la versión 1 estableció una base técnica sólida sobre la cual se pueden construir mejoras funcionales y de experiencia para versiones futuras.
-
-
+La versión 1 representó un avance significativo respecto a la versión inicial, al mejorar la modularidad, el control de costos y la calidad de las respuestas. LanceDB optimizó el manejo de embeddings y DSPy facilitó una implementación más clara del pipeline RAG. También se incorporaron mecanismos de filtrado y evaluación automática. No obstante, persistieron limitaciones en la retención del contexto en conversaciones largas y en el rendimiento de NeMo Guardrails en español. Estos resultados evidenciaron la necesidad de fortalecer la continuidad conversacional y el control lingüístico. En conjunto, la versión 1 estableció una base técnica sólida para futuras mejoras funcionales.
 
 %%%%%%%%%%%%% VERSION 2 %%%%%%%%%%%%%
 \subsection{Pruebas para la versión 2}
@@ -194,30 +183,30 @@ Sin embargo, persistieron desafíos relacionados con la retención del contexto 
 
 \subsubsection{Pruebas de interacción básica}
 
-En las pruebas de interacción básica, la versión 2 presentó mejoras significativas con respecto a la anterior. La implementación de guardrails personalizados permitió un mayor control sobre las respuestas, filtrando de forma más efectiva las preguntas fuera de contexto. Además, la integración de memoria conversacional facilitó respuestas más coherentes, al aprovechar el historial completo de la conversación. No obstante, se observó un aumento en la latencia debido al almacenamiento de conversaciones completas en RAM, lo que afectó ligeramente los tiempos de respuesta en consultas extensas.
+En las pruebas de interacción básica, la versión 2 presentó mejoras significativas respecto a la anterior. Sin embargo, se observó un aumento en la latencia debido al almacenamiento de conversaciones completas en RAM, lo que afectó ligeramente los tiempos de respuesta en consultas extensas.
 
 \begin{itemize}
-    \item Hallazgos: el filtrado de preguntas fuera de contexto resultó más efectivo, especialmente en español, gracias al uso de guardrails personalizados. la memoria conversacional mejoró la coherencia y continuidad de las respuestas. el almacenamiento en RAM elevó la latencia en consultas prolongadas.
-    \item Recomendaciones: optimizar el uso de RAM para reducir la latencia, considerando un sistema de almacenamiento más eficiente o en la nube, como REDIS\footnote{Es un sistema de almacenamiento en memoria, basado en clave-valor, que permite la persistencia de datos y es ampliamente utilizado para mejorar el rendimiento de aplicaciones web.}. continuar ajustando los guardrails personalizados para mejorar el filtrado en escenarios complejos y con variaciones lingüísticas.
+    \item Recomendaciones: optimizar el uso de RAM para reducir la latencia, considerando un sistema de almacenamiento más eficiente o en la nube, como REDIS\footnote{Es un sistema de almacenamiento en memoria, basado en clave-valor, que permite la persistencia de datos y es ampliamente utilizado para mejorar el rendimiento de aplicaciones web.}.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
 
-En interacciones complejas que incluyeron consultas encadenadas, el sistema presentó un rendimiento mixto. Aunque la memoria conversacional permitió generar respuestas más coherentes, en algunos casos el contexto no se interpretó correctamente, especialmente cuando las preguntas no hacían referencia explícita a elementos previos. Por ejemplo, ante la pregunta "¿Cuánto cuesta?" luego de una consulta sobre un producto, el sistema no logró identificar adecuadamente el antecedente, lo que condujo a respuestas incorrectas.
+En interacciones complejas que incluyeron consultas encadenadas, el sistema presentó un rendimiento mixto. Aunque la memoria conversacional permitió generar respuestas más coherentes, en algunos casos el contexto no se interpretó correctamente, especialmente cuando las preguntas no hacían referencia explícita a elementos previos. Por ejemplo, ante la pregunta ``¿Cuánto cuesta?'' tras una consulta sobre un producto, el sistema no logró identificar adecuadamente el antecedente, lo que condujo a respuestas incorrectas.
 
 \begin{itemize}
-    \item Hallazgos: la memoria conversacional mejoró la coherencia general, pero persistieron dificultades en la interpretación del contexto en preguntas encadenadas. la ausencia de un mecanismo de reformulación afectó la precisión, al no integrar de forma adecuada las referencias anteriores.
-    \item Recomendaciones: incorporar un sistema de reformulación automática de preguntas para enriquecer el contexto y mejorar la precisión de las respuestas. mejorar la detección de cambios temáticos sutiles o ambigüedades en la formulación de consultas.
+    \item Hallazgos: la memoria conversacional mejoró la coherencia general, pero persistieron dificultades en la interpretación del contexto en preguntas encadenadas.
+    \item Recomendaciones: incorporar un sistema de reformulación automática de preguntas para enriquecer el contexto y mejorar la precisión de las respuestas. Mejorar la detección de cambios temáticos sutiles o ambigüedades en la formulación de consultas.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-El sistema de guardrails personalizados en la versión 2 mostró mayor precisión en la detección y bloqueo de consultas fuera de contexto. Las preguntas irrelevantes o mal formuladas fueron redirigidas con mayor efectividad. Sin embargo, el rendimiento del sistema aún dependía de ejemplos predefinidos, lo que limitó su capacidad para clasificar correctamente ciertos casos.
+El sistema de guardrails personalizados en la versión 2 mostró mayor precisión en la detección y bloqueo de consultas fuera de contexto. Las preguntas irrelevantes o mal formuladas fueron redirigidas con mayor efectividad.
 
-\begin{itemize}
-    \item Hallazgos: el filtrado de consultas fuera de contexto fue más eficaz y la redirección resultó más precisa.
-    \item Recomendaciones: optimizar el sistema de clasificación para reducir los tiempos de respuesta.
-\end{itemize}
+
+\subsubsection{Conclusiones de la versión 2}
+
+La versión 2 mostró avances relevantes en coherencia, control contextual y filtrado de preguntas, especialmente en español. No obstante, persistieron limitaciones en la interpretación de referencias implícitas y en la latencia durante consultas extensas. Se recomienda optimizar el uso de memoria y reforzar los mecanismos de reformulación automática.
+
 
 %%%%%%%%%%%%% VERSION 3 %%%%%%%%%%%%%
 \subsection{Pruebas para la versión 3}
@@ -225,20 +214,11 @@ El sistema de guardrails personalizados en la versión 2 mostró mayor precisió
 
 \subsubsection{Pruebas de interacción básica}
 
-En esta fase se evaluó el desempeño general del sistema ante preguntas frecuentes y directas relacionadas con productos, precios y servicios ofrecidos. Se verificó la capacidad de respuesta bajo condiciones normales de uso.
+En las pruebas de interacción básica, el sistema respondió adecuadamente a preguntas simples y directas, manteniendo la coherencia y relevancia en las respuestas.
 
 \begin{itemize}
-    \item Hallazgos: el sistema respondió con precisión en la mayoría de los casos gracias a la estructura RAG y al uso de contextos organizados mediante pares clave-valor. Se observó una mejora notable en la coherencia y contextualización de las respuestas, especialmente en consultas simples.
+    \item Hallazgos: el sistema respondió con precisión en la mayoría de los casos gracias a la estructura RAG y al uso de contextos organizados mediante pares clave-valor. Se observó una mejora notable en la coherencia y contextualización de las respuestas, especialmente en consultas complejas.
     \item Recomendaciones: reforzar la cobertura de dominios poco frecuentes mediante la expansión del conjunto de datos contextuales. Incluir ejemplos que aborden productos nuevos o condiciones especiales.
-\end{itemize}
-
-\subsubsection{Pruebas de consultas fuera de contexto}
-
-Estas pruebas consistieron en realizar preguntas ambiguas, fuera del dominio temático o sin relación con el historial reciente, con el objetivo de evaluar los mecanismos de restricción y reformulación de consultas.
-
-\begin{itemize}
-    \item Hallazgos: el sistema logró filtrar adecuadamente consultas fuera de dominio (por ejemplo, temas políticos o religiosos) y reformuló preguntas ambiguas con un grado moderado de éxito. No obstante, en ciertos casos respondió sin advertir la falta de contexto suficiente.
-    \item Recomendaciones: fortalecer los mecanismos de respuesta ante insuficiencia contextual. Se recomienda incorporar mensajes estandarizados o plantillas que soliciten información adicional cuando el contexto no sea claro.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
@@ -246,25 +226,29 @@ Estas pruebas consistieron en realizar preguntas ambiguas, fuera del dominio tem
 Se evaluaron interacciones en las que la respuesta dependía de la acumulación de información a lo largo de varios turnos. Este tipo de prueba fue clave para validar la persistencia del contexto y la capacidad de recuperación de información distribuida.
 
 \begin{itemize}
-    \item Hallazgos: el módulo de redefinición de preguntas mejoró la comprensión de consultas multietapa. Sin embargo, se identificaron errores en la asociación semántica cuando las referencias anteriores eran vagas o excesivamente extensas.
-    \item Recomendaciones: incorporar mecanismos de ventana de contexto dinámica o técnicas de resumen conversacional para evitar pérdida de información en diálogos prolongados.
+    \item Hallazgos: el módulo de reformulación de preguntas mejoró la comprensión de consultas multietapa.
+\end{itemize}
+
+\subsubsection{Pruebas de consultas fuera de contexto}
+
+Para las preguntas fuera de contexto, no se observaron cambios significativos en comparación con la versión 2. El sistema continuó utilizando guardrails personalizados para filtrar preguntas irrelevantes.
+
+\begin{itemize}
+    \item Hallazgos: se logró trazabilidad completa de las interacciones, evaluación automática y una arquitectura modular consolidada. No obstante, se detectó un rendimiento inferior en categorías como quejas, posiblemente debido a la falta de contexto temático suficiente.
+    \item Recomendaciones: ampliar la base contextual en áreas críticas como atención al cliente. Evaluar la implementación de mecanismos de autoajuste más frecuentes y rediseñar los \textit{prompts} de reformulación para mejorar la recuperación semántica en casos límite.
 \end{itemize}
 
 \subsubsection{Conclusiones de la versión 3}
 
-La integración de Langfuse, en conjunto con DSPy y LanceDB, representó un avance significativo en términos de trazabilidad, evaluación y diseño modular del sistema. Se mejoró tanto la precisión como la eficiencia sin aumentar los costos operativos.
-
-\begin{itemize}
-    \item Hallazgos: se logró trazabilidad completa de las interacciones, evaluación automática y una arquitectura modular consolidada. No obstante, se observó un rendimiento inferior en categorías como quejas, posiblemente debido a la falta de contexto temático suficiente.
-    \item Recomendaciones: ampliar la base contextual en áreas críticas como atención al cliente. Evaluar la implementación de mecanismos de autoajuste más frecuentes y rediseñar los prompts de reformulación para mejorar la recuperación semántica en casos límite.
-\end{itemize}
+La integración de Langfuse, junto con DSPy y LanceDB, representó un avance significativo en términos de trazabilidad, evaluación y diseño modular del sistema. Se mejoró tanto la precisión como la eficiencia sin incrementar los costos operativos.
 
 
 %%%%%%%%%%%%% COMPARACION DE VERSIONES %%%%%%%%%%%%%
-\subsubsection{Comparación de versiones del chatbot según métricas de aplicación}
+\subsection{Comparación de versiones del chatbot según métricas de aplicación}
 \label{sec:comparacionVersionesAplicacion}
 
-En la Tabla~\ref{tab:comparacion_versiones} se resumen las principales métricas de desempeño obtenidas a lo largo del desarrollo del chatbot. Se incluyen el número de interacciones registradas, el costo asociado y el puntaje promedio de evaluación automática.
+La incorporación del sistema de bases de datos en la versión 2 permitió realizar pruebas retrospectivas sobre versiones anteriores, almacenando los resultados en dicha base con el propósito de analizarlos posteriormente. Con la inclusión de Langfuse en la versión final, se migró esta información desde la base de datos obsoleta hacia Langfuse, lo que habilitó la ejecución de agentes automáticos sobre todas las trazas correspondientes a las cuatro versiones. Esto posibilitó un análisis retrospectivo de la evolución del modelo a lo largo del proceso. En la Tabla~\ref{tab:comparacion_versiones} se resumen las principales métricas de desempeño obtenidas durante el desarrollo del chatbot. Se incluyen el número de interacciones registradas, el costo asociado y el puntaje promedio de evaluación automática.
+
 
 \begin{table}[ht]
     \centering
@@ -294,7 +278,7 @@ A partir de la versión 1, consolidado en la versión 2, se reemplazó Pinecone 
 
 Sin embargo, la optimización más significativa se logró mediante la redefinición de la estructura de contexto. Se pasó de fragmentos textuales extensos a una arquitectura basada en pares clave-valor semánticos, donde cada clave correspondía a una intención o categoría de consulta y cada valor contenía únicamente la información estrictamente necesaria. Este diseño minimizó el tamaño de los contextos insertados en los prompts, reduciendo drásticamente el número de tokens utilizados por consulta.
 
-Esta estrategia quedó reflejada en la métrica de la versión 2: con solo 54 trazas se alcanzó un costo total de USD 0,0126 y un puntaje promedio de calidad de 8,29, el más alto entre todas las versiones. Aunque la versión 3 reintrodujo una leve subida en el costo (USD 0,0353), ello se debió a la complejidad adicional que implicó el manejo de categorías como quejas, las cuales demandan más procesamiento contextual.
+Esta estrategia se reflejó en la métrica de la versión 2: con solo 54 trazas se alcanzó un costo total de USD 0,0126 y un puntaje promedio de calidad de 8,29, el más alto entre todas las versiones. Aunque la versión 3 presentó un leve aumento en el costo (USD 0,0353), este incremento se debió a la mayor complejidad asociada al manejo de categorías y a la redefinición de las consultas, lo que generó un incremento en la cantidad de tokens procesados en comparación con la versión 2.
 
 En resumen, la reducción del costo operativo del sistema se debió fundamentalmente a dos acciones técnicas clave: la adopción de LanceDB como vectorstore local y la estructuración eficiente del conocimiento en pares clave-valor, lo que redujo sustancialmente el consumo de tokens sin comprometer la calidad de las respuestas.
 
