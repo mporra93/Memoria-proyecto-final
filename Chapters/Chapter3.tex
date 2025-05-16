@@ -98,14 +98,14 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
     Por otro lado, el sistema de métricas, aunque útil para el análisis de performance, presentó limitaciones: el uso simultáneo de múltiples modelos incrementó el tiempo de respuesta y el consumo de cómputo, y la clasificación dependía demasiado de ejemplos predefinidos, lo que reducía su robustez frente a consultas poco comunes o mal redactadas.
 
 
-\vspace{1em}
+\newpage
 \item{Versión 3 - Integración de Langfuse, clasificación y evaluación automática}
 
     Razón del cambio: necesidad de un sistema robusto para trazabilidad, evaluación y mejora continua.
 
     Descripción: se integró Langfuse como sistema observador no intrusivo para registrar todas las interacciones del sistema. Asimismo, se incorporaron dos nuevas tareas en la capa de restricciones (guardrails): la primera consistió en la reformulación de preguntas, que generaba una nueva oración con palabras clave referidas al contexto de la consulta actual, con el fin de optimizar la búsqueda de contextos en el vectorstore; la segunda correspondió a la clasificación de consultas, encargada de categorizarlas según su temática, tales como: productos, precios, delivery, quejas, saludos, entre otras. Además, se eliminaron las bases de datos auxiliares y se centralizó la gestión de trazabilidad en Langfuse, el cual pasó a encargarse del registro de todos los eventos relevantes del sistema: consultas, respuestas, errores, rechazos por restricciones, consumo de tokens, costos, latencia, entre otros.
 
-
+    Problemas detectados: algunos temas, como las quejas, mostraron un rendimiento inferior, lo que sugiere la necesidad de expandir y refinar el contexto disponible en versiones futuras.
 
     \begin{figure}[htbp]
         \centering
@@ -114,7 +114,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
         \label{fig:ejemploreformulado}
     \end{figure}
 
-    Problemas detectados: algunos temas, como las quejas, mostraron un rendimiento inferior, lo que sugiere la necesidad de expandir y refinar el contexto disponible en versiones futuras.
+    
 \end{itemize}
 
 

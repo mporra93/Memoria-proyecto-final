@@ -41,7 +41,7 @@ La interfaz de usuario permite realizar preguntas al chatbot y visualizar las re
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.8\textwidth]{./Figures/frontend.png}
+    \includegraphics[width=.68\textwidth]{./Figures/frontend.png}
     \caption{Frontend del chatbot.}
     \label{fig:frontend}
 \end{figure}
@@ -55,7 +55,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=.95\textwidth]{./Figures/metricas.png}
+        \includegraphics[width=.80\textwidth]{./Figures/metricas.png}
         \caption{Métricas por categoría temática.}
         \label{fig:metricas1}
     \end{figure}
@@ -64,16 +64,17 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=.9\textwidth]{./Figures/metricasbuenas.png}
+        \includegraphics[width=.85\textwidth]{./Figures/metricasbuenas.png}
         \caption{Ejemplo del frontend con métricas de preguntas bien calificadas.}
         \label{fig:metricasbuenas}
     \end{figure}
 
+    \newpage
     \item \textit{Malas preguntas}: se visualizan métricas correspondientes a preguntas mal calificadas, lo que permite detectar fallos en el sistema y orientar acciones correctivas en los contextos o el flujo conversacional.
 
     \begin{figure}[htbp]
         \centering
-        \includegraphics[width=.9\textwidth]{./Figures/metricasmalas.png}
+        \includegraphics[width=.85\textwidth]{./Figures/metricasmalas.png}
         \caption{Ejemplo del frontend con métricas de preguntas mal calificadas.}
         \label{fig:metricasmalas}
     \end{figure}
@@ -85,7 +86,7 @@ Esta sección de la interfaz permite modificar o agregar fragmentos de contexto 
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.75\textwidth]{./Figures/contextosui.png}
+    \includegraphics[width=.7\textwidth]{./Figures/contextosui.png}
     \caption{Vista del frontend para la administración de contextos.}
     \label{fig:contextos_ui}
 \end{figure}
@@ -177,6 +178,8 @@ Con la incorporación de NeMo Guardrails, el sistema identificó y bloqueó parc
 
 La versión 1 representó un avance significativo respecto a la versión inicial, al mejorar la modularidad, el control de costos y la calidad de las respuestas. LanceDB optimizó el manejo de embeddings y DSPy facilitó una implementación más clara del pipeline RAG. También se incorporaron mecanismos de filtrado y evaluación automática. No obstante, persistieron limitaciones en la retención del contexto en conversaciones largas y en el rendimiento de NeMo Guardrails en español. Estos resultados evidenciaron la necesidad de fortalecer la continuidad conversacional y el control lingüístico. En conjunto, la versión 1 estableció una base técnica sólida para futuras mejoras funcionales.
 
+
+\newpage
 %%%%%%%%%%%%% VERSION 2 %%%%%%%%%%%%%
 \subsection{Pruebas para la versión 2}
 \label{sec:resultadosPruebasV2}
@@ -208,6 +211,7 @@ El sistema de guardrails personalizados en la versión 2 mostró mayor precisió
 La versión 2 mostró avances relevantes en coherencia, control contextual y filtrado de preguntas, especialmente en español. No obstante, persistieron limitaciones en la interpretación de referencias implícitas y en la latencia durante consultas extensas. Se recomienda optimizar el uso de memoria y reforzar los mecanismos de reformulación automática.
 
 
+\newpage
 %%%%%%%%%%%%% VERSION 3 %%%%%%%%%%%%%
 \subsection{Pruebas para la versión 3}
 \label{sec:resultadosPruebasV3}
@@ -243,6 +247,7 @@ Para las preguntas fuera de contexto, no se observaron cambios significativos en
 La integración de Langfuse, junto con DSPy y LanceDB, representó un avance significativo en términos de trazabilidad, evaluación y diseño modular del sistema. Se mejoró tanto la precisión como la eficiencia sin incrementar los costos operativos.
 
 
+\newpage
 %%%%%%%%%%%%% COMPARACION DE VERSIONES %%%%%%%%%%%%%
 \subsection{Comparación de versiones del chatbot según métricas de aplicación}
 \label{sec:comparacionVersionesAplicacion}
