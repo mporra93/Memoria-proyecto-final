@@ -22,16 +22,16 @@ Dado que estos aspectos no siempre pueden medirse mediante métricas automática
 
 \subsection{Evaluación, observabilidad y trazabilidad}
 
-El sistema adopta un enfoque híbrido para evaluar la calidad de las respuestas, combinando mecanismos automatizados y revisión humana, complementados con capacidades de observabilidad y trazabilidad para la mejora continua.
+El sistema adopta un enfoque híbrido para evaluar la calidad de las respuestas. Combina mecanismos automatizados y revisión humana, complementados con capacidades de observabilidad y trazabilidad para la mejora continua.
 
-Langfuse se utiliza como plataforma central para el registro y análisis de interacciones, integrando agentes automáticos que asignan puntuaciones de calidad en una escala del 1 al 10, basándose en reglas y modelos predefinidos. Estas puntuaciones, almacenadas junto con las trazas conversacionales, permiten detectar respuestas problemáticas, identificar patrones de error mediante agrupamiento semántico y calcular métricas según el tipo de pregunta, contexto o modelo, facilitando así la escalabilidad del control de calidad sin supervisión constante.
+Langfuse se utiliza como plataforma central para el registro y análisis de interacciones. Integra agentes automáticos que asignan puntuaciones de calidad en una escala del 1 al 10, basadas en reglas y modelos predefinidos. Estas puntuaciones, almacenadas junto con las trazas conversacionales, permiten detectar respuestas problemáticas, identificar patrones de error mediante agrupamiento semántico y calcular métricas según el tipo de pregunta, contexto o modelo. Esto facilita la escalabilidad del control de calidad sin supervisión constante.
 
 Como complemento cualitativo, el administrador realiza revisiones manuales enfocadas en casos ambiguos que no se resuelven automáticamente, preguntas frecuentes con baja puntuación que requieren ajustes, y oportunidades de mejora en el tono o la empatía conversacional.
 
 
 \section{Despliegue de la interfaz de pruebas}
 
-Se desarrolló una interfaz interactiva utilizando ReactJS, con apoyo en las herramientas en línea de lovable.dev. Esta interfaz tuvo un doble propósito: facilitar las pruebas de usuario y permitir la administración dinámica de los contextos del sistema.
+Se desarrolló una interfaz interactiva con ReactJS, con apoyo en las herramientas en línea de lovable.dev. La interfaz tuvo un doble propósito: facilitar las pruebas de usuario y permitir la administración dinámica de los contextos del sistema.
 
 \subsection{Interfaz de usuario}
 
@@ -119,7 +119,7 @@ En este apartado se presentan los resultados obtenidos en cada uno de los escena
 
 \subsubsection{Pruebas de interacción básica}
 
-El sistema funcionó adecuadamente en la mayoría de las interacciones directas, proporcionando respuestas precisas y pertinentes según la información almacenada en Pinecone. Sin embargo, debido a la simplicidad del modelo RAG y a la recuperación subóptima de fragmentos desde los embeddings, se detectaron dificultades ante preguntas ambiguas o imprecisas. En estos casos, las respuestas resultaron menos alineadas con la intención del usuario o presentaron imprecisiones en detalles específicos debido a la ausencia de un contexto claro.
+El sistema funcionó adecuadamente en la mayoría de las interacciones directas, y proporcionó respuestas precisas y pertinentes según la información almacenada en Pinecone. Sin embargo, debido a la simplicidad del modelo RAG y a la recuperación subóptima de fragmentos desde los embeddings, se detectaron dificultades ante preguntas ambiguas o imprecisas. En estos casos, las respuestas resultaron menos alineadas con la intención del usuario o presentaron imprecisiones en detalles específicos debido a la ausencia de un contexto claro.
 
 \begin{itemize}
     \item Hallazgos: la recuperación de información fue efectiva cuando las preguntas coincidieron con las secciones temáticas predefinidas. En contraste, las consultas formuladas de forma vaga provocaron respuestas generales.
@@ -140,7 +140,7 @@ Ante la ausencia de datos relevantes en el contexto, el sistema generó respuest
 
 \subsubsection{Conclusiones de la versión 0}
 
-La versión 0 del chatbot presentó un rendimiento adecuado en interacciones básicas, ofreciendo respuestas coherentes y precisas cuando las preguntas se alinearon con los fragmentos almacenados en Pinecone. Sin embargo, se identificaron limitaciones ante consultas complejas, encadenadas o fuera de contexto. Estos resultados evidencian que, aunque el sistema básico de recuperación y generación fue funcional, requería mejoras fundamentales.
+La versión 0 del chatbot presentó un rendimiento adecuado en interacciones básicas y ofreció respuestas coherentes y precisas cuando las preguntas se alinearon con los fragmentos almacenados en Pinecone. Sin embargo, se identificaron limitaciones ante consultas complejas, encadenadas o fuera de contexto. Estos resultados evidencian que, aunque el sistema básico de recuperación y generación fue funcional, requería mejoras fundamentales.
 
 
 %%%%%%%%%%%%% VERSION 1 %%%%%%%%%%%%%
@@ -149,7 +149,7 @@ La versión 0 del chatbot presentó un rendimiento adecuado en interacciones bá
 
 \subsubsection{Pruebas de interacción básica}
 
-Durante las pruebas de interacción básica, la versión 1 presentó mejoras notables en comparación con la versión anterior. La incorporación de LanceDB permitió una recuperación local más eficiente de fragmentos relevantes. Por otro lado, la integración de DSPy contribuyó a una mayor claridad en la construcción de los \textit{prompts}, lo que facilitó respuestas más consistentes y alineadas con el contenido. En esta etapa, el sistema respondió con alta precisión a preguntas simples y directas, cumpliendo las expectativas del \textit{happy path}.
+Durante las pruebas de interacción básica, la versión 1 presentó mejoras notables en comparación con la versión anterior. La incorporación de LanceDB permitió una recuperación local más eficiente de fragmentos relevantes. Por otro lado, la integración de DSPy contribuyó a una mayor claridad en la construcción de los \textit{prompts}, lo que facilitó respuestas más consistentes y alineadas con el contenido. En esta etapa, el sistema respondió con alta precisión a preguntas simples y directas, y cumplió las expectativas del \textit{happy path}.
 
 \begin{itemize}
     \item Hallazgos: se observó una mejora en la calidad de las respuestas debido al uso de \textit{prompts} más estructurados. La recuperación local fue eficiente y precisa, lo que redujo los tiempos de respuesta.
@@ -166,7 +166,7 @@ En interacciones más complejas, que incluyeron consultas encadenadas o cambios 
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-Con la incorporación de NeMo Guardrails, el sistema identificó y bloqueó parcialmente consultas fuera de dominio, generando respuestas más controladas. Adicionalmente, mediante DSPy se definió una regla en el \textit{prompt} que permitía simular la derivación de la conversación hacia un asistente alternativo cuando el contexto disponible no resultaba suficiente para formular una respuesta adecuada.
+Con la incorporación de NeMo Guardrails, el sistema identificó y bloqueó parcialmente consultas fuera de dominio, lo que generó respuestas más controladas. Adicionalmente, mediante DSPy se definió una regla en el \textit{prompt} que permitía simular la derivación de la conversación hacia un asistente alternativo cuando el contexto disponible no resultaba suficiente para formular una respuesta adecuada.
 
 \begin{itemize}
     \item Hallazgos: se identificaron limitaciones relevantes en el desempeño de Guardrails en español, lo que ocasionó respuestas inconsistentes y filtros poco precisos.
@@ -186,7 +186,7 @@ La versión 1 representó un avance significativo respecto a la versión inicial
 En las pruebas de interacción básica, la versión 2 presentó mejoras significativas respecto a la anterior. Sin embargo, se observó un aumento en la latencia debido al almacenamiento de conversaciones completas en RAM, lo que afectó ligeramente los tiempos de respuesta en consultas extensas.
 
 \begin{itemize}
-    \item Recomendaciones: optimizar el uso de RAM para reducir la latencia, considerando un sistema de almacenamiento más eficiente o en la nube, como REDIS\footnote{Es un sistema de almacenamiento en memoria, basado en clave-valor, que permite la persistencia de datos y es ampliamente utilizado para mejorar el rendimiento de aplicaciones web.}.
+    \item Recomendaciones: optimizar el uso de RAM para reducir la latencia mediante un sistema de almacenamiento más eficiente o basado en la nube, como REDIS\footnote{Es un sistema de almacenamiento en memoria, basado en clave-valor, que permite la persistencia de datos y es ampliamente utilizado para mejorar el rendimiento de aplicaciones web.}.
 \end{itemize}
 
 \subsubsection{Pruebas de consultas con múltiples pasos}
@@ -214,7 +214,7 @@ La versión 2 mostró avances relevantes en coherencia, control contextual y fil
 
 \subsubsection{Pruebas de interacción básica}
 
-En las pruebas de interacción básica, el sistema respondió adecuadamente a preguntas simples y directas, manteniendo la coherencia y relevancia en las respuestas.
+En las pruebas de interacción básica, el sistema respondió adecuadamente a preguntas simples y directas y mantuvo la coherencia y relevancia en las respuestas.
 
 \begin{itemize}
     \item Hallazgos: el sistema respondió con precisión en la mayoría de los casos gracias a la estructura RAG y al uso de contextos organizados mediante pares clave-valor. Se observó una mejora notable en la coherencia y contextualización de las respuestas, especialmente en consultas complejas.
@@ -231,7 +231,7 @@ Se evaluaron interacciones en las que la respuesta dependía de la acumulación 
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-Para las preguntas fuera de contexto, no se observaron cambios significativos en comparación con la versión 2. El sistema continuó utilizando guardrails personalizados para filtrar preguntas irrelevantes.
+Para las preguntas fuera de contexto, no se observaron cambios significativos en comparación con la versión 2. El sistema continuó empleando guardrails personalizados para filtrar preguntas irrelevantes.
 
 \begin{itemize}
     \item Hallazgos: se logró trazabilidad completa de las interacciones, evaluación automática y una arquitectura modular consolidada. No obstante, se detectó un rendimiento inferior en categorías como quejas, posiblemente debido a la falta de contexto temático suficiente.
@@ -247,7 +247,7 @@ La integración de Langfuse, junto con DSPy y LanceDB, representó un avance sig
 \subsection{Comparación de versiones del chatbot según métricas de aplicación}
 \label{sec:comparacionVersionesAplicacion}
 
-La incorporación del sistema de bases de datos en la versión 2 permitió realizar pruebas retrospectivas sobre versiones anteriores, almacenando los resultados en dicha base con el propósito de analizarlos posteriormente. Con la inclusión de Langfuse en la versión final, se migró esta información desde la base de datos obsoleta hacia Langfuse, lo que habilitó la ejecución de agentes automáticos sobre todas las trazas correspondientes a las cuatro versiones. Esto posibilitó un análisis retrospectivo de la evolución del modelo a lo largo del proceso. En la Tabla~\ref{tab:comparacion_versiones} se resumen las principales métricas de desempeño obtenidas durante el desarrollo del chatbot. Se incluyen el número de interacciones registradas, el costo asociado y el puntaje promedio de evaluación automática.
+La incorporación del sistema de bases de datos en la versión 2 permitió realizar pruebas retrospectivas sobre versiones anteriores y almacenar los resultados en dicha base con el propósito de analizarlos posteriormente. Con la inclusión de Langfuse en la versión final, se migró esta información desde la base de datos obsoleta hacia Langfuse, lo que habilitó la ejecución de agentes automáticos sobre todas las trazas correspondientes a las cuatro versiones. Esto posibilitó un análisis retrospectivo de la evolución del modelo a lo largo del proceso. En la Tabla~\ref{tab:comparacion_versiones} se resumen las principales métricas de desempeño obtenidas durante el desarrollo del chatbot. Se incluyen el número de interacciones registradas, el costo asociado y el puntaje promedio de evaluación automática.
 
 
 \begin{table}[ht]
@@ -270,13 +270,13 @@ La incorporación del sistema de bases de datos en la versión 2 permitió reali
 \end{table}
 
 
-A lo largo del desarrollo del chatbot, se observó una disminución progresiva del costo por interacción, alcanzando su punto más bajo en la versión 2. Esta optimización económica no fue producto del azar, sino el resultado directo de decisiones técnicas orientadas a reducir la cantidad de tokens procesados por el modelo de lenguaje.
+A lo largo del desarrollo del chatbot, se observó una disminución progresiva del costo por interacción, que alcanzó su punto más bajo en la versión 2. Esta optimización económica no fue producto del azar, sino el resultado directo de decisiones técnicas orientadas a reducir la cantidad de tokens procesados por el modelo de lenguaje.
 
 En la versión 0, el sistema utilizaba Pinecone como base vectorial y almacenaba fragmentos extensos de documentos que se incorporaban directamente al prompt. Este enfoque implicaba altos volúmenes de texto por consulta, lo que generaba un mayor consumo de tokens y, por ende, un costo más elevado por interacción (USD 0,0506 por 96 trazas).
 
 A partir de la versión 1, consolidado en la versión 2, se reemplazó Pinecone por LanceDB, una base de datos vectorial local que permitió no solo reducir los costos asociados a infraestructura externa, sino también mejorar la precisión de recuperación mediante el control total del almacenamiento.
 
-Sin embargo, la optimización más significativa se logró mediante la redefinición de la estructura de contexto. Se pasó de fragmentos textuales extensos a una arquitectura basada en pares clave-valor semánticos, donde cada clave correspondía a una intención o categoría de consulta y cada valor contenía únicamente la información estrictamente necesaria. Este diseño minimizó el tamaño de los contextos insertados en los prompts, reduciendo drásticamente el número de tokens utilizados por consulta.
+Sin embargo, la optimización más significativa se logró mediante la redefinición de la estructura de contexto. Se pasó de fragmentos textuales extensos a una arquitectura basada en pares clave-valor semánticos, donde cada clave correspondió a una intención o categoría de consulta y cada valor contuvo únicamente la información estrictamente necesaria. Este diseño minimizó el tamaño de los contextos insertados en los prompts y redujo drásticamente el número de tokens utilizados por consulta.
 
 Esta estrategia se reflejó en la métrica de la versión 2: con solo 54 trazas se alcanzó un costo total de USD 0,0126 y un puntaje promedio de calidad de 8,29, el más alto entre todas las versiones. Aunque la versión 3 presentó un leve aumento en el costo (USD 0,0353), este incremento se debió a la mayor complejidad asociada al manejo de categorías y a la redefinición de las consultas, lo que generó un incremento en la cantidad de tokens procesados en comparación con la versión 2.
 
