@@ -6,7 +6,7 @@ En este capítulo se presentan las pruebas realizadas al chatbot desarrollado, j
 
 \section{Evaluación de calidad en sistemas conversacionales}
 
-La evaluación de la calidad en sistemas conversacionales basados en modelos de lenguaje es esencial para asegurar que las respuestas generadas sean útiles, coherentes, contextualizadas y acordes con la intención del usuario. A diferencia de los sistemas deterministas clásicos, los modelos generativos presentan una salida probabilística, lo que requiere métodos de evaluación específicos, tanto automáticos como humanos, que permitan analizar la experiencia del usuario y la efectividad del sistema.
+La evaluación de la calidad en sistemas conversacionales basados en modelos de lenguaje es fundamental para garantizar que las respuestas generadas sean útiles, coherentes, contextualizadas y acordes con la intención del usuario. A diferencia de los sistemas deterministas clásicos, los modelos generativos producen salidas de naturaleza probabilística. Esto exige métodos de evaluación específicos, tanto automáticos como humanos, que permitan analizar la experiencia del usuario y la efectividad del sistema.
 
 \subsection{Criterios y mecanismos de evaluación}
 
@@ -51,7 +51,7 @@ La interfaz de usuario permite realizar preguntas al chatbot y visualizar las re
 La interfaz permite consultar las métricas generadas por el sistema de evaluación automática, junto con las categorías temáticas asignadas a cada pregunta. Esto facilita un análisis detallado del desempeño del sistema de clasificación.
 
 \begin{itemize}
-    \item \textit{Métricas generales}: se presentan indicadores agregados del sistema, como el total de preguntas, el puntaje promedio, la desviación estándar y una evaluación global de la calidad de las respuestas generadas. Estos datos permiten identificar el rendimiento general por categoría temática y detectar áreas que requieren ajustes en el contexto.
+    \item Métricas generales: se presentan indicadores agregados del sistema, como el total de preguntas, el puntaje promedio, la desviación estándar y una evaluación global de la calidad de las respuestas generadas. Estos datos permiten identificar el rendimiento general por categoría temática y detectar áreas que requieren ajustes en el contexto.
 
     \begin{figure}[htbp]
         \centering
@@ -60,7 +60,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
         \label{fig:metricas1}
     \end{figure}
 
-    \item \textit{Buenas preguntas}: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, incluyendo el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema.
+    \item Buenas preguntas: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, incluyendo el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema.
 
     \begin{figure}[htbp]
         \centering
@@ -70,7 +70,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
     \end{figure}
 
     \newpage
-    \item \textit{Malas preguntas}: se visualizan métricas correspondientes a preguntas mal calificadas, lo que permite detectar fallos en el sistema y orientar acciones correctivas en los contextos o el flujo conversacional.
+    \item Malas preguntas: se visualizan métricas correspondientes a preguntas mal calificadas, lo que permite detectar fallos en el sistema y orientar acciones correctivas en los contextos o el flujo conversacional.
 
     \begin{figure}[htbp]
         \centering
@@ -97,13 +97,13 @@ Esta sección de la interfaz permite modificar o agregar fragmentos de contexto 
 \section{Evaluación de escenarios del chatbot}
 \label{sec:evaluacionEscenarios}
 
-\subsection{Escenario 1: Interacción básica}
+\subsection{Escenario 1: interacción básica}
 Se evaluó la capacidad del chatbot para mantener una conversación coherente en interacciones simples. Para ello, se formularon preguntas directamente relacionadas con el contexto actual de la versión, aunque no siempre completas ni contextualizadas en el hilo conversacional. El objetivo principal de esta prueba fue verificar el denominado \textit{happy path} del sistema; es decir, el funcionamiento correcto de las etapas del \textit{pipeline}, incluyendo la recepción de entrada, la captura de contextos relevantes y el análisis por parte del modelo de lenguaje para generar una respuesta adecuada.
 
-\subsection{Escenario 2: Consultas con múltiples pasos}
+\subsection{Escenario 2: consultas con múltiples pasos}
 En esta evaluación se realizaron consultas más complejas desde el punto de vista del hilo conversacional, donde el usuario planteó preguntas encadenadas que requerían del sistema la retención y gestión del contexto. Se analizó la capacidad del chatbot para mantener coherencia y relevancia a lo largo de múltiples interacciones. Si bien las preguntas fueron formuladas de forma directa, se buscó evaluar la habilidad del sistema para adaptarse a cambios en la temática sin perder el hilo de la conversación ni mezclar las respuestas con temas tratados previamente.
 
-\subsection{Escenario 3: Consultas fuera de contexto}
+\subsection{Escenario 3: consultas fuera de contexto}
 En este escenario se examinó la capacidad del chatbot para gestionar preguntas ambiguas o fuera de contexto, así como su habilidad para solicitar mayor información o derivar la consulta a un humano. Cabe destacar que esta función se encuentra en etapa de pruebas, ya que el prototipo no cuenta con una conexión real a un sistema CRM para realizar la transferencia de la conversación. El objetivo fue evaluar la habilidad del sistema para reconocer sus propias limitaciones y ofrecer respuestas apropiadas incluso ante la falta de información contextual.
 
 

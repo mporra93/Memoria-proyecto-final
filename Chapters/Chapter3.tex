@@ -65,7 +65,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
 
     Descripción del sistema de métricas: el sistema de métricas implementado permitió analizar automáticamente los mensajes recibidos por el asistente y clasificarlos según su intención, mediante una combinación de tecnologías de procesamiento de lenguaje natural (PLN). La arquitectura se basó en un sistema de clasificación híbrido que empleó modelos de lenguaje como DistilBERT multilingüe (a través de la librería Hugging Face), Sentence Transformers para la detección de similitud semántica y FastText para el análisis vectorial de lenguaje coloquial. Cada mensaje fue evaluado por estos tres modelos, y la decisión final se determinó mediante un mecanismo de votación basado en el mayor puntaje. Esta combinación mejoró la precisión del sistema frente a distintos tipos de expresiones, registros lingüísticos y errores comunes en el texto.
 
-    Una vez clasificados, los mensajes fueron almacenados de forma estructurada y pudieron someterse a procesos adicionales de agrupamiento (clustering). Para ello, se emplearon técnicas de TF-IDF y el algoritmo K-Means (de la librería scikit-learn), con la eliminación de palabras vacías (stopwords) mediante la biblioteca NLTK. Esto permitió segmentar, por ejemplo, las consultas sobre productos en temas más específicos, lo que facilitó el análisis posterior y la detección de tendencias.
+    Una vez clasificados, los mensajes fueron almacenados de forma estructurada y pudieron someterse a procesos adicionales de agrupamiento (clustering). Para ello, se emplearon técnicas de TF-IDF y el algoritmo K-Means (de la librería scikit-learn), con la eliminación de palabras vacías (\textit{stopwords}) mediante la biblioteca NLTK. Esto permitió segmentar, por ejemplo, las consultas sobre productos en temas más específicos, lo que facilitó el análisis posterior y la detección de tendencias.
 
     El resultado fue un sistema que no solo clasificó los mensajes con alta precisión, sino que también posibilitó la exploración temática del contenido agrupado.
 
@@ -77,7 +77,7 @@ Durante el desarrollo del sistema se elaboraron cuatro versiones principales, ca
     \end{figure}
 
     \vspace{1em}
-    Problemas detectados: aunque el nuevo sistema de guardrails ofreció mayor control, su forma de almacenar historiales elevó el uso de RAM y la latencia, lo que afectó la escalabilidad y la experiencia del usuario; además, en preguntas encadenadas, el contexto no siempre se interpretaba correctamente.
+    Problemas detectados: aunque el nuevo sistema de \textit{guardrails} ofreció un mayor control, su mecanismo de almacenamiento de historiales incrementó el uso de RAM y la latencia. Esta situación afectó tanto la escalabilidad como la experiencia del usuario. Además, en las preguntas encadenadas, el sistema no siempre interpretaba correctamente el contexto.
     
     \newpage
     Por ejemplo:
@@ -150,7 +150,7 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
     
     \item Backend: implementado en FastAPI\footnote{FastAPI es un framework web moderno y de alto rendimiento para construir APIs con Python, basado en las anotaciones de tipo de Python 3.6+. Se destaca por su rapidez, facilidad de uso y soporte nativo para documentación automática, lo que lo hace ideal para desarrollar backends eficientes en sistemas que integran modelos de lenguaje y flujos RAG.}, se encarga de recibir las solicitudes del frontend para procesar las preguntas, enviar las respuestas, gestionar las métricas requeridas y actualizar los contextos en la base de datos de vectores.
 
-    \item Guardrails: módulo de filtrado y preprocesamiento que evalúa si una consulta es válida (según reglas predefinidas), la clasifica en categorías como "Producto", "Quejas", "Saludos" y la redefine con el contexto de los mensajes anteriores.
+    \item Guardrails: módulo de filtrado y preprocesamiento que evalúa si una consulta es válida (según reglas predefinidas), la clasifica en categorías como ``Producto'', ``Quejas'' o ``Saludos'' y la redefine con el contexto de los mensajes anteriores.
 
     \item DSPy RAG: es el corazón del sistema, responsable de orquestar la lógica principal del flujo RAG. DSPy toma la pregunta ya enriquecida desde el módulo de guardrails y ejecuta una búsqueda eficiente de contextos relevantes en LanceDB. A partir de los fragmentos recuperados, construye un prompt enriquecido que será enviado al modelo LLM para generar una respuesta coherente y precisa. Además de facilitar la integración de prompts, DSPy permite definir y estructurar toda la lógica del sistema de recuperación y generación, y proporciona un marco flexible y modular para el diseño del flujo completo.
 
@@ -222,7 +222,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
 
   \subsection{Preparación de los datos de contexto} 
   
- La base de conocimiento utilizada por el sistema no se deriva de documentos extensos fragmentados en segmentos, como se hacía en versiones anteriores, sino que se construyó a partir de una estructura de tipo clave-valor, diseñada específicamente para realizar búsquedas contextuales rápidas y precisas. Cada entrada en esta estructura contiene dos campos principales:
+ La base de conocimiento utilizada por el sistema no se deriva de documentos extensos divididos en segmentos, como en versiones anteriores. En su lugar, se construyó a partir de una estructura de tipo clave-valor, diseñada específicamente para permitir búsquedas contextuales rápidas y precisas. Cada entrada en esta estructura contiene dos campos principales:
 
   \begin{itemize}
       \item question: una lista de términos, sinónimos o expresiones relacionadas que representan la intención del usuario. Este campo actúa como una clave semántica para la búsqueda.
