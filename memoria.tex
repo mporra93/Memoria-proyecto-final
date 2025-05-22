@@ -1,87 +1,86 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Template license:
-% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %----------------------------------------------------------------------------------------
-%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+% Preambulo y Configuración
 %----------------------------------------------------------------------------------------
-
 \documentclass[
-11pt, % The default document font size, options: 10pt, 11pt, 12pt
-%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
-%chapterinoneline,% Have the chapter title next to the number in one single line
-spanish,
-singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
-%draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
-%nolistspacing, % If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
-%liststotoc, % Uncomment to add the list of figures/tables/etc to the table of contents
-%toctotoc, % Uncomment to add the main table of contents to the table of contents
-parskip, % Uncomment to add space between paragraphs
-%codirector, % Uncomment to add a codirector to the title page
-headsepline, % Uncomment to get a line under the header
-]{MastersDoctoralThesis} % The class file specifying the document structure
+    11pt,
+    spanish,
+    singlespacing,
+    parskip,
+    headsepline,
+    bookmarks=true,
+    unicode=true,
+    pdftoolbar=true,
+    pdfmenubar=true,
+    pdffitwindow=false,
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+]{MastersDoctoralThesis}
+
+\usepackage[utf8]{inputenc} % Codificación de entrada UTF-8
+\usepackage[T1]{fontenc}    % Codificación de salida para caracteres especiales
+\usepackage{graphicx}       % Manejo de gráficos
+\usepackage{eso-pic}        % Permite agregar fondos
+\usepackage{hyperref}       % Manejo de hipervínculos y marcadores
+
+% Redefinición de caracteres problemáticos en marcadores
+\hypersetup{
+    pdftitle={Título del Documento},
+    pdfauthor={Autor del Documento},
+    pdfkeywords={Sistemas Embebidos, Internet de las Cosas, Inteligencia Artificial},
+    pdfstartview={FitH},
+    unicode=true,
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\pdfstringdefDisableCommands{%
+  \def\texttt#1{#1}%
+  \def\textbf#1{#1}%
+  \def\textit#1{#1}%
+  \def\"{\"}%
+  \def\~{~}%
+  \def\'{'}%
+  \def\^{}%
+  \def\textunderscore{\_} % Manejo del subrayado en marcadores
+}
 
 
-
+% Definir comandos requeridos por la clase
+\newcommand{\degreename}{Maestría en Ciencias} % Cambia según tu título
+\newcommand{\univname}{Universidad Nacional de Ejemplo} % Cambia según tu universidad
+\newcommand{\keywordnames}{Palabras clave:}
 %----------------------------------------------------------------------------------------
-%	INFORMACIÓN DE LA MEMORIA
+% Documento Principal
 %----------------------------------------------------------------------------------------
-\thesistitle{Desarrollo de un \textit{pipeline} de aprendizaje continuo para chatbots basados en PLN} % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
- 
-
-% Nombre del posgrado, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \degreename
-\posgrado{Carrera de Especialización en Inteligencia Artificial} 
-%\posgrado{Carrera de Especialización en Internet de las Cosas} 
-%\posgrado{Carrera de Especialización en Intelegencia Artificial}
-%\posgrado{Maestría en Sistemas Embebidos} 
-%\posgrado{Maestría en Internet de las cosas}
-
-\author{Ing. Porra Bustos, Matias Exequiel (UTN-FRLR)} % Tu nombre, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \authorname
-
-\director{Dr. Ing. Cárdenas Rodrigo (FIUBA)} % El nombre del director, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \dirname
-% \codirector{Nombre del codirector (pertenencia)} % El nombre del codirector si lo hubiera, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \codirname.  Para activar este campo se debe descomentar la opción "codirector" en el comando \documentclass, línea 23.
-
-\juradoUNO{Esp. Ing. Torrent Leandro (FIUBA)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur1name
-\juradoDOS{Nombre del jurado 2 (pertenencia)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur2name
-\juradoTRES{Nombre del jurado 3 (pertenencia)} % Nombre y pertenencia del un jurado se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \jur3name
-
-\ciudad{Ciudad Autónoma de Buenos Aires}
-% \ciudad{ciudad de Mendoza}
-
-\fechaINICIO{mayo de 2024}
-\fechaFINAL{junio de 2025}
-
-
-\keywords{Intelegencia Artificial, FIUBA} % Keywords for your thesis, print it elsewhere with \keywordnames
-
 
 \begin{document}
 
+% Configuración de la portada
+\posgrado{Carrera / Maestría}
+\keywords{Sistemas Embebidos, Internet de las Cosas, Inteligencia Artificial}
 
-\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+% Incluir la portada desde un archivo separado
+\include{portada}
 
-\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
-
+% Configuración del contenido preliminar
+\frontmatter % Usar numeración romana para las páginas preliminares
+\pagestyle{plain} % Estilo de encabezado simple
 
 %----------------------------------------------------------------------------------------
-%	RESUMEN - ABSTRACT 
+% Resumen
 %----------------------------------------------------------------------------------------
 
 \begin{abstract}
-\addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-%
-%The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
-\centering
-
+\addchaptertocentry{\abstractname} % Agregar resumen al índice
 El presente trabajo desarrolla una solución avanzada para la automatización de la comunicación empresarial, orientada a emprendedores y pequeñas empresas. El sistema desarrollado consiste en un chatbot que integra técnicas de procesamiento del lenguaje natural (PLN) y gestión de bases de datos, articulado en un pipeline de aprendizaje continuo. Este chatbot está diseñado para optimizar la interacción con los clientes, ya que genera respuestas precisas y relevantes a sus consultas en lenguaje natural. Además, el sistema se retroalimenta de las interacciones previas para mejorar su rendimiento de manera constante y adaptarse mejor a las necesidades de los usuarios.
-
 \end{abstract}
 
 %----------------------------------------------------------------------------------------
-%	CONTENIDO DE LA MEMORIA  - AGRADECIMIENTOS
+% Agradecimientos
 %----------------------------------------------------------------------------------------
 
 \begin{acknowledgements}
@@ -100,59 +99,49 @@ A Michael Schreiber por sus grandes aportes y guía en mi formación profesional
 \end{acknowledgements}
 
 %----------------------------------------------------------------------------------------
-%	LISTA DE CONTENIDOS/FIGURAS/TABLAS
+% Índice
 %----------------------------------------------------------------------------------------
 
-\tableofcontents % Prints the main table of contents
-
-\listoffigures % Prints the list of figures
-
-\listoftables % Prints the list of tables
-
+\tableofcontents
+\listoffigures
+\listoftables
 
 %----------------------------------------------------------------------------------------
-%	CONTENIDO DE LA MEMORIA  - DEDICATORIA
+% Dedicatoria
 %----------------------------------------------------------------------------------------
 
-% \dedicatory{\textbf{Dedicado a... [OPCIONAL]}}  % escribir acá si se desea una dedicatoria
+% \dedicatory{\textbf{Dedicado a... [OPCIONAL]}}
 
 %----------------------------------------------------------------------------------------
-%	CONTENIDO DE LA MEMORIA  - CAPÍTULOS
+% Capítulos
 %----------------------------------------------------------------------------------------
 
-\mainmatter % Begin numeric (1,2,3...) page numbering
+\mainmatter % Iniciar numeración numérica para el contenido principal
+\pagestyle{thesis} % Estilo de encabezado de tesis
 
-\pagestyle{thesis} % Return the page headers back to the "thesis" style
-
-% Incluir los capítulos como archivos separados desde la carpeta Chapters
-
+% Incluir capítulos desde archivos separados
 \include{Chapters/Chapter1}
-\include{Chapters/Chapter2} 
+\include{Chapters/Chapter2}
 \include{Chapters/Chapter3}
-\include{Chapters/Chapter4} 
-\include{Chapters/Chapter5} 
-
-% ----------------------------------------------------------------------------------------
-% 	CONTENIDO DE LA MEMORIA  - APÉNDICES
-% ----------------------------------------------------------------------------------------
-
-% \appendix % indicativo para indicarle a LaTeX los siguientes "capítulos" son apéndices
-
-% Incluir los apéndices de la memoria como archivos separadas desde la carpeta Appendices
-% Descomentar las líneas a medida que se escriben los apéndices
-
-% \include{Appendices/AppendixA}
-% \include{Appendices/AppendixB}
-% \include{Appendices/AppendixC}
+\include{Chapters/Chapter4}
+\include{Chapters/Chapter5}
 
 %----------------------------------------------------------------------------------------
-%	BIBLIOGRAPHY
+% Apéndices
 %----------------------------------------------------------------------------------------
 
-\Urlmuskip=0mu plus 1mu\relax
-\raggedright
+% \appendix
+
+% Incluir apéndices desde archivos separados si es necesario
+%\include{Appendices/AppendixA}
+
+%----------------------------------------------------------------------------------------
+% Bibliografía
+%----------------------------------------------------------------------------------------
+
+\renewcommand{\bibname}{Bibliografía} % Para asegurarte de que el título sea correcto
+\phantomsection % Necesario para que el enlace del marcador sea correcto
+
 \printbibliography[heading=bibintoc]
 
-%----------------------------------------------------------------------------------------
-
-\end{document}  
+\end{document}

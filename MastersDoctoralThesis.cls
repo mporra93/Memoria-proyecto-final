@@ -359,50 +359,50 @@ KOMA-script documentation for details.}]{fancyhdr}
 %----------------------------------------------------------------------------------------
 %	 PORTADA
 %----------------------------------------------------------------------------------------
+% \AtBeginDocument{
+%     \begin{titlepage}
+%     \begin{center}
+%     
+%     \includegraphics[width=.8\textwidth]{./Figures/logoFIUBA.pdf}
+%     \vspace{2cm}
+%     
+%     \textsc{\huge{\degreename}}
+%     \vspace{.5cm} 
+%     
+%     \textsc{\Large Memoria del Trabajo Final}\\[1cm] 
+%     
+%     {\huge \bfseries \ttitle\par}\vspace{0.4cm} 
+%     \vfill
+%     
+%     \vspace{2cm}
+%     \LARGE\textbf{Autor:\\
+%     \authorname}\\ % Author name
+%     
+%     \vspace{1.5cm}
+%     
+%     \large
+%     {Director:} \\
+%     {\dirname} \\% Supervisor name
+%     \ifbool{codirector}{% If the codirector class option has been specified
+%     \vspace{10px}
+%     {Codirector:} \\
+%     {\codirname} % Supervisor name
+%     }{\vspace{2pc}%nothing
+%     }
+%     
+%     \vspace{1cm}
+%     Jurados:\\    
+%     \jurunoname\\
+%     \jurdosname\\
+%     \jurtresname
+%     
+%     \vfill
+%     
+%     \textit{Este trabajo fue realizado en la \ciudadname,\\ entre \fechaINICIOname \hspace{1px} y \fechaFINALname.}
+%     \end{center}
+%     \end{titlepage}
+% }
 
-\AtBeginDocument{
-	\begin{titlepage}
-	\begin{center}
-	
-	\includegraphics[width=.8\textwidth]{./Figures/logoFIUBA.pdf}
-	\vspace{2cm}
-	
-	\textsc{\huge{\degreename}}
-	\vspace{.5cm} 
-	
-	\textsc{\Large Memoria del Trabajo Final}\\[1cm] 
-	
-	{\huge \bfseries \ttitle\par}\vspace{0.4cm} 
-	\vfill
-	
-	\vspace{2cm}
-	\LARGE\textbf{Autor:\\
-	\authorname}\\ % Author name
-	
-	\vspace{1.5cm}
-	
-	\large
-	{Director:} \\
-	{\dirname} \\% Supervisor name
-	\ifbool{codirector}{% If the codirector class option has been specified
-	\vspace{10px}
-	{Codirector:} \\
-	{\codirname} % Supervisor name
-	}{\vspace{2pc}%nothing
-	}
-	
-	\vspace{1cm}
-	Jurados:\\	
-	\jurunoname\\
-	\jurdosname\\
-	\jurtresname
-	
-	\vfill
-	
-	\textit{Este trabajo fue realizado en la \ciudadname,\\ entre \fechaINICIOname \hspace{1px} y \fechaFINALname.}
-	\end{center}
-	\end{titlepage}
-}
 
 
 
