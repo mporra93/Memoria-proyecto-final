@@ -39,6 +39,9 @@ Se desarrolló una interfaz interactiva con ReactJS, con apoyo en las herramient
 
 La interfaz de usuario permite realizar preguntas al chatbot y visualizar las respuestas en tiempo real, lo que habilita una interacción directa con el sistema y un análisis inmediato de la calidad de las respuestas. Presenta un diseño intuitivo y accesible, compuesto por un campo de texto para ingresar preguntas, un botón de envío y un área de visualización para las respuestas generadas por el modelo. También incluye un campo de nombre, útil para la trazabilidad de usuarios durante las pruebas, ya que permitió distinguir fácilmente entre los distintos perfiles de uso, incluyendo el usuario de desarrollo empleado para pruebas locales.
 
+En la Figura~\ref{fig:frontend} se muestra una captura de pantalla de la interfaz del chatbot, en la que se observan los principales elementos de interacción: el campo de entrada de preguntas, el botón de envío y el área de visualización de respuestas generadas por el modelo.
+
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.68\textwidth]{./Figures/frontend.png}
@@ -52,6 +55,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
 
 \begin{itemize}
     \item Métricas generales: se presentan indicadores agregados del sistema, como el total de preguntas, el puntaje promedio, la desviación estándar y una evaluación global de la calidad de las respuestas generadas. Estos datos permiten identificar el rendimiento general por categoría temática y detectar áreas que requieren ajustes en el contexto.
+    La Figura~\ref{fig:metricas1} muestra la visualización de estas métricas, segmentadas por categorías, lo que facilita su interpretación y el seguimiento del comportamiento del sistema.
 
     \begin{figure}[htbp]
         \centering
@@ -60,7 +64,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
         \label{fig:metricas1}
     \end{figure}
 
-    \item Buenas preguntas: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, incluyendo el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema.
+    \item Buenas preguntas: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, incluyendo el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema, como se ilustra en la Figura~\ref{fig:metricasbuenas}.
 
     \begin{figure}[htbp]
         \centering
@@ -70,7 +74,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
     \end{figure}
 
     \newpage
-    \item Malas preguntas: se visualizan métricas correspondientes a preguntas mal calificadas, lo que permite detectar fallos en el sistema y orientar acciones correctivas en los contextos o el flujo conversacional.
+    \item Malas preguntas: se visualizan métricas correspondientes a preguntas mal calificadas, lo que permite detectar fallos en el sistema y orientar acciones correctivas en los contextos o el flujo conversacional, como se ejemplifica en la Figura~\ref{fig:metricasmalas}.
 
     \begin{figure}[htbp]
         \centering
@@ -82,7 +86,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
 
 \subsubsection{Administración de contextos}
 
-Esta sección de la interfaz permite modificar o agregar fragmentos de contexto mediante un formulario de carga, lo que brinda flexibilidad para actualizar la base de conocimiento de forma dinámica, sin intervención técnica directa.
+Esta sección de la interfaz permite modificar o agregar fragmentos de contexto mediante un formulario de carga, lo que brinda flexibilidad para actualizar la base de conocimiento de forma dinámica, sin intervención técnica directa. La Figura~\ref{fig:contextos_ui}, muestra la vista del frontend correspondiente al formulario y las opciones disponibles para gestionar los contextos.
 
 \begin{figure}[htbp]
     \centering
@@ -255,20 +259,18 @@ La integración de Langfuse, junto con DSPy y LanceDB, representó un avance sig
 La incorporación del sistema de bases de datos en la versión 2 permitió realizar pruebas retrospectivas sobre versiones anteriores y almacenar los resultados en dicha base con el propósito de analizarlos posteriormente. Con la inclusión de Langfuse en la versión final, se migró esta información desde la base de datos obsoleta hacia Langfuse, lo que habilitó la ejecución de agentes automáticos sobre todas las trazas correspondientes a las cuatro versiones. Esto posibilitó un análisis retrospectivo de la evolución del modelo a lo largo del proceso. En la Tabla~\ref{tab:comparacion_versiones} se resumen las principales métricas de desempeño obtenidas durante el desarrollo del chatbot. Se incluyen el número de interacciones registradas, el costo asociado y el puntaje promedio de evaluación automática.
 
 
-\begin{table}[ht]
+\begin{table}[h]
     \centering
-    \caption{Comparación de métricas entre versiones del chatbot.}
-    \begin{tabular}{|c|c|c|c|}
-        \hline
+    \caption[Comparación de versiones del chatbot]{Comparación detallada de métricas entre diferentes versiones del chatbot, incluyendo número de trazas, costo y puntaje promedio.}
+    \begin{tabular}{l c c c}
+        \toprule
         \textbf{Versión} & \textbf{Trazas} & \textbf{Costo (USD)} & \textbf{Puntaje Promedio} \\
-        \hline
-        0 & 96 & 0,0506 & 5,88 \\
-        \hline
+        \midrule
+        0 & 96  & 0,0506 & 5,88 \\
         1 & 132 & 0,0436 & 7,78 \\
-        \hline
-        2 & 54 & 0,0126 & 8,29 \\
-        \hline
+        2 & 54  & 0,0126 & 8,29 \\
         3 & 136 & 0,0353 & 6,33 \\
+        \bottomrule
         \hline
     \end{tabular}
     \label{tab:comparacion_versiones}

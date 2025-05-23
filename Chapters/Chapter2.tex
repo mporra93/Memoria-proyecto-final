@@ -69,11 +69,11 @@ En esta sección se presentan los requerimientos específicos de software del si
 
 
 
-  \subsection{Retrieval Augmented Generation (RAG)}
-  
-  RAG integra técnicas de generación de lenguaje natural con mecanismos de recuperación de información que operan sobre una base de conocimiento estructurada. Ante una consulta del usuario, el modelo emplea \textit{embeddings}\footnote{Embeddings [representaciones vectoriales].} para localizar y extraer los segmentos más relevantes del contexto almacenado, con el fin de generar una respuesta coherente y fundamentada.
+\subsection{Retrieval Augmented Generation (RAG)}
+
+    RAG integra técnicas de generación de lenguaje natural con mecanismos de recuperación de información que operan sobre una base de conocimiento estructurada. Ante una consulta del usuario, el modelo emplea \textit{embeddings}\footnote{Embeddings [representaciones vectoriales].} para localizar y extraer los segmentos más relevantes del contexto almacenado, con el fin de generar una respuesta coherente y fundamentada.
   Este conocimiento relevante se inyecta en el \textit{prompt}\footnote{prompt [entrada o solicitud al modelo de lenguaje].} enviado al modelo de lenguaje (LLM). El \textit{prompt} incluye tanto la pregunta como el contexto relacionado, lo que permite a la LLM generar respuestas más precisas y contextualizadas. La incorporación de datos externos en este proceso enriquece el conocimiento del modelo en tiempo real y disminuye las posibilidades de alucinaciones—respuestas que, aunque parecen plausibles, son incorrectas.
-  Además, RAG utiliza bases de datos vectoriales y la búsqueda semántica para recuperar información relevante, lo que mejora la precisión y relevancia de las respuestas del chatbot. Este enfoque es especialmente útil en situaciones donde se requiere información actualizada o especializada, como en consultas de productos o en el soporte técnico.
+  Además, RAG utiliza bases de datos vectoriales y la búsqueda semántica para recuperar información relevante, lo que mejora la precisión y relevancia de las respuestas del chatbot. Este enfoque es especialmente útil en situaciones donde se requiere información actualizada o especializada, como en consultas de productos o en el soporte técnico. La ilustración mostrada en la Figura~\ref{fig:arquitectura_rag}, representa el flujo de información en una arquitectura RAG desde la consulta inicial hasta la generación final de la respuesta.
 
 %  \vspace{1cm}
  \begin{figure}[htbp] 
@@ -93,50 +93,41 @@ En esta sección se presentan los requerimientos específicos de software del si
   \newpage
 \subsection{Ventajas y desventajas de los modelos RAG y Fine-Tuning}
 
-  A continuación, se presenta una tabla que compara las principales ventajas y desventajas de los modelos RAG (Retrieval-Augmented Generation) y \textit{Fine-Tuning}. Esta comparación proporciona una visión clara de las características distintivas de cada enfoque, lo que permite una evaluación informada de su idoneidad en función de los requisitos específicos del entorno de implementación.
+  A continuación, se presenta la Tabla~\ref{tab:rag_vs_finetuning}, que compara las principales ventajas y desventajas de los modelos RAG (Retrieval-Augmented Generation) y \textit{Fine-Tuning}. Esta comparación proporciona una visión clara de las características distintivas de cada enfoque, lo que permite una evaluación informada de su idoneidad en función de los requisitos específicos del entorno de implementación.
 
-  \begin{table}[ht]
-    \centering
-    \caption{Ventajas y desventajas de los modelos RAG y Fine-Tuning.}
-    \begin{tabular}{|c|p{0.35\linewidth}|p{0.35\linewidth}|}
-        \hline
-        % \textbf{Modelo} & \textbf{Ventaja} & \textbf{Desventaja} \\
-        \multicolumn{1}{|c|}{\textbf{Modelo}} & \multicolumn{1}{c|}{\textbf{Ventaja}} & \multicolumn{1}{c|}{\textbf{Desventaja}} \\ 
-        \hline
-        RAG & 
-        \begin{raggedright}
-        \begin{itemize}
-            \item Permite incorporar información contextual actualizada en tiempo real.
-            \item Reduce la probabilidad de alucinaciones al usar datos relevantes.
-            \item Mejora la precisión y relevancia de las respuestas del chatbot.
-        \end{itemize} 
-        \end{raggedright} & 
-        \begin{raggedright}
-        \begin{itemize}
-            \item Requiere una infraestructura adecuada para la recuperación de información.
-            \item Dependencia de la calidad y disponibilidad de la base de datos.
-            \item Puede ser más complejo de implementar y mantener.
-        \end{itemize} 
-        \end{raggedright} \\
-        \hline
-        Fine-Tuning & 
-        \begin{raggedright}
-        \begin{itemize}
-            \item Mejora la calidad de las respuestas al adaptar el modelo a un dominio específico.
-            \item Proporciona un rendimiento más consistente en contextos bien definidos.
-            \item Permite la optimización de la latencia al trabajar con un modelo entrenado.
-        \end{itemize} 
-        \end{raggedright} & 
-        \begin{raggedright}
-        \begin{itemize}
-            \item El modelo se congela en el tiempo y no se adapta a cambios contextuales.
-            \item Requiere un conjunto de datos específico para el entrenamiento, lo que puede ser costoso.
-            \item Menor flexibilidad para abordar consultas inesperadas o no entrenadas.
-        \end{itemize} 
-        \end{raggedright} \\
-        \hline
-    \end{tabular}
-    \label{tab:rag_vs_finetuning}
-\end{table}
+    \begin{table}[ht]
+        \centering
+        \caption{Ventajas y desventajas de los modelos RAG y Fine-Tuning.}
+        \begin{tabular}{l p{0.4\linewidth} p{0.4\linewidth}}
+            \toprule
+            \textbf{Modelo} & \textbf{Ventajas} & \textbf{Desventajas} \\
+            \midrule
+            RAG &
+            \begin{itemize}
+                \item Permite incorporar información contextual actualizada en tiempo real.
+                \item Reduce la probabilidad de alucinaciones al usar datos relevantes.
+                \item Mejora la precisión y relevancia de las respuestas del chatbot.
+            \end{itemize} &
+            \begin{itemize}
+                \item Requiere una infraestructura adecuada para la recuperación de información.
+                \item Dependencia de la calidad y disponibilidad de la base de datos.
+                \item Puede ser más complejo de implementar y mantener.
+            \end{itemize} \\
+            \midrule
+            Fine-Tuning &
+            \begin{itemize}
+                \item Mejora la calidad de las respuestas al adaptar el modelo a un dominio específico.
+                \item Proporciona un rendimiento más consistente en contextos bien definidos.
+                \item Permite la optimización de la latencia al trabajar con un modelo entrenado.
+            \end{itemize} &
+            \begin{itemize}
+                \item El modelo se congela en el tiempo y no se adapta a cambios contextuales.
+                \item Requiere un conjunto de datos específico para el entrenamiento, lo que puede ser costoso.
+                \item Menor flexibilidad para abordar consultas inesperadas o no entrenadas.
+            \end{itemize} \\
+            \bottomrule
+        \end{tabular}
+        \label{tab:rag_vs_finetuning}
+    \end{table}
 
  
