@@ -37,7 +37,7 @@ Se desarrolló una interfaz interactiva con ReactJS, con apoyo en las herramient
 
 \subsubsection{Chatbot}
 
-La interfaz de usuario permite realizar preguntas al chatbot y visualizar las respuestas en tiempo real, lo que habilita una interacción directa con el sistema y un análisis inmediato de la calidad de las respuestas. Presenta un diseño intuitivo y accesible, compuesto por un campo de texto para ingresar preguntas, un botón de envío y un área de visualización para las respuestas generadas por el modelo. También incluye un campo de nombre, útil para la trazabilidad de usuarios durante las pruebas, ya que permitió distinguir fácilmente entre los distintos perfiles de uso, incluyendo el usuario de desarrollo empleado para pruebas locales.
+La interfaz de usuario permite realizar preguntas al chatbot y visualizar las respuestas en tiempo real, lo que habilita una interacción directa con el sistema y un análisis inmediato de la calidad de las respuestas. Presenta un diseño intuitivo y accesible, compuesto por un campo de texto para ingresar preguntas, un botón de envío y un área de visualización para las respuestas generadas por el modelo. También incluye un campo de nombre, útil para la trazabilidad de usuarios durante las pruebas, ya que permitió distinguir fácilmente entre los distintos perfiles de uso, entre ellos el usuario de desarrollo empleado para pruebas locales.
 
 En la Figura~\ref{fig:frontend} se muestra una captura de pantalla de la interfaz del chatbot, en la que se observan los principales elementos de interacción: el campo de entrada de preguntas, el botón de envío y el área de visualización de respuestas generadas por el modelo.
 
@@ -64,7 +64,7 @@ La interfaz permite consultar las métricas generadas por el sistema de evaluaci
         \label{fig:metricas1}
     \end{figure}
 
-    \item Buenas preguntas: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, incluyendo el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema, como se ilustra en la Figura~\ref{fig:metricasbuenas}.
+    \item Buenas preguntas: se presentan métricas específicas asociadas a preguntas que obtuvieron calificaciones altas, tales como el puntaje de calidad y un breve análisis de los factores que contribuyeron a una respuesta satisfactoria. Estas métricas son clave para identificar patrones positivos en el rendimiento del sistema, como se ilustra en la Figura~\ref{fig:metricasbuenas}.
 
     \begin{figure}[htbp]
         \centering
@@ -102,7 +102,7 @@ Esta sección de la interfaz permite modificar o agregar fragmentos de contexto 
 \label{sec:evaluacionEscenarios}
 
 \subsection{Escenario 1: interacción básica}
-Se evaluó la capacidad del chatbot para mantener una conversación coherente en interacciones simples. Para ello, se formularon preguntas directamente relacionadas con el contexto actual de la versión, aunque no siempre completas ni contextualizadas en el hilo conversacional. El objetivo principal de esta prueba fue verificar el denominado \textit{happy path} del sistema; es decir, el funcionamiento correcto de las etapas del \textit{pipeline}, incluyendo la recepción de entrada, la captura de contextos relevantes y el análisis por parte del modelo de lenguaje para generar una respuesta adecuada.
+Se evaluó la capacidad del chatbot para mantener una conversación coherente en interacciones simples. Para ello, se formularon preguntas directamente relacionadas con el contexto actual de la versión, aunque no siempre completas ni contextualizadas en el hilo conversacional. El objetivo principal de esta prueba fue verificar el denominado \textit{happy path} del sistema; es decir, el funcionamiento correcto de las etapas del \textit{pipeline}, que abarcan la recepción de entrada, la captura de contextos relevantes y el análisis por parte del modelo de lenguaje para generar una respuesta adecuada.
 
 \subsection{Escenario 2: consultas con múltiples pasos}
 En esta evaluación se realizaron consultas más complejas desde el punto de vista del hilo conversacional, donde el usuario planteó preguntas encadenadas que requerían del sistema la retención y gestión del contexto. Se analizó la capacidad del chatbot para mantener coherencia y relevancia a lo largo de múltiples interacciones. Si bien las preguntas fueron formuladas de forma directa, se buscó evaluar la habilidad del sistema para adaptarse a cambios en la temática sin perder el hilo de la conversación ni mezclar las respuestas con temas tratados previamente.
@@ -239,7 +239,7 @@ Se evaluaron interacciones en las que la respuesta dependía de la acumulación 
 
 \subsubsection{Pruebas de consultas fuera de contexto}
 
-Para las preguntas fuera de contexto, no se observaron cambios significativos en comparación con la versión 2. El sistema continuó empleando guardrails personalizados para filtrar preguntas irrelevantes.
+Para las preguntas fuera de contexto, no se observaron cambios significativos en comparación con la versión 2. El sistema mantuvo guardrails personalizados para filtrar preguntas irrelevantes.
 
 \begin{itemize}
     \item Hallazgos: se logró trazabilidad completa de las interacciones, evaluación automática y una arquitectura modular consolidada. No obstante, se detectó un rendimiento inferior en categorías como quejas, posiblemente debido a la falta de contexto temático suficiente.
@@ -261,7 +261,7 @@ La incorporación del sistema de bases de datos en la versión 2 permitió reali
 
 \begin{table}[h]
     \centering
-    \caption[Comparación de versiones del chatbot]{Comparación detallada de métricas entre diferentes versiones del chatbot, incluyendo número de trazas, costo y puntaje promedio.}
+    \caption[Comparación de versiones del chatbot]{Comparación detallada de métricas entre diferentes versiones del chatbot, que incluyen número de trazas, costo y puntaje promedio.}
     \begin{tabular}{l c c c}
         \toprule
         \textbf{Versión} & \textbf{Trazas} & \textbf{Costo (USD)} & \textbf{Puntaje Promedio} \\
