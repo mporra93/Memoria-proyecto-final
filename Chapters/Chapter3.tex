@@ -29,7 +29,7 @@ Razón del cambio: mejorar la calidad de las respuestas, reducir los costos de i
 
     Se integró DSPy, un framework que permite definir \textit{prompts} de manera modular y declarativa, lo que facilitó una implementación más mantenible y escalable de la arquitectura RAG.
 
-    Asimismo, se añadió una capa de filtrado con NemoGuardrails \citep{nemoguardrailsdef} para bloquear preguntas fuera de dominio, junto con un sistema de evaluación automática que puntuaba las respuestas de la LLM, y permitía monitorear su rendimiento. Estos componentes fueron implementados como módulos independientes en DSPy, lo que mejoró la modularidad y claridad del sistema. La Figura~\ref{fig:version1} muestra el esquema general del sistema desarrollado en esta versión, y destaca los componentes principales y su integración en el flujo conversacional.
+    Asimismo, se añadió una capa de filtrado con NemoGuardrails \citep{nemoguardrailsdef} para bloquear preguntas fuera de dominio, junto con un sistema de evaluación automática que puntuaba las respuestas de la LLM, y permitía monitorear su rendimiento. Estos componentes fueron implementados como módulos independientes en DSPy, lo que mejoró la modularidad y claridad del sistema. La figura~\ref{fig:version1} muestra el esquema general del sistema desarrollado en esta versión, y destaca los componentes principales y su integración en el flujo conversacional.
 
     Problemas detectados: aunque se logró mayor robustez y control, surgieron desafíos como el rendimiento limitado de NemoGuardrails en español y la falta de trazabilidad completa, lo que motivó la búsqueda de alternativas.
 
@@ -53,7 +53,7 @@ Razón del cambio: mejorar la calidad de las respuestas, reducir los costos de i
     Descripción: se reemplazó NemoGuardrails por una implementación propia, basada en LLMs livianos y reglas personalizadas escritas en código con prompts específicos. Esto permitió una mayor flexibilidad y una mejor adaptación al idioma español. 
 
     Se comenzó a almacenar localmente la conversación completa de cada usuario, con preguntas, respuestas y el contexto previo, en la memoria RAM. Esta funcionalidad dotó al sistema de memoria conversacional, lo que mejoró la coherencia de las respuestas.
-    En paralelo, todas las interacciones del asistente (preguntas, respuestas, errores y rechazos por guardrails) comenzaron a registrarse en una base de datos NoSQL, lo que facilitó la trazabilidad de cada interacción y el análisis detallado del comportamiento conversacional, como se muestra en la Figura~\ref{fig:version2}. Gracias a esto, se pudo implementar un sistema de métricas que permitía calcular estadísticas de rendimiento y analizar patrones de uso.
+    En paralelo, todas las interacciones del asistente (preguntas, respuestas, errores y rechazos por guardrails) comenzaron a registrarse en una base de datos NoSQL, lo que facilitó la trazabilidad de cada interacción y el análisis detallado del comportamiento conversacional, como se muestra en la figura~\ref{fig:version2}. Gracias a esto, se pudo implementar un sistema de métricas que permitía calcular estadísticas de rendimiento y analizar patrones de uso.
 
     \begin{figure}[htbp]
         \centering
@@ -66,7 +66,7 @@ Razón del cambio: mejorar la calidad de las respuestas, reducir los costos de i
 
     Una vez clasificados, los mensajes fueron almacenados de forma estructurada y pudieron someterse a procesos adicionales de agrupamiento (\textit{clustering}). Para ello, se emplearon técnicas de TF-IDF y el algoritmo K-Means (de la librería scikit-learn), con la eliminación de palabras vacías (\textit{stopwords}) mediante la biblioteca NLTK. Esto permitió segmentar, por ejemplo, las consultas sobre productos en temas más específicos, lo que facilitó el análisis posterior y la detección de tendencias.
 
-    El resultado fue un sistema que no solo clasificó los mensajes con alta precisión, sino que también posibilitó la exploración temática del contenido agrupado. En la imagen se presenta un ejemplo gráfico de clasificación y agrupación, como se muestra en la Figura~\ref{fig:clasificadorv2}.
+    El resultado fue un sistema que no solo clasificó los mensajes con alta precisión, sino que también posibilitó la exploración temática del contenido agrupado. En la figura~\ref{fig:clasificadorv2} se presenta un ejemplo gráfico de clasificación y agrupación:
 
     \begin{figure}[htbp]
         \centering
@@ -102,7 +102,7 @@ Razón del cambio: mejorar la calidad de las respuestas, reducir los costos de i
 
     Razón del cambio: necesidad de un sistema robusto para trazabilidad, evaluación y mejora continua.
 
-Descripción: se integró Langfuse como sistema observador no intrusivo para registrar todas las interacciones del sistema. Asimismo, se incorporaron dos nuevas tareas en la capa de restricciones (\textit{guardrails}). La primera consistió en la reformulación de preguntas, que generaba una nueva oración con palabras clave relacionadas con el contexto de la consulta actual, con el fin de relacionar preguntas anidadas, como se muestra en el ejemplo de la Figura~\ref{fig:ejemploreformulado}. Este proceso tenía como objetivo optimizar la búsqueda de contextos en el \textit{vectorstore}. La segunda tarea correspondió a la clasificación de consultas, encargada de categorizarlas según su temática, tales como productos, precios, delivery, quejas, saludos, entre otras. Además, se eliminaron las bases de datos auxiliares y se centralizó la gestión de trazabilidad en Langfuse, que pasó a encargarse del registro de todos los eventos relevantes del sistema: consultas, respuestas, errores, rechazos por restricciones, consumo de tokens, costos, latencia, entre otros.
+Descripción: se integró Langfuse como sistema observador no intrusivo para registrar todas las interacciones del sistema. Asimismo, se incorporaron dos nuevas tareas en la capa de restricciones (\textit{guardrails}). La primera consistió en la reformulación de preguntas, que generaba una nueva oración con palabras clave relacionadas con el contexto de la consulta actual, con el fin de relacionar preguntas anidadas, como se muestra en el ejemplo de la figura~\ref{fig:ejemploreformulado}. Este proceso tenía como objetivo optimizar la búsqueda de contextos en el \textit{vectorstore}. La segunda tarea correspondió a la clasificación de consultas, encargada de categorizarlas según su temática, tales como productos, precios, delivery, quejas, saludos, entre otras. Además, se eliminaron las bases de datos auxiliares y se centralizó la gestión de trazabilidad en Langfuse, que pasó a encargarse del registro de todos los eventos relevantes del sistema: consultas, respuestas, errores, rechazos por restricciones, consumo de tokens, costos, latencia, entre otros.
 
 
 Problemas detectados: algunos temas, como las quejas, mostraron un rendimiento inferior, lo que sugiere la necesidad de expandir y refinar el contexto disponible en versiones futuras.
@@ -157,7 +157,7 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
     \item Langfuse: observador pasivo que registra todas las interacciones del sistema sin intervenir. Almacena información crítica como la pregunta original, la redefinida, el consumo de tokens, la respuesta final y los estados de los guardrails. También permite aplicar evaluaciones automáticas sobre la precisión de las respuestas generadas por el sistema que luego son usadas por el sistema de métricas.
 \end{itemize}
 
-La Figura~\ref{fig:highlevel} muestra el diagrama de la arquitectura completa, en la que se detallan los principales componentes y flujos de información del sistema.
+La figura~\ref{fig:highlevel} muestra el diagrama de la arquitectura completa, en la que se detallan los principales componentes y flujos de información del sistema.
 
 \begin{figure}[htbp]
     \centering
@@ -181,7 +181,7 @@ La Figura~\ref{fig:highlevel} muestra el diagrama de la arquitectura completa, e
 % \newpage
 \subsection{Funcionamiento general} 
 
-El pipeline del sistema está diseñado para ofrecer una experiencia conversacional precisa, eficiente y trazable. A continuación, se detalla el flujo completo de funcionamiento representado en la imagen Figura~\ref{fig:svgtech}:
+El pipeline del sistema está diseñado para ofrecer una experiencia conversacional precisa, eficiente y trazable. A continuación, se detalla el flujo completo de funcionamiento representado en la figura~\ref{fig:svgtech}:
 
 \begin{enumerate}
     \item El usuario realiza una consulta a través del frontend.
@@ -231,7 +231,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
       \item relates: una serie de frases informativas asociadas a la clave, que constituyen el contexto que será devuelto al modelo como parte del proceso RAG.
   \end{itemize}
   
-  La estructura clave-valor facilita la búsqueda semántica eficiente, y permite que el sistema recupere contextos relevantes rápidamente al comparar las consultas del usuario con las claves almacenadas en la base de datos. La Figura~\ref{fig:contextformat} muestra un ejemplo de cómo se estructuran estos datos.
+  La estructura clave-valor facilita la búsqueda semántica eficiente, y permite que el sistema recupere contextos relevantes rápidamente al comparar las consultas del usuario con las claves almacenadas en la base de datos. La figura~\ref{fig:contextformat} muestra un ejemplo de cómo se estructuran estos datos.
 
   
   \begin{figure}[htbp]
@@ -282,7 +282,7 @@ Durante el proceso de evaluación de las métricas, se recorrieron todas las tra
     \item Síntesis por grupo: se selecciona una pregunta representativa de cada clúster mayoritario, a partir de la cual se genera un resumen conciso para cada etiqueta temática. Esta síntesis facilita la visualización del desempeño del sistema y la identificación de áreas susceptibles de mejora.
 \end{enumerate}
 
-En la Figura~\ref{fig:flujometricas} se presenta un diagrama del \textit{pipeline} que ilustra el proceso de extracción de las métricas desde Langfuse, el agrupamiento en el \textit{backend} y la posterior renderización en el \textit{frontend}.
+En la figura~\ref{fig:flujometricas} se presenta un diagrama del \textit{pipeline} que ilustra el proceso de extracción de las métricas desde Langfuse, el agrupamiento en el \textit{backend} y la posterior renderización en el \textit{frontend}.
 
 
 \vspace{1em}
