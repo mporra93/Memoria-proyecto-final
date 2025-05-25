@@ -97,7 +97,7 @@ Razón del cambio: mejorar la calidad de las respuestas, reducir los costos de i
     Por otro lado, el sistema de métricas, aunque útil para el análisis de performance, presentó limitaciones: el uso simultáneo de múltiples modelos incrementó el tiempo de respuesta y el consumo de cómputo, y la clasificación dependía demasiado de ejemplos predefinidos, lo que reducía su robustez frente a consultas poco comunes o mal redactadas.
 
 
-\newpage
+
 \item{Versión 3 - Integración de Langfuse, clasificación y evaluación automática}
 
     Razón del cambio: necesidad de un sistema robusto para trazabilidad, evaluación y mejora continua.
@@ -107,7 +107,7 @@ Descripción: se integró Langfuse como sistema observador no intrusivo para reg
 
 Problemas detectados: algunos temas, como las quejas, mostraron un rendimiento inferior, lo que sugiere la necesidad de expandir y refinar el contexto disponible en versiones futuras.
 
-    \begin{figure}[htbp]
+    \begin{figure}[t]
         \centering
         \includegraphics[width=.75\textwidth]{./Figures/ejemploreformulado.png}
         \caption{Ejemplo de redefinición de pregunta.}
@@ -118,7 +118,7 @@ Problemas detectados: algunos temas, como las quejas, mostraron un rendimiento i
 \end{itemize}
 
 
-% \newpage
+\newpage
 \subsection{Problemas y mitigaciones}
 
 Durante las primeras iteraciones surgieron limitaciones clave: costos por servicios externos (Pinecone, API de LLMs), pobre trazabilidad del sistema y ausencia de control sobre la evaluación de calidad. Estos problemas fueron mitigados mediante las siguientes acciones:
@@ -157,9 +157,10 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
     \item Langfuse: observador pasivo que registra todas las interacciones del sistema sin intervenir. Almacena información crítica como la pregunta original, la redefinida, el consumo de tokens, la respuesta final y los estados de los guardrails. También permite aplicar evaluaciones automáticas sobre la precisión de las respuestas generadas por el sistema que luego son usadas por el sistema de métricas.
 \end{itemize}
 
+\newpage
 La figura~\ref{fig:highlevel} muestra el diagrama de la arquitectura completa, en la que se detallan los principales componentes y flujos de información del sistema.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
     \centering
     \includegraphics[width=.75\textwidth]{./Figures/highlevel.png}
     \caption{Diagrama general del flujo del pipeline del sistema.}
@@ -241,7 +242,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
     \label{fig:contextformat}
   \end{figure}
 
-\newpage
+
     Esta estructura permite una consulta eficiente, ya que las claves semánticas generadas durante el proceso de reformulación se emplean para buscar y recuperar los fragmentos de contexto más adecuados. A partir de estas claves, se extraen las frases informativas ubicadas en el campo relates. La búsqueda se realiza mediante un enfoque híbrido que combina técnicas semánticas y vectoriales, lo que permite identificar coincidencias exactas y también similitudes conceptuales entre la consulta y las claves almacenadas.
     Una vez identificadas las coincidencias, LanceDB accede a los valores del campo relates, que contienen el contexto necesario para interpretar correctamente la consulta. Después, el sistema inserta los fragmentos de contexto relevantes en el prompt del modelo generador LLM. Este procedimiento garantiza respuestas precisas y contextualizadas, al integrar tanto la consulta original del usuario como el contexto
 
@@ -258,7 +259,7 @@ El pipeline del sistema está diseñado para ofrecer una experiencia conversacio
 
     En particular, el uso de algoritmos de \textit{clustering} basados en densidad, como HDBSCAN, ofrece ventajas significativas para agrupar datos de naturaleza compleja y heterogénea. Estos algoritmos no requieren predefinir la cantidad de grupos y manejan eficazmente el ruido o las preguntas atípicas. Esta característica facilita una visión más profunda y detallada del comportamiento del sistema, lo que resulta clave para implementar procesos de mejora continua. Estos procesos no dependen exclusivamente del reentrenamiento de modelos de lenguaje, sino que aprovechan la riqueza de los datos conversacionales reales.
  
-  
+\newpage
 \subsection{Sistema de evaluación automatizada y mejora continua sin reentrenamiento}
 
 Durante el desarrollo del sistema, se adoptó un enfoque alternativo al reentrenamiento tradicional de modelos de lenguaje (LLM). Se priorizó la adaptabilidad mediante evaluación automatizada y actualización contextual. Esta arquitectura permite analizar los resultados de las interacciones con los usuarios sin modificar directamente los parámetros del modelo base.
@@ -282,6 +283,7 @@ Durante el proceso de evaluación de las métricas, se recorrieron todas las tra
     \item Síntesis por grupo: se selecciona una pregunta representativa de cada clúster mayoritario, a partir de la cual se genera un resumen conciso para cada etiqueta temática. Esta síntesis facilita la visualización del desempeño del sistema y la identificación de áreas susceptibles de mejora.
 \end{enumerate}
 
+\newpage
 En la figura~\ref{fig:flujometricas} se presenta un diagrama del \textit{pipeline} que ilustra el proceso de extracción de las métricas desde Langfuse, el agrupamiento en el \textit{backend} y la posterior renderización en el \textit{frontend}.
 
 
