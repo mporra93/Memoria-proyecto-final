@@ -109,8 +109,8 @@ Descripción: se integró Langfuse como sistema observador no intrusivo para reg
 
 
 Problemas detectados: algunos temas, como las quejas, mostraron un rendimiento inferior, lo que sugiere la necesidad de expandir y refinar el contexto disponible en versiones futuras.
-
-    \begin{figure}[t]
+\vspace{1em}
+    \begin{figure}[h]
         \centering
         \includegraphics[width=.75\textwidth]{./Figures/ejemploreformulado.png}
         \caption{Ejemplo de redefinición de pregunta.}
@@ -160,7 +160,7 @@ La arquitectura final del sistema está diseñada para ofrecer una solución rob
     \item Langfuse: observador pasivo que registra todas las interacciones del sistema sin intervenir. Almacena información crítica como la pregunta original, la redefinida, el consumo de tokens, la respuesta final y los estados de los \textit{guardrails}. También permite aplicar evaluaciones automáticas sobre la precisión de las respuestas generadas por el sistema que luego son usadas por el sistema de métricas.
 \end{itemize}
 
-\newpage
+% \newpage
 La figura~\ref{fig:highlevel} muestra el diagrama de la arquitectura completa, en la que se detallan los principales componentes y flujos de información del sistema.
 
 \begin{figure}[h]
@@ -223,7 +223,7 @@ El \textit{pipeline} del sistema está diseñado para ofrecer una experiencia co
 
 
 % new page 
-% \newpage
+\newpage
 \section{Implementación} 
 
   \subsection{Preparación de los datos de contexto} 
@@ -262,7 +262,7 @@ El \textit{pipeline} del sistema está diseñado para ofrecer una experiencia co
 
     En particular, el uso de algoritmos basados en densidad, como \texttt{HDBSCAN}, ofrece ventajas significativas para agrupar datos de naturaleza compleja y heterogénea. Estos algoritmos no requieren predefinir la cantidad de grupos y manejan eficazmente el ruido o las preguntas atípicas. Esta característica facilita una visión más profunda y detallada del comportamiento del sistema, lo que resulta clave para implementar procesos de mejora continua. Estos procesos no dependen exclusivamente del reentrenamiento de modelos de lenguaje, sino que aprovechan la riqueza de los datos conversacionales reales.
  
-\newpage
+% \newpage
 \subsection{Sistema de evaluación automatizada y mejora continua sin reentrenamiento}
 
 Durante el desarrollo del sistema, se adoptó un enfoque alternativo al reentrenamiento tradicional de modelos de lenguaje (LLM). Se priorizó la adaptabilidad mediante evaluación automatizada y actualización contextual. Esta arquitectura permite analizar los resultados de las interacciones con los usuarios sin modificar directamente los parámetros del modelo base.
@@ -286,7 +286,7 @@ Durante el proceso de evaluación de las métricas, se recorrieron todas las tra
     \item Síntesis por grupo: se selecciona una pregunta representativa de cada \textit{cluster} mayoritario, a partir de la cual se genera un resumen conciso para cada etiqueta temática. Esta síntesis facilita la visualización del desempeño del sistema y la identificación de áreas susceptibles de mejora.
 \end{enumerate}
 
-\newpage
+% \newpage
 En la figura~\ref{fig:flujometricas} se presenta un diagrama del \textit{pipeline} que ilustra el proceso de extracción de las métricas desde Langfuse, el agrupamiento en el backend y la posterior renderización en el frontend.
 
 
