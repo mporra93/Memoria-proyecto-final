@@ -32,7 +32,7 @@ Razón del cambio: mejorar la calidad de las respuestas, reducir los costos de i
 
     Se integró \texttt{DSPy}, un \textit{framework} que permite definir \textit{prompts} de manera modular y declarativa, lo que facilitó una implementación más mantenible y escalable de la arquitectura RAG.
 
-    Asimismo, se añadió una capa de filtrado con \texttt{NeMo Guardrails} \citep{nemoguardrailsdef} para bloquear preguntas fuera de dominio, junto con un sistema de evaluación automática que puntuaba las respuestas de la LLM, y permitía monitorear su rendimiento. Estos componentes fueron implementados como módulos independientes en \texttt{DSPy}, lo que mejoró la modularidad y claridad del sistema. La figura~\ref{fig:version1} muestra el esquema general del sistema desarrollado en esta versión, y destaca los componentes principales y su integración en el flujo conversacional.
+    Asimismo, se añadió una capa de filtrado con \texttt{NeMo Guardrails} \citep{nvidia-guardrails-ai} para bloquear preguntas fuera de dominio, junto con un sistema de evaluación automática que puntuaba las respuestas de la LLM, y permitía monitorear su rendimiento. Estos componentes fueron implementados como módulos independientes en \texttt{DSPy}, lo que mejoró la modularidad y claridad del sistema. La figura~\ref{fig:version1} muestra el esquema general del sistema desarrollado en esta versión, y destaca los componentes principales y su integración en el flujo conversacional.
 
     Problemas detectados: aunque se logró mayor robustez y control, surgieron desafíos como el rendimiento limitado de \texttt{NeMo Guardrails} en español y la falta de trazabilidad completa, lo que motivó la búsqueda de alternativas.
 
@@ -139,7 +139,7 @@ Durante las primeras iteraciones surgieron limitaciones clave, como costos por s
 
 \subsection{Elección de la arquitectura de chatbot}
 
-La arquitectura final del chatbot se basa en el enfoque RAG (por sus siglas en inglés, \textit{Retrieval-Augmented Generation}), una técnica que ha demostrado ser altamente efectiva para responder preguntas contextualizadas sin necesidad de realizar un reentrenamiento completo del modelo de lenguaje (LLM). Esta decisión se tomó para ofrecer un sistema flexible, escalable y de bajo costo operativo, especialmente orientado a pequeñas empresas y emprendedores que requieren soluciones ágiles y sostenibles.
+La arquitectura final del chatbot se basa en el enfoque RAG, una técnica que ha demostrado ser altamente efectiva para responder preguntas contextualizadas sin necesidad de realizar un reentrenamiento completo del modelo de lenguaje (LLM). Esta decisión se tomó para ofrecer un sistema flexible, escalable y de bajo costo operativo, especialmente orientado a pequeñas empresas y emprendedores que requieren soluciones ágiles y sostenibles.
 
 El uso de RAG permite mantener el modelo LLM independiente de la base de conocimiento. Esto implica que se pueden incorporar nuevos documentos, actualizaciones o correcciones mediante la modificación de los datos almacenados en el \textit{vectorstore}, sin necesidad de ajustar los parámetros del modelo. Esta separación entre el modelo y la información facilita considerablemente las tareas de mantenimiento y mejora continua del sistema.
 
