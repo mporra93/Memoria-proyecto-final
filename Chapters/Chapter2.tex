@@ -26,15 +26,15 @@ En esta sección se presentan los requerimientos específicos de software del si
          \end{enumerate}
 		 
 	% \newpage % agrego un salto de página 
-    \item Requerimientos de Testing:
+    \item Requerimientos de testing:
         \begin{enumerate}
             \item Se llevarán a cabo pruebas en diferentes escenarios y con diferentes tipos de contexto de datos, para garantizar la fiabilidad y precisión del chatbot.
          \end{enumerate}
-    \item Requerimientos de la Interfaz:
+    \item Requerimientos de la interfaz:
         \begin{enumerate}
             \item Se requiere una interfaz interactiva, que permita hacer preguntas y obtener respuestas en tiempo real dentro del mismo entorno de interacción.
         \end{enumerate}
-    \item Requerimientos de Rendimiento:
+    \item Requerimientos de rendimiento:
         \begin{enumerate} 
             \item Se establece un límite máximo de tiempo de respuesta de 1 minuto, para asegurar una experiencia satisfactoria para el usuario.
         \end{enumerate}
@@ -46,14 +46,14 @@ En esta sección se presentan los requerimientos específicos de software del si
      
   Modelos basados en reglas: estos modelos utilizan gramáticas y diccionarios para analizar el lenguaje. Aunque son efectivos en tareas específicas, su rigidez y la necesidad de una extensa programación manual limitan su aplicabilidad en contextos más amplios.
   
-  Modelos estadísticos: a medida que los datos comenzaron a acumularse, los modelos estadísticos, como los n-gramas, se convirtieron en populares. Estos modelos predicen la probabilidad de una palabra en función de las anteriores. Sin embargo, su dependencia de datos limitados puede resultar en un contexto insuficiente, lo que afecta la calidad de las predicciones.
+  Modelos estadísticos: a medida que los datos comenzaron a acumularse, los modelos estadísticos, como los \texttt{n-gramas}, se convirtieron en populares. Estos modelos predicen la probabilidad de una palabra en función de las anteriores. Sin embargo, su dependencia de datos limitados puede resultar en un contexto insuficiente, lo que afecta la calidad de las predicciones.
   
-  Modelos de aprendizaje profundo: con el auge del aprendizaje profundo, arquitecturas como RNN (Redes Neuronales Recurrentes), LSTM (Memoria a Largo Plazo) y transformers han revolucionado el PLN. Estos modelos pueden captar patrones complejos en grandes volúmenes de datos, lo que les permite realizar tareas como la traducción automática y la generación de texto de manera más efectiva.
+  Modelos de aprendizaje profundo: con el auge del aprendizaje profundo, arquitecturas como RNN (Redes Neuronales Recurrentes), LSTM (por sus siglas en inglés, \textit{Long Short-Term Memory}) y \texttt{transformer} han revolucionado el PLN. Estos modelos pueden captar patrones complejos en grandes volúmenes de datos, lo que les permite realizar tareas como la traducción automática y la generación de texto de manera más efectiva.
   
   \newpage
   \subsection{Modelos de Lenguaje modernos}
 
-  Modelos como BERT (por sus siglas en inglés, Bidirectional Encoder Representations from Transformers) y GPT (Generative Pre-trained Transformer) han transformado el campo del procesamiento de lenguaje natural (PLN), al ofrecer enfoques innovadores para comprender y generar texto.
+  Modelos como BERT (por sus siglas en inglés, \textit{Bidirectional Encoder Representations from Transformers}) y GPT (por sus siglas en inglés, \textit{Generative Pre-trained Transformer}) han transformado el campo del procesamiento de lenguaje natural (PLN), al ofrecer enfoques innovadores para comprender y generar texto.
   
   \begin{itemize}
 	  \item GPT: este modelo utiliza técnicas de aprendizaje profundo para generar texto coherente y contextualmente relevante. Su capacidad para crear respuestas naturales ha revolucionado la interacción de los chatbots con los usuarios, lo que permite conversaciones más fluidas y precisas.
@@ -62,17 +62,17 @@ En esta sección se presentan los requerimientos específicos de software del si
   \end{itemize}
   
 
-  \section{Modelos de chatbots: RAG vs Fine-Tuning}
+  \section{Modelos de chatbots: RAG vs \textit{Fine-Tuning}}
   
-  Los chatbots se pueden clasificar según sus arquitecturas y métodos de entrenamiento. Entre las más destacadas se encuentran Retrieval Augmented Generation (RAG) y \textit{fine-tuning}. Ambas arquitecturas ofrecen ventajas complementarias, lo que las convierten en opciones populares en el desarrollo de chatbots efectivos \cite{greyling2023}.
+  Los chatbots se pueden clasificar según sus arquitecturas y métodos de entrenamiento. Entre las más destacadas se encuentran \textit{Retrieval Augmented Generation} (RAG) y \textit{fine-tuning}. Ambas arquitecturas ofrecen ventajas complementarias, lo que las convierten en opciones populares en el desarrollo de chatbots efectivos \cite{greyling2023}.
 
 
 
 
-\subsection{Retrieval Augmented Generation (RAG)}
+\subsection{\textit{Retrieval Augmented Generation} (RAG)}
 
     RAG integra técnicas de generación de lenguaje natural con mecanismos de recuperación de información que operan sobre una base de conocimiento estructurada. Ante una consulta del usuario, el modelo emplea \textit{embeddings} para localizar y extraer los segmentos más relevantes del contexto almacenado, con el fin de generar una respuesta coherente y fundamentada \cite{embeddings2024}.
-  Este conocimiento relevante se inyecta en el \textit{prompt}\citep{promptdefinition} enviado al modelo de lenguaje (LLM). El \textit{prompt} incluye tanto la pregunta como el contexto relacionado, lo que permite a la LLM generar respuestas más precisas y contextualizadas. La incorporación de datos externos en este proceso enriquece el conocimiento del modelo en tiempo real y disminuye las posibilidades de alucinaciones—respuestas que, aunque parecen plausibles, son incorrectas.
+  Este conocimiento relevante se inyecta en el \textit{prompt} \citep{promptdefinition} enviado al modelo de lenguaje (LLM). El \textit{prompt} incluye tanto la pregunta como el contexto relacionado, lo que permite a la LLM generar respuestas más precisas y contextualizadas. La incorporación de datos externos en este proceso enriquece el conocimiento del modelo en tiempo real y disminuye las posibilidades de alucinaciones respuestas que, aunque parecen plausibles, son incorrectas.
   Además, RAG utiliza bases de datos vectoriales y la búsqueda semántica para recuperar información relevante, lo que mejora la precisión y relevancia de las respuestas del chatbot. Este enfoque es especialmente útil en situaciones donde se requiere información actualizada o especializada, como en consultas de productos o en el soporte técnico. La figura~\ref{fig:arquitectura_rag} representa el flujo de información en una arquitectura RAG desde la consulta inicial hasta la generación final de la respuesta.
 
 %  \vspace{1cm}
@@ -86,18 +86,18 @@ En esta sección se presentan los requerimientos específicos de software del si
 
   \newpage
   
-  \subsection{Fine-Tuning}
+  \subsection{\textit{Fine-Tuning}}
   El \textit{fine-tuning} implica ajustar un modelo de lenguaje preentrenado en un conjunto de datos específico para mejorar su comportamiento en contextos particulares. Este proceso optimiza la efectividad del modelo en aplicaciones industriales específicas, como en medicina, derecho o ingeniería. Sin embargo, una desventaja del \textit{fine-tuning} es que el modelo resultante puede quedar congelado en un estado particular, lo que limita su adaptabilidad a nuevos contextos sin un nuevo ciclo de entrenamiento.
   Aunque el \textit{fine-tuning} proporciona respuestas más precisas en contextos específicos, puede carecer de la flexibilidad de RAG, que permite incorporar datos contextuales en tiempo real.
    
   \newpage
-\subsection{Ventajas y desventajas de los modelos RAG y Fine-Tuning}
+\subsection{Ventajas y desventajas de los modelos RAG y \textit{Fine-Tuning}}
 
-  A continuación, se presenta en la tabla~\ref{tab:rag_vs_finetuning} las comparaciones de las principales ventajas y desventajas de los modelos RAG (Retrieval-Augmented Generation) y \textit{Fine-Tuning}. Esta comparación proporciona una visión clara de las características distintivas de cada enfoque, lo que permite una evaluación informada de su idoneidad en función de los requisitos específicos del entorno de implementación.
+  A continuación, se presenta en la tabla~\ref{tab:rag_vs_finetuning} las comparaciones de las principales ventajas y desventajas de los modelos RAG (por sus siglas en inglés, \textit{Retrieval-Augmented Generation}) y \textit{Fine-Tuning}. Esta comparación proporciona una visión clara de las características distintivas de cada enfoque, lo que permite una evaluación informada de su idoneidad en función de los requisitos específicos del entorno de implementación.
 
     \begin{table}[ht]
         \centering
-        \caption{Ventajas y desventajas de los modelos RAG y Fine-Tuning.}
+        \caption{Ventajas y desventajas de los modelos RAG y \textit{Fine-Tuning}.}
         \begin{tabular}{l p{0.4\linewidth} p{0.4\linewidth}}
             \toprule
             \textbf{Modelo} & \textbf{Ventajas} & \textbf{Desventajas} \\
@@ -114,7 +114,7 @@ En esta sección se presentan los requerimientos específicos de software del si
                 \item Puede ser más complejo de implementar y mantener.
             \end{itemize} \\
             \midrule
-            Fine-Tuning &
+            \textit{Fine-Tuning} &
             \begin{itemize}
                 \item Mejora la calidad de las respuestas al adaptar el modelo a un dominio específico.
                 \item Proporciona un rendimiento más consistente en contextos bien definidos.
